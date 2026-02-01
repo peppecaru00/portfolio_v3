@@ -1,0 +1,11 @@
+{
+  "title": "Morena's Birthday",
+  "client": "A Friend",
+  "year": "2024",
+  "category": "Casual",
+  "description": "A heartfelt video capturing the moments of a birthday celebration.",
+  "challenge": "To shoot a entire video on very dark setting with minimal lighting equipment.",
+  "services": ["Shooting", "Color Grading", "Editing"],
+  "shotOn": ["Lumix S5", "Helios 44M-4 58mm f/2 Lens"],
+  "toolsUsed": ["DaVinci Resolve"]
+}

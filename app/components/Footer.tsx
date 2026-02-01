@@ -8,11 +8,11 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
   
   const socials = [
-    { name: "Instagram", href: "https://instagram.com", icon: Instagram },
+    { name: "Instagram", href: "https://instagram.com/giuseppe_caruso00", icon: Instagram },
     { name: "Twitter", href: "https://twitter.com", icon: Twitter },
     { name: "LinkedIn", href: "https://linkedin.com", icon: Linkedin },
     { name: "GitHub", href: "https://github.com", icon: Github },
-    { name: "Email", href: "mailto:hello@example.com", icon: Mail },
+    { name: "Email", href: "mailto:giuseppe.caruso.sc@gmail.com", icon: Mail },
   ];
 
   const scrollToTop = () => {
@@ -72,13 +72,11 @@ export default function Footer() {
             className="md:col-span-4 lg:col-span-3"
           >
             <h3 className="text-sm font-medium tracking-widest uppercase text-neutral-500 mb-6">
-              Location
+              Based in
             </h3>
             <address className="not-italic text-lg md:text-xl font-medium leading-relaxed text-neutral-300">
-              Based in<br />
-              New York City<br />
+              Turin, Piedmont, Italy<br />
               <span className="text-neutral-600 text-base mt-2 block">
-                Working worldwide
               </span>
             </address>
           </motion.div>
@@ -99,13 +97,13 @@ export default function Footer() {
                 href="mailto:hello@example.com" 
                 className="block text-lg md:text-xl font-medium hover:text-neutral-400 transition-colors"
               >
-                hello@example.com
+                giuseppe.caruso.sc@gmail.com
               </a>
               <a 
                 href="tel:+1234567890" 
                 className="block text-lg md:text-xl font-medium hover:text-neutral-400 transition-colors"
               >
-                +1 (234) 567-890
+                +39 3925808834
               </a>
             </div>
           </motion.div>
@@ -141,7 +139,7 @@ export default function Footer() {
         {/* Bottom Section - Copyright & Back to Top */}
         <div className="py-8 border-t border-neutral-900 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8 text-sm text-neutral-600">
-            <span>© {currentYear} Portfolio. All rights reserved.</span>
+            <span>© {currentYear} Giuseppe Caruso. All rights reserved.</span>
             <div className="flex gap-6">
               <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
               <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
@@ -170,7 +168,7 @@ export default function Footer() {
             repeat: Infinity, 
             ease: "linear" 
           }}
-          className="whitespace-nowrap text-[20vw] font-bold tracking-tighter text-neutral-950 leading-none opacity-50"
+          className="whitespace-nowrap text-[20vw] font-bold tracking-tighter text-neutral-950 leading-none opacity-100"
         >
           CREATE • DESIGN • BUILD • IMAGINE • CREATE • DESIGN • BUILD • IMAGINE •
         </motion.div>

@@ -13,6 +13,7 @@ export interface ProjectMeta {
   solution: string;
   services: string[];
   toolsUsed: string[];
+  shotOn?: string[];
   coverImage: string;
   nextProject?: string;
 }

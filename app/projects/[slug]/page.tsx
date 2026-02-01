@@ -119,6 +119,15 @@ export default async function ProjectPage({
               </div>
             )}
 
+            {project.shotOn && (
+              <div>
+                <h3 className="text-sm font-medium tracking-widest uppercase text-neutral-500 mb-2">
+                  Shot On
+                </h3>
+                <p className="text-lg font-medium">{project.shotOn.join(', ')}</p>
+              </div>
+            )}
+
 
           </div>
 
@@ -184,7 +193,7 @@ export default async function ProjectPage({
                     src={image}
                     alt={`${project.title} detail ${index + 1}`}
                     fill
-                    className="object-cover transition-all duration-700 group-hover:scale-105 md:h-full"
+                    className="object-cover transition-all duration-700"
                     sizes={index % 5 === 0 ? "60vw" : "40vw"}
                   />
                 </div>
