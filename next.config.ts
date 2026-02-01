@@ -1,15 +1,13 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
   output: 'export',
-  distDir: 'dist',
-  
-  // Auto-detect from GitHub Actions or use repo name
-  basePath: process.env.NEXT_PUBLIC_BASE_PATH || '',
-  
+  basePath: process.env.NODE_ENV === 'production' ? '/portfolio_v3' : '',
+
   images: {
     unoptimized: true,
   },
-  trailingSlash: true,
-}
 
-module.exports = nextConfig
+};
+
+export default nextConfig;
