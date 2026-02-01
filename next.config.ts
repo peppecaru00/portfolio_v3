@@ -9,18 +9,14 @@ const isProd = process.env.NODE_ENV === 'production';
 const nextConfig: NextConfig = {
   output: 'export',
   
-  // 3. Only apply the base path in production
-  basePath: isProd ? `/${repoName}` : '',
-  assetPrefix: isProd ? `/${repoName}/` : '',
-
+  basePath: isProd ? "/portfolio_v3" : "",  
+  // Sometimes needed for CSS/JS loading correctly
+  assetPrefix: isProd ? "/portfolio_v3/" : "",
+  // Ensure images are unoptimized for static export if using next/image
   images: {
     unoptimized: true,
   },
 
-  // 4. Expose this variable to your frontend code
-  env: {
-    NEXT_PUBLIC_BASE_PATH: isProd ? `/${repoName}` : '',
-  },
 };
 
 export default nextConfig;
