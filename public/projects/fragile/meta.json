@@ -1,0 +1,11 @@
+{
+  "title": "Macello Horse BTS",
+  "client": "Politecnico di Torino & Castello di Macello",
+  "year": "2025",
+  "category": "VFX Shot BTS",
+  "description": "A Quick behind the scene edit showcasing the VFX shots created for Macello Castle Horse VFX shot for the Visual Effect class project.",
+  "challenge": "Blending an horse, his rider and other elements into a historical castle environment while maintaining realism and visual coherence.",
+  "solution": "Utilized advanced compositing techniques, 3D tracking, and color grading to seamlessly integrate all elements into the castle setting, ensuring a believable and immersive final shot.",
+  "services": ["Shooting", "Color Grading", "Editing"],
+  "toolsUsed": ["DaVinci Resolve"]
+}
