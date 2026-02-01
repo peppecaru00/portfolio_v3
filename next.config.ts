@@ -1,22 +1,15 @@
-import type { NextConfig } from "next";
-
-// 1. Define your repo name here ONCE
-const repoName = 'portfolio_v3'; 
-
-// 2. Determine if we are in production (GitHub Pages) or development (Localhost)
-const isProd = process.env.NODE_ENV === 'production';
-
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   output: 'export',
+  distDir: 'dist',
   
-  basePath: isProd ? "/portfolio_v3" : "",  
-  // Sometimes needed for CSS/JS loading correctly
-  assetPrefix: isProd ? "/portfolio_v3/" : "",
-  // Ensure images are unoptimized for static export if using next/image
+  // Auto-detect from GitHub Actions or use repo name
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH || '',
+  
   images: {
     unoptimized: true,
   },
+  trailingSlash: true,
+}
 
-};
-
-export default nextConfig;
+module.exports = nextConfig
