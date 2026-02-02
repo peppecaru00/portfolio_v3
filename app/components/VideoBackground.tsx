@@ -17,12 +17,6 @@ export default function VideoBackground({
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.playbackRate = 0.75;
-    }
-  }, []);
-
   return (
     <div className="absolute inset-0 w-full h-full overflow-hidden">
       <motion.div
