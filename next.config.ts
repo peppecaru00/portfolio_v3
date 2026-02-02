@@ -1,19 +1,23 @@
 import type { NextConfig } from "next";
 
-const isProd = process.env.NODE_ENV === 'production';
-const repoName = "portfolio_v3"; // ⚠️ REPLACE THIS with your repository name
+const repo = 'portfolio_v3';
+const assetPrefix = `/${repo}`;
+const basePath = `/${repo}`;
 
 const nextConfig: NextConfig = {
   output: 'export',
-  // This tells Next.js to serve the site from the subdirectory on GitHub Pages
-  basePath: isProd ? `/${repoName}` : '',
-  // Required for static export to work with images
+  
+  // 2. These settings tell Next.js where your site lives
+  basePath: process.env.NODE_ENV === 'production' ? basePath : '',
+  assetPrefix: process.env.NODE_ENV === 'production' ? assetPrefix : '',
+  
   images: {
     unoptimized: true,
   },
-  // Makes the basePath available as an environment variable in your components
+  
+  // 3. This forces the variable into the browser code
   env: {
-    NEXT_PUBLIC_BASE_PATH: isProd ? `/${repoName}` : '',
+    NEXT_PUBLIC_BASE_PATH: process.env.NODE_ENV === 'production' ? basePath : '',
   },
 };
 
