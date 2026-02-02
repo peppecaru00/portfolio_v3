@@ -21,7 +21,7 @@ export default async function ProjectsPage() {
         {projects.map((project, index) => (
           <Link
             key={project.slug}
-            href={`${basePath}/projects/${project.slug}`}
+            href={`/projects/${project.slug}`}
             className="group block"
           >
             {/* Ring container - outside overflow-hidden */}
