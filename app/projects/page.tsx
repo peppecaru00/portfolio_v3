@@ -27,7 +27,7 @@ export default async function ProjectsPage() {
             {/* Ring container - outside overflow-hidden */}
             <div className="relative rounded-xl transition-all duration-200 group-hover:ring-2 group-hover:ring-white group-hover:ring-offset-black">
               {/* Image mask container - handles overflow and aspect ratio */}
-              <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-neutral-100 dark:bg-neutral-900 mb-4">
+              <div className="relative aspect-[16/9] overflow-hidden rounded-xl bg-neutral-100 dark:bg-neutral-900 mb-4">
                 <Image
                   src={project.coverImage}
                   alt={project.title}
