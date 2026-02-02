@@ -13,7 +13,7 @@ const nextConfig: NextConfig = {
   },
   // Makes the basePath available as an environment variable in your components
   env: {
-    basePath: isProd ? `/${repoName}` : '',
+    NEXT_PUBLIC_BASE_PATH: isProd ? `/${repoName}` : '',
   },
 };
 

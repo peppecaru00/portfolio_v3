@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default async function ProjectsPage() {
   const projects = await getProjects();
-  const basePath = process.env.basePath || '';
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
 
   return (
     <div className="min-h-screen pt-32 pb-24 px-6 md:px-12 max-w-[1800px] mx-auto">

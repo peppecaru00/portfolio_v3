@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function Home() {
   // Get the base path we defined in next.config.ts
-  const basePath = process.env.basePath || '';
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
   console.log("Current Base Path:", basePath);
   return (
     <div className="relative min-h-screen flex items-center justify-center">

@@ -43,7 +43,7 @@ export default async function ProjectPage({
 
   // Get all images from the project's images folder
   const galleryImages = await getProjectImages(slug);
-  const basePath = process.env.basePath || '';
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
   // Find next project for navigation
   const allProjects = await getProjects();
   const currentIndex = allProjects.findIndex(p => p.slug === slug);

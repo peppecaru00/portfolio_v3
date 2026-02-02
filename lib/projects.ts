@@ -18,7 +18,7 @@ export interface ProjectMeta {
   nextProject?: string;
 }
 
- const basePath = process.env.basePath || '';
+ const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
 
 // Cache the project scan for performance
 export const getProjects = cache(async (): Promise<ProjectMeta[]> => {
