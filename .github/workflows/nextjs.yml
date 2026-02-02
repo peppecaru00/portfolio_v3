@@ -61,6 +61,11 @@ jobs:
           #
           # You may remove this line if you want to manage the configuration yourself.
           static_site_generator: next
+      - name: Copy static assets
+        run: |
+          cp -r public/projects out/ 2>/dev/null || true
+          cp -r public/videos out/ 2>/dev/null || true
+      
       - name: Restore cache
         uses: actions/cache@v4
         with:
