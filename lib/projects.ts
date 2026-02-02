@@ -87,7 +87,7 @@ export const getProjectImages = cache(async (slug: string): Promise<string[]> =>
   const files = fs.readdirSync(imagesDirectory)
     .filter(file => {
       const ext = path.extname(file).toLowerCase();
-      return ['.jpg', '.jpeg', '.png', '.webp', '.gif', 'webp'].includes(ext);
+      return ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.webp'].includes(ext);
     })
     .sort(); // Sort alphabetically/ numerically
 
