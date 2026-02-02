@@ -1,25 +1,20 @@
 import type { NextConfig } from "next";
 
-// ⚠️ Ensure this matches your repository name EXACTLY
-const repoName = "portfolio_v3"; 
-const basePath = `/${repoName}`;
+// 1. Grab the path from the environment (injected by GitHub Actions)
+// If running locally, this will be undefined, defaulting to '' (root)
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
 
 const nextConfig: NextConfig = {
-  output: 'export',
-  // Fixes the 404s on reload/direct link
-  trailingSlash: true,
-  
-  // Force the path. No conditions.
+  output: 'export',  
+  // 2. Use the dynamic path
   basePath: basePath,
   
   images: {
     unoptimized: true,
   },
   
-  // Force the variable into the browser
-  env: {
-    NEXT_PUBLIC_BASE_PATH: basePath,
-  },
+  // 3. No need for 'env' block here; NEXT_PUBLIC_ variables 
+  // are automatically picked up if set in the system (like we did in YAML).
 };
 
 export default nextConfig;
