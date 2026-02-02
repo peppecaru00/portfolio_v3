@@ -54,7 +54,7 @@ export default async function ProjectPage({
       {/* Hero Section */}
       <div className="relative h-[70vh] md:h-[85vh] bg-neutral-100 dark:bg-neutral-900">
         <Image
-          src={project.coverImage}
+          src={`${basePath}${project.coverImage}`}
           alt={project.title}
           fill
           className="object-cover"
