@@ -43,7 +43,7 @@ export default async function ProjectPage({
 
   // Get all images from the project's images folder
   const galleryImages = await getProjectImages(slug);
-  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+
   // Find next project for navigation
   const allProjects = await getProjects();
   const currentIndex = allProjects.findIndex(p => p.slug === slug);
@@ -54,7 +54,7 @@ export default async function ProjectPage({
       {/* Hero Section */}
       <div className="relative h-[70vh] md:h-[85vh] bg-neutral-100 dark:bg-neutral-900">
         <Image
-          src={`${basePath}${project.coverImage}`}
+          src={project.coverImage}
           alt={project.title}
           fill
           className="object-cover"
@@ -191,7 +191,7 @@ export default async function ProjectPage({
                   className={`group relative overflow-hidden rounded-2xl bg-neutral-100 dark:bg-neutral-900 ${aspectClass} ${gridClass}`}
                 >
                   <Image
-                    src={`${basePath}${image}`}
+                    src={image}
                     alt={`${project.title} detail ${index + 1}`}
                     fill
                     className="object-cover transition-all duration-700"
