@@ -15,6 +15,7 @@ export interface ProjectMeta {
   toolsUsed: string[];
   shotOn?: string[];
   coverImage: string;
+  youtubeUrl?: string;
   nextProject?: string;
 }
 

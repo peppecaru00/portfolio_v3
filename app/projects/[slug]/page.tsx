@@ -2,11 +2,12 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { getProjects, getProjectBySlug, getProjectImages } from "@/lib/projects";
+import YouTubeButton from "../../components/YoutubeButton";
 
 // Generate static params for all projects
 export async function generateStaticParams() {
   const projects = await getProjects();
-  
+
   return projects.map((project) => ({
     slug: project.slug,
   }));
@@ -63,8 +64,14 @@ export default async function ProjectPage({
         <div className="absolute inset-0 bg-black/20" />
 
         {/* Project Title Overlay */}
-        <div className="absolute bottom-0 left-0 right-0 p-6 md:p-12 text-white">
-          <div className="max-w-[1800px] mx-auto">
+        <div className="gap-4 absolute bottom-0 left-0 right-0 p-6 md:p-12 text-white">
+          {/* YouTube Link */}
+          {project.youtubeUrl && (
+            <div>
+              <YouTubeButton url={project.youtubeUrl} />
+            </div>
+          )}
+          <div className="max-w-[1800px]">
             <p className="text-sm font-medium tracking-widest uppercase mb-4 opacity-80">
               {project.client || project.category}
             </p>
@@ -78,6 +85,7 @@ export default async function ProjectPage({
       {/* Project Info */}
       <div className="max-w-[1800px] mx-auto px-6 md:px-12 py-16 md:py-24">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
+
           {/* Sidebar */}
           <div className="lg:col-span-4 space-y-8">
             <div>
