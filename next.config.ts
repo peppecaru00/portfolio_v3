@@ -1,23 +1,31 @@
 import type { NextConfig } from "next";
 
 const repo = 'portfolio_v3';
-const assetPrefix = `/${repo}`;
-const basePath = `/${repo}`;
+
+// 1. We check if we are running on GitHub Actions.
+// This variable is ALWAYS present in the GitHub build environment.
+const isGithub = process.env.GITHUB_ACTIONS === 'true';
+
+// 2. Set the path based on that check.
+// Localhost -> ''
+// GitHub -> '/portfolio_v3'
+const basePath = isGithub ? `/${repo}` : '';
 
 const nextConfig: NextConfig = {
   output: 'export',
+  trailingSlash: true,
   
-  // 2. These settings tell Next.js where your site lives
-  basePath: process.env.NODE_ENV === 'production' ? basePath : '',
-  assetPrefix: process.env.NODE_ENV === 'production' ? assetPrefix : '',
+  // Apply the path for the router
+  basePath: basePath,
   
+  // Disable image optimization for static export
   images: {
     unoptimized: true,
   },
   
-  // 3. This forces the variable into the browser code
+  // Bake the variable into the client-side JavaScript
   env: {
-    NEXT_PUBLIC_BASE_PATH: process.env.NODE_ENV === 'production' ? basePath : '',
+    NEXT_PUBLIC_BASE_PATH: basePath,
   },
 };
 
