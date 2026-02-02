@@ -1,15 +1,17 @@
 "use client";
-
 import { motion } from "framer-motion";
 import VideoBackground from "./components/VideoBackground";
 import Link from "next/link";
 
 export default function Home() {
+  // Get the base path we defined in next.config.ts
+  const basePath = process.env.basePath || '';
+
   return (
     <div className="relative min-h-screen flex items-center justify-center">
       {/* Background Video */}
       <VideoBackground 
-        videoSrc="/videos/hero-bg.mp4" 
+        videoSrc={`${basePath}/videos/hero-bg.mp4`}
         overlay={true}
       />
 

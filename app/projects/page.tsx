@@ -4,6 +4,7 @@ import Link from "next/link";
 
 export default async function ProjectsPage() {
   const projects = await getProjects();
+  const basePath = process.env.basePath || '';
 
   return (
     <div className="min-h-screen pt-32 pb-24 px-6 md:px-12 max-w-[1800px] mx-auto">
@@ -20,7 +21,7 @@ export default async function ProjectsPage() {
         {projects.map((project, index) => (
           <Link
             key={project.slug}
-            href={`/projects/${project.slug}`}
+            href={`${basePath}/projects/${project.slug}`}
             className="group block"
           >
             {/* Ring container - outside overflow-hidden */}

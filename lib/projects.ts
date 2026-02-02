@@ -18,6 +18,8 @@ export interface ProjectMeta {
   nextProject?: string;
 }
 
+ const basePath = process.env.basePath || '';
+
 // Cache the project scan for performance
 export const getProjects = cache(async (): Promise<ProjectMeta[]> => {
   const projectsDirectory = path.join(process.cwd(), 'public', 'projects');
@@ -55,7 +57,7 @@ export const getProjects = cache(async (): Promise<ProjectMeta[]> => {
       // Check for cover image
       const coverPath = path.join(projectsDirectory, slug, 'cover.webp');
       const coverImage = fs.existsSync(coverPath) 
-        ? `/projects/${slug}/cover.webp`
+        ? `${basePath}/projects/${slug}/cover.webp`
         : '/images/placeholder.jpg';
 
       return {
@@ -89,5 +91,5 @@ export const getProjectImages = cache(async (slug: string): Promise<string[]> =>
     })
     .sort(); // Sort alphabetically/ numerically
 
-  return files.map(file => `/projects/${slug}/images/${file}`);
+  return files.map(file => `${basePath}/projects/${slug}/images/${file}`);
 });
