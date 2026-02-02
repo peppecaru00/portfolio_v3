@@ -3,8 +3,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navigation from "./components/Navigation";
 import Footer from "./components/Footer";
+import Preloader from "./components/Preloader";
 
-const inter = Inter({ 
+const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
 });
@@ -22,9 +23,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable}>
       <body className="font-sans antialiased bg-white text-black dark:bg-neutral-950 dark:text-white transition-colors">
-        <Navigation />
-        <main>{children}</main>
-        <Footer/>
+        <Preloader>
+          <Navigation />
+          <main>{children}</main>
+          <Footer />
+        </Preloader>
       </body>
     </html>
   );
