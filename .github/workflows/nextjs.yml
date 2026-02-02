@@ -38,7 +38,7 @@ jobs:
             echo "manager=yarn" >> $GITHUB_OUTPUT
             echo "command=install" >> $GITHUB_OUTPUT
             echo "runner=yarn" >> $GITHUB_OUTPUT
-            exit 0S    
+            exit 0
       - name: Restore cache
         uses: actions/cache@v4
         with:
