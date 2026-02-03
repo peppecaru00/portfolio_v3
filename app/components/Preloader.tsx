@@ -1,16 +1,24 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, createContext, useContext } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+
+interface LoadingContextType {
+  isLoading: boolean;
+}
+
+const LoadingContext = createContext<LoadingContextType>({ isLoading: true });
+
+export const useLoading = () => useContext(LoadingContext);
 
 export default function Preloader({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    // Track loading progress
     let loadedCount = 0;
-    const totalAssets = document.querySelectorAll('img, video').length || 1;
+    const mediaElements = document.querySelectorAll('img, video');
+    const totalAssets = Math.max(mediaElements.length, 1);
     
     const updateProgress = () => {
       loadedCount++;
@@ -18,21 +26,18 @@ export default function Preloader({ children }: { children: React.ReactNode }) {
       setProgress(percent);
     };
 
-    // Listen for image/video loads
-    const mediaElements = document.querySelectorAll('img, video');
     mediaElements.forEach((el) => {
       if ((el as HTMLImageElement).complete || (el as HTMLVideoElement).readyState >= 3) {
         updateProgress();
       } else {
         el.addEventListener('load', updateProgress);
-        el.addEventListener('error', updateProgress); // Count errors as loaded
+        el.addEventListener('canplaythrough', updateProgress);
+        el.addEventListener('error', updateProgress);
       }
     });
 
-    // Minimum display time (prevents flash)
     const minTime = new Promise(resolve => setTimeout(resolve, 1500));
 
-    // Wait for window load + min time
     const handleLoad = async () => {
       await Promise.all([
         minTime,
@@ -43,7 +48,7 @@ export default function Preloader({ children }: { children: React.ReactNode }) {
       ]);
       
       setProgress(100);
-      setTimeout(() => setIsLoading(false), 400); // Exit animation time
+      setTimeout(() => setIsLoading(false), 400);
     };
 
     handleLoad();
@@ -51,14 +56,15 @@ export default function Preloader({ children }: { children: React.ReactNode }) {
     return () => {
       mediaElements.forEach((el) => {
         el.removeEventListener('load', updateProgress);
+        el.removeEventListener('canplaythrough', updateProgress);
         el.removeEventListener('error', updateProgress);
       });
     };
   }, []);
 
   return (
-    <>
-      <AnimatePresence mode="wait">
+    <LoadingContext.Provider value={{ isLoading }}>
+      <AnimatePresence>
         {isLoading && (
           <motion.div
             initial={{ opacity: 1 }}
@@ -66,7 +72,6 @@ export default function Preloader({ children }: { children: React.ReactNode }) {
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             className="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center"
           >
-            {/* Logo or Brand */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -76,7 +81,6 @@ export default function Preloader({ children }: { children: React.ReactNode }) {
               Hi! Just a sec...
             </motion.div>
 
-            {/* Progress Bar */}
             <div className="w-48 h-[2px] bg-neutral-800 overflow-hidden">
               <motion.div
                 className="h-full bg-white"
@@ -86,7 +90,6 @@ export default function Preloader({ children }: { children: React.ReactNode }) {
               />
             </div>
 
-            {/* Percentage */}
             <motion.span
               className="mt-4 text-neutral-500 text-sm font-mono tabular-nums"
               initial={{ opacity: 0 }}
@@ -98,7 +101,6 @@ export default function Preloader({ children }: { children: React.ReactNode }) {
         )}
       </AnimatePresence>
 
-      {/* Content with fade-in */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: isLoading ? 0 : 1 }}
@@ -106,6 +108,6 @@ export default function Preloader({ children }: { children: React.ReactNode }) {
       >
         {children}
       </motion.div>
-    </>
+    </LoadingContext.Provider>
   );
 }

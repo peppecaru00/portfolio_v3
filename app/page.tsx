@@ -48,15 +48,9 @@ export default function Home() {
           >
             <Link
               href="/projects"
-              className="inline-flex items-center justify-center rounded-4xl px-8 py-4 bg-white text-black font-medium tracking-wide hover:bg-neutral-200 transition-colors duration-300"
-            >
-              View Projects
-            </Link>
-            <Link
-              href="/contact"
               className="inline-flex items-center justify-center rounded-4xl px-8 py-4 border border-white text-white font-medium tracking-wide hover:bg-white hover:text-black transition-all duration-300"
             >
-              Get in Touch
+              View Projects
             </Link>
           </motion.div>
         </div>
