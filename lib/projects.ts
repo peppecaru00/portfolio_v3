@@ -15,17 +15,19 @@ export interface ProjectMeta {
   toolsUsed: string[];
   shotOn?: string[];
   coverImage: string;
+  coverType: 'image' | 'video';
+  galleryAspectRatio?: 'horizontal' | 'vertical' | 'square';
   youtubeUrl?: string;
   nextProject?: string;
 }
 
- const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+const IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp', '.gif'];
+const VIDEO_EXTENSIONS = ['.mp4', '.mov', '.webm'];
 
-// Cache the project scan for performance
 export const getProjects = cache(async (): Promise<ProjectMeta[]> => {
   const projectsDirectory = path.join(process.cwd(), 'public', 'projects');
   
-  // Check if directory exists
   if (!fs.existsSync(projectsDirectory)) {
     console.warn('Projects directory not found:', projectsDirectory);
     return [];
@@ -41,35 +43,54 @@ export const getProjects = cache(async (): Promise<ProjectMeta[]> => {
     projectFolders.map(async (slug) => {
       const metaPath = path.join(projectsDirectory, slug, 'meta.json');
       
-      // Default metadata if meta.json doesn't exist
       let meta: Partial<ProjectMeta> = {
         slug,
         title: slug.replace(/-/g, ' '),
         category: 'Uncategorized',
         year: new Date().getFullYear().toString(),
+        galleryAspectRatio: 'horizontal',
       };
 
-      // Read meta.json if it exists
       if (fs.existsSync(metaPath)) {
         const fileContent = fs.readFileSync(metaPath, 'utf8');
         meta = { ...meta, ...JSON.parse(fileContent) };
       }
 
-      // Check for cover image
-      const coverPath = path.join(projectsDirectory, slug, 'cover.webp');
-      const coverImage = fs.existsSync(coverPath) 
-        ? `${basePath}/projects/${slug}/cover.webp`
-        : '/images/placeholder.jpg';
+      const projectPath = path.join(projectsDirectory, slug);
+      let coverImage = '/images/placeholder.jpg';
+      let coverType: 'image' | 'video' = 'image';
+
+      const videoExtensions = ['.mp4', '.mov', '.webm'];
+      const imageExtensions = ['.gif', '.webp', '.jpg', '.jpeg', '.png'];
+      
+      for (const ext of videoExtensions) {
+        const coverPath = path.join(projectPath, `cover${ext}`);
+        if (fs.existsSync(coverPath)) {
+          coverImage = `${basePath}/projects/${slug}/cover${ext}`;
+          coverType = 'video';
+          break;
+        }
+      }
+      
+      if (coverType === 'image') {
+        for (const ext of imageExtensions) {
+          const coverPath = path.join(projectPath, `cover${ext}`);
+          if (fs.existsSync(coverPath)) {
+            coverImage = `${basePath}/projects/${slug}/cover${ext}`;
+            break;
+          }
+        }
+      }
 
       return {
         ...meta,
         slug,
         coverImage,
+        coverType,
       } as ProjectMeta;
     })
   );
 
-  // Sort by year (newest first)
   return projects.sort((a, b) => parseInt(b.year) - parseInt(a.year));
 });
 
@@ -88,9 +109,9 @@ export const getProjectImages = cache(async (slug: string): Promise<string[]> =>
   const files = fs.readdirSync(imagesDirectory)
     .filter(file => {
       const ext = path.extname(file).toLowerCase();
-      return ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.webp'].includes(ext);
+      return ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.mp4', '.mov', '.webm'].includes(ext);
     })
-    .sort(); // Sort alphabetically/ numerically
+    .sort();
 
   return files.map(file => `${basePath}/projects/${slug}/images/${file}`);
 });

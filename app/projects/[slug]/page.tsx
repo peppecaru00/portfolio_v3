@@ -4,16 +4,13 @@ import Link from "next/link";
 import { getProjects, getProjectBySlug, getProjectImages } from "@/lib/projects";
 import YouTubeButton from "../../components/YoutubeButton";
 
-// Generate static params for all projects
 export async function generateStaticParams() {
   const projects = await getProjects();
-
   return projects.map((project) => ({
     slug: project.slug,
   }));
 }
 
-// Generate metadata for each project
 export async function generateMetadata({
   params
 }: {
@@ -42,30 +39,84 @@ export default async function ProjectPage({
     notFound();
   }
 
-  // Get all images from the project's images folder
   const galleryImages = await getProjectImages(slug);
-
-  // Find next project for navigation
   const allProjects = await getProjects();
   const currentIndex = allProjects.findIndex(p => p.slug === slug);
   const nextProject = allProjects[(currentIndex + 1) % allProjects.length];
+
+  const aspectRatio = project.galleryAspectRatio || 'horizontal';
+
+  // True 9:16 = 0.5625 ratio
+  const aspectClasses = {
+    horizontal: {
+      mobile: "aspect-[16/9]",
+      desktop: "md:aspect-auto",
+      gridRowHeight: "md:auto-rows-[250px]",
+      pattern: [
+        "md:col-span-7 md:row-span-2",
+        "md:col-span-5 md:row-span-1",
+        "md:col-span-5 md:row-span-1",
+        "md:col-span-6 md:row-span-1",
+        "md:col-span-6 md:row-span-1",
+      ]
+    },
+    vertical: {
+      mobile: "aspect-[9/16]", // TRUE 9:16 portrait
+      desktop: "md:aspect-[9/16]", // Keep 9:16 even on desktop
+      gridRowHeight: "md:auto-rows-[minmax(600px,80vh)]", // Tall rows for vertical
+      pattern: [
+        "md:col-span-6 md:row-span-1", // Each takes full height
+        "md:col-span-6 md:row-span-1",
+        "md:col-span-4 md:row-span-1",
+        "md:col-span-4 md:row-span-1",
+        "md:col-span-4 md:row-span-1",
+      ]
+    },
+    square: {
+      mobile: "aspect-square",
+      desktop: "md:aspect-auto",
+      gridRowHeight: "md:auto-rows-[300px]",
+      pattern: [
+        "md:col-span-6 md:row-span-2",
+        "md:col-span-6 md:row-span-1",
+        "md:col-span-6 md:row-span-1",
+        "md:col-span-4 md:row-span-2",
+        "md:col-span-4 md:row-span-2",
+        "md:col-span-4 md:row-span-2",
+      ]
+    }
+  };
+
+  const currentAspect = aspectClasses[aspectRatio];
 
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
       <div className="relative h-[70vh] md:h-[85vh] bg-neutral-100 dark:bg-neutral-900">
-        <Image
-          src={project.coverImage}
-          alt={project.title}
-          fill
-          className="object-cover"
-          priority
-        />
+        {project.coverType === 'video' ? (
+          <video
+            src={project.coverImage}
+            autoPlay
+            muted
+            loop
+            playsInline
+            disableRemotePlayback
+            disablePictureInPicture
+            preload="auto"
+            className="object-cover w-full h-full"
+          />
+        ) : (
+          <Image
+            src={project.coverImage}
+            alt={project.title}
+            fill
+            className="object-cover"
+            priority
+          />
+        )}
         <div className="absolute inset-0 bg-black/20" />
 
-        {/* Project Title Overlay */}
         <div className="gap-4 absolute bottom-0 left-0 right-0 p-6 md:p-12 text-white">
-          {/* YouTube Link */}
           {project.youtubeUrl && (
             <div>
               <YouTubeButton url={project.youtubeUrl} />
@@ -85,8 +136,6 @@ export default async function ProjectPage({
       {/* Project Info */}
       <div className="max-w-[1800px] mx-auto px-6 md:px-12 py-16 md:py-24">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
-
-          {/* Sidebar */}
           <div className="lg:col-span-4 space-y-8">
             <div>
               <h3 className="text-sm font-medium tracking-widest uppercase text-neutral-500 mb-2">
@@ -136,11 +185,8 @@ export default async function ProjectPage({
                 <p className="text-lg font-medium">{project.shotOn.join(', ')}</p>
               </div>
             )}
-
-
           </div>
 
-          {/* Main Content */}
           <div className="lg:col-span-8 space-y-16">
             <section>
               <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-6">
@@ -178,33 +224,85 @@ export default async function ProjectPage({
       {/* Dynamic Project Gallery - Bento Grid */}
       {galleryImages.length > 0 && (
         <div className="max-w-[1800px] mx-auto px-6 md:px-12 pb-24">
-          <div className="grid grid-cols-1 md:grid-cols-12 md:auto-rows-[250px] gap-2 md:gap-3">
-            {galleryImages.map((image, index) => {
-              // Repeating pattern every 5 items for visual rhythm
-              const patterns = [
-                "md:col-span-7 md:row-span-2", // Large left (2x2)
-                "md:col-span-5 md:row-span-1", // Top right (1x1)
-                "md:col-span-5 md:row-span-1", // Bottom right (1x1)
-                "md:col-span-6 md:row-span-1", // Half width
-                "md:col-span-6 md:row-span-1", // Half width
-              ];
-              const gridClass = patterns[index % patterns.length] || "md:col-span-6";
+          <div className="flex justify-between items-end mb-6">
+            <h3 className="pb-2 text-xl font-bold text-neutral-300 tracking-tight">
+              GALLERY
+            </h3>
+          </div>
 
-              // Mobile: Keep original aspect ratios | Desktop: Full height
-              const aspectClass = index % 3 === 0 ? "aspect-[16/9] md:aspect-auto" : "aspect-[21/9] md:aspect-auto";
+          <div className={`grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-3 ${aspectRatio === 'vertical' ? 'md:auto-rows-[350px]' : 'md:auto-rows-[250px]'
+            }`}>
+            {galleryImages.map((image, index) => {
+              const isVideo = ['.mp4', '.mov', '.webm'].some(ext =>
+                image.toLowerCase().endsWith(ext)
+              );
+
+              // Grid patterns based on aspect ratio
+              let gridClass = "md:col-span-6";
+              let aspectClass = index % 3 === 0 ? "aspect-[16/9] md:aspect-auto" : "aspect-[21/9] md:aspect-auto";
+
+              if (aspectRatio === 'horizontal' || !aspectRatio) {
+                // Original horizontal bento pattern
+                const patterns = [
+                  "md:col-span-7 md:row-span-2",
+                  "md:col-span-5 md:row-span-1",
+                  "md:col-span-5 md:row-span-1",
+                  "md:col-span-6 md:row-span-1",
+                  "md:col-span-6 md:row-span-1",
+                ];
+                gridClass = patterns[index % patterns.length];
+              } else if (aspectRatio === 'vertical') {
+                // Vertical pattern - 3 columns, taller rows
+                const patterns = [
+                  "md:col-span-6 md:row-span-2",
+                  "md:col-span-6 md:row-span-1",
+                  "md:col-span-6 md:row-span-1",
+                  "md:col-span-4 md:row-span-2",
+                  "md:col-span-4 md:row-span-2",
+                  "md:col-span-4 md:row-span-2",
+                ];
+                gridClass = patterns[index % patterns.length];
+                aspectClass = "aspect-[3/4] md:aspect-auto"; // Portrait mobile, auto desktop
+              } else if (aspectRatio === 'square') {
+                // Square pattern
+                const patterns = [
+                  "md:col-span-6 md:row-span-2",
+                  "md:col-span-6 md:row-span-1",
+                  "md:col-span-6 md:row-span-1",
+                  "md:col-span-4 md:row-span-2",
+                  "md:col-span-4 md:row-span-2",
+                  "md:col-span-4 md:row-span-2",
+                ];
+                gridClass = patterns[index % patterns.length];
+                aspectClass = "aspect-square md:aspect-auto";
+              }
 
               return (
                 <div
                   key={image}
                   className={`group relative overflow-hidden rounded-2xl bg-neutral-100 dark:bg-neutral-900 ${aspectClass} ${gridClass}`}
                 >
-                  <Image
-                    src={image}
-                    alt={`${project.title} detail ${index + 1}`}
-                    fill
-                    className="object-cover transition-all duration-700"
-                    sizes={index % 5 === 0 ? "60vw" : "40vw"}
-                  />
+                  {isVideo ? (
+                    <video
+                      src={image}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      disableRemotePlayback
+                      disablePictureInPicture
+                      preload="auto"
+                      className="object-cover w-full h-full transition-all duration-700"
+                    />
+                  ) : (
+                    <Image
+                      src={image}
+                      alt={`${project.title} detail ${index + 1}`}
+                      fill
+                      className="object-cover transition-all duration-700"
+                      sizes={aspectRatio === 'vertical' ? "40vw" : (index % 5 === 0 ? "60vw" : "40vw")}
+                    />
+                  )}
                 </div>
               );
             })}

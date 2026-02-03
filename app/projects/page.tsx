@@ -24,18 +24,30 @@ export default async function ProjectsPage() {
             href={`/projects/${project.slug}`}
             className="group block"
           >
-            {/* Ring container - outside overflow-hidden */}
             <div className="relative rounded-xl transition-all duration-200 group-hover:ring-2 group-hover:ring-white group-hover:ring-offset-black">
-              {/* Image mask container - handles overflow and aspect ratio */}
               <div className="relative aspect-[16/9] overflow-hidden rounded-xl bg-neutral-100 dark:bg-neutral-900 mb-4">
-                <Image
-                  src={project.coverImage}
-                  alt={project.title}
-                  fill
-                  className="object-cover transition-transform duration-700"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  priority={index < 3}
-                />
+                {project.coverType === 'video' ? (
+                  <video
+                    src={project.coverImage}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    disableRemotePlayback
+                    disablePictureInPicture
+                    preload="auto"
+                    className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
+                  />
+                ) : (
+                  <Image
+                    src={project.coverImage}
+                    alt={project.title}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    priority={index < 3}
+                  />
+                )}
               </div>
             </div>
 
