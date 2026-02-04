@@ -1,9 +1,13 @@
 import { getProjects } from "@/lib/projects";
+import { getPhotos } from "@/lib/photos";
 import Image from "next/image";
 import Link from "next/link";
 
+// Remove the searchParams prop completely
 export default async function ProjectsPage() {
+  // Fetch BOTH datasets at build time
   const projects = await getProjects();
+  const photos = await getPhotos();
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
 
   return (

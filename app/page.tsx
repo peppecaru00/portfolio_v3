@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <div className="relative min-h-screen flex items-center justify-center">
       {/* Background Video */}
-      <VideoBackground 
+      <VideoBackground
         videoSrc={`${basePath}/videos/hero-bg.mp4`}
         overlay={true}
       />
@@ -24,9 +24,9 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-sm md:text-base font-medium tracking-widest uppercase mb-6"
           >
-            Creative Filmmaker & Editor
+            Creative Filmmaker & Photographer
           </motion.p>
-          
+
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -51,6 +51,12 @@ export default function Home() {
               className="inline-flex items-center justify-center rounded-4xl px-8 py-4 border border-white text-white font-medium tracking-wide hover:bg-white hover:text-black transition-all duration-300"
             >
               View Projects
+            </Link>
+            <Link
+              href="/photos"
+              className="inline-flex items-center justify-center rounded-4xl px-8 py-4 border border-white text-white font-medium tracking-wide hover:bg-white hover:text-black transition-all duration-300"
+            >
+              View Photos
             </Link>
           </motion.div>
         </div>
