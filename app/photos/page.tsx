@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export const metadata = {
   title: 'Photography | Portfolio',
-  description: 'A collection of captured moments',
+  description: 'A collection of nice pics',
 };
 
 export default async function PhotosPage() {
@@ -13,10 +13,10 @@ export default async function PhotosPage() {
     <div className="min-h-screen pt-32 pb-24 px-6 md:px-12 max-w-[1800px] mx-auto">
       <div className="mb-16 md:mb-24">
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter mb-6">
-          Photography
+          Photogallery
         </h1>
         <p className="text-lg md:text-xl text-neutral-600 dark:text-neutral-400 max-w-2xl">
-          A collection of {photos.length} moments captured
+          {photos.length} nice pics.
         </p>
       </div>
 

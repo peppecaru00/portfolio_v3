@@ -78,7 +78,7 @@ export default function Preloader({ children }: { children: React.ReactNode }) {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="text-white text-2xl font-bold tracking-tighter mb-8"
             >
-              Rendering videos...
+            ✌️ Just a sec...
             </motion.div>
 
             <div className="w-48 h-[2px] bg-neutral-800 overflow-hidden">

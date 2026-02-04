@@ -7,5 +7,6 @@
   "challenge": "To shoot a entire video on very dark setting with minimal lighting equipment.",
   "services": ["Shooting", "Color Grading", "Editing"],
   "shotOn": ["Lumix S5", "Helios 44M-4 58mm f/2 Lens"],
+  "youtubeUrl": "https://youtu.be/5fBkZ5esxNk",
   "toolsUsed": ["DaVinci Resolve"]
 }

@@ -11,7 +11,6 @@ export default function Footer() {
     { name: "Instagram", href: "https://instagram.com/giuseppe_caruso00", icon: Instagram },
     { name: "LinkedIn", href: "https://www.linkedin.com/in/giuseppecaruso00/", icon: Linkedin },
     { name: "GitHub", href: "https://github.com/peppecaru00", icon: Github },
-    { name: "Email", href: "giuseppe.caruso.sc@gmail.com", icon: Mail },
   ];
 
   const scrollToTop = () => {
