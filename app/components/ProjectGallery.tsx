@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Play } from "lucide-react";
-import ImageLightbox from "./ImageLightbox";
 
 interface GalleryItem {
   type: 'image' | 'video';
