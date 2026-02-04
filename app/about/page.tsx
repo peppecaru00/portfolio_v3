@@ -13,13 +13,7 @@ export default function AboutPage() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center mb-24">
                 {/* Profile Image */}
                 <div className="relative aspect-[4/5] w-full max-w-md mx-auto lg:mx-0">
-                    <Image
-                        src="/me.jpg"
-                        alt="Profile photo"
-                        fill
-                        className="object-cover rounded-2xl"
-                        priority
-                    />
+                    <img src="/me.jpg" className="object-cover rounded-2xl" alt="profile photo" />
                 </div>
 
                 {/* Intro Text */}
