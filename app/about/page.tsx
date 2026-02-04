@@ -6,6 +6,8 @@ export const metadata = {
     description: 'Learn more about me and my work',
 };
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+
 export default function AboutPage() {
     return (
         <div className="min-h-screen pt-32 pb-24 px-6 md:px-12 max-w-[1800px] mx-auto">
@@ -13,7 +15,17 @@ export default function AboutPage() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center mb-24">
                 {/* Profile Image */}
                 <div className="relative aspect-[4/5] w-full max-w-md mx-auto lg:mx-0">
-                    <img src="/me.jpg" className="object-cover rounded-2xl" alt="profile photo" />
+                    <div className="relative aspect-[4/5] w-full max-w-md mx-auto lg:mx-0">
+          <Image
+            src={`${basePath}/me.jpg`}
+            alt="Profile photo"
+            className="object-cover rounded-2xl"
+            priority
+            unoptimized
+            width={800}
+            height={1000}
+          />
+        </div>
                 </div>
 
                 {/* Intro Text */}
