@@ -40,14 +40,14 @@ export default async function ProjectsPage() {
                     disableRemotePlayback
                     disablePictureInPicture
                     preload="auto"
-                    className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
+                    className="object-cover"
                   />
                 ) : (
                   <Image
                     src={project.coverImage}
                     alt={project.title}
                     fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="object-cover"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     priority={index < 3}
                   />

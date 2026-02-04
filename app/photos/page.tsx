@@ -20,24 +20,23 @@ export default async function PhotosPage() {
         </p>
       </div>
 
-      {/* Mobile: Single column stack | Desktop: Bento grid */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-3 md:auto-rows-[200px]">
+      {/* Bento grid - Vertical orientation */}
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-3 md:auto-rows-auto">
         {photos.map((photo, index) => {
-          // Desktop bento patterns only
+          // Vertical bento patterns - 3 columns, portrait focus
           const patterns = [
-                  "md:col-span-6 md:row-span-2",
-                  "md:col-span-6 md:row-span-1",
-                  "md:col-span-6 md:row-span-1",
-                  "md:col-span-4 md:row-span-2",
-                  "md:col-span-4 md:row-span-2",
-                  "md:col-span-4 md:row-span-2",
+            "md:col-span-6 md:row-span-1", // Each takes full height
+            "md:col-span-6 md:row-span-1",
+            "md:col-span-4 md:row-span-1",
+            "md:col-span-4 md:row-span-1",
+            "md:col-span-4 md:row-span-1",
           ];
           const gridClass = patterns[index % patterns.length];
 
           return (
             <div
               key={photo.id}
-              className={`group relative overflow-hidden rounded-2xl bg-neutral-100 dark:bg-neutral-900 aspect-[4/5] md:aspect-auto ${gridClass}`}
+              className={`group relative overflow-hidden rounded-2xl bg-neutral-100 dark:bg-neutral-900 aspect-[3/2] ${gridClass}`}
             >
               {photo.type === 'video' ? (
                 <video
@@ -49,19 +48,19 @@ export default async function PhotosPage() {
                   disableRemotePlayback
                   disablePictureInPicture
                   preload="auto"
-                  className="w-full h-full object-contain bg-black md:object-cover"
+                  className="w-full h-full object-cover"
                 />
               ) : (
                 <Image
                   src={photo.src}
                   alt={photo.title || `Photo ${index + 1}`}
                   fill
-                  className="object-cover bg-neutral-900 md:object-cover"
-                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 33vw"
                 />
               )}
-              
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-end p-4 opacity-0">
+
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-end p-4 opacity-0 group-hover:opacity-100">
                 <div className="text-white">
                   {photo.location && (
                     <p className="text-xs opacity-80">{photo.location}</p>

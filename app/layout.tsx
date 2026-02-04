@@ -11,7 +11,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Portfolio | Creative Developer",
+  title: "Portfolio | Giuseppe Caruso",
   description: "Selected works and creative projects",
 };
 

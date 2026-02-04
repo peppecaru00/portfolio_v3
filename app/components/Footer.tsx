@@ -11,7 +11,7 @@ export default function Footer() {
     { name: "Instagram", href: "https://instagram.com/giuseppe_caruso00", icon: Instagram },
     { name: "LinkedIn", href: "https://www.linkedin.com/in/giuseppecaruso00/", icon: Linkedin },
     { name: "GitHub", href: "https://github.com/peppecaru00", icon: Github },
-    { name: "Email", href: "mailto:giuseppe.caruso.sc@gmail.com", icon: Mail },
+    { name: "Email", href: "giuseppe.caruso.sc@gmail.com", icon: Mail },
   ];
 
   const scrollToTop = () => {
@@ -33,31 +33,6 @@ export default function Footer() {
       />
 
       <div className="max-w-[1800px] mx-auto px-6 md:px-12 relative z-10">
-        
-        {/* Main CTA Section */}
-        <div className="py-24 md:py-32 lg:py-40 border-b border-neutral-800">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="max-w-4xl"
-          >
-            <h2 className="text-4xl md:text-6xl lg:text-8xl font-bold tracking-tighter leading-[0.9] mb-8">
-              Let's create<br />
-              something<br />
-              <span className="text-neutral-500">extraordinary</span>
-            </h2>
-            
-            <Link 
-              href="mailto:giuseppe.caruso.sc@gmail.com"
-              className="group inline-flex items-center gap-3 text-xl md:text-2xl font-medium hover:text-neutral-400 transition-colors duration-300"
-            >
-              <span>Start a project</span>
-              <ArrowUpRight className="w-6 h-6 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
-            </Link>
-          </motion.div>
-        </div>
 
         {/* Middle Section - Socials & Info Grid */}
         <div className="py-16 md:py-24 grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8">
@@ -92,18 +67,16 @@ export default function Footer() {
               Contact
             </h3>
             <div className="space-y-2">
-              <a 
-                href="mailto:hello@example.com" 
-                className="block text-lg md:text-xl font-medium hover:text-neutral-400 transition-colors"
+              <p 
+                className="block text-lg md:text-xl font-medium"
               >
                 giuseppe.caruso.sc@gmail.com
-              </a>
-              <a 
-                href="tel:+1234567890" 
-                className="block text-lg md:text-xl font-medium hover:text-neutral-400 transition-colors"
+              </p>
+              <p 
+                className="block text-lg md:text-xl font-medium"
               >
                 +39 3925808834
-              </a>
+              </p>
             </div>
           </motion.div>
 
@@ -139,10 +112,6 @@ export default function Footer() {
         <div className="py-8 border-t border-neutral-900 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8 text-sm text-neutral-600">
             <span>© {currentYear} Giuseppe Caruso. All rights reserved.</span>
-            <div className="flex gap-6">
-              <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
-              <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
-            </div>
           </div>
 
           <button
