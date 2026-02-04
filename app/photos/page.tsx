@@ -25,12 +25,12 @@ export default async function PhotosPage() {
         {photos.map((photo, index) => {
           // Desktop bento patterns only
           const patterns = [
-            "md:col-span-6 md:row-span-2",
-            "md:col-span-3 md:row-span-1",
-            "md:col-span-3 md:row-span-1",
-            "md:col-span-4 md:row-span-2",
-            "md:col-span-4 md:row-span-2",
-            "md:col-span-4 md:row-span-2",
+                  "md:col-span-6 md:row-span-2",
+                  "md:col-span-6 md:row-span-1",
+                  "md:col-span-6 md:row-span-1",
+                  "md:col-span-4 md:row-span-2",
+                  "md:col-span-4 md:row-span-2",
+                  "md:col-span-4 md:row-span-2",
           ];
           const gridClass = patterns[index % patterns.length];
 
@@ -61,9 +61,8 @@ export default async function PhotosPage() {
                 />
               )}
               
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-end p-4 opacity-0 group-hover:opacity-100">
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-end p-4 opacity-0">
                 <div className="text-white">
-                  <p className="text-sm font-medium">{photo.title}</p>
                   {photo.location && (
                     <p className="text-xs opacity-80">{photo.location}</p>
                   )}
