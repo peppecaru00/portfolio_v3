@@ -50,13 +50,13 @@ export default function Home() {
               href="/projects"
               className="inline-flex items-center justify-center rounded-4xl px-8 py-4 border border-white text-white font-medium tracking-wide hover:bg-white hover:text-black transition-all duration-300"
             >
-              View Projects
+              Projects
             </Link>
             <Link
               href="/photos"
               className="inline-flex items-center justify-center rounded-4xl px-8 py-4 border border-white text-white font-medium tracking-wide hover:bg-white hover:text-black transition-all duration-300"
             >
-              View Photos
+              Photos
             </Link>
           </motion.div>
         </div>
