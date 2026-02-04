@@ -50,7 +50,7 @@ export default function Footer() {
             </h2>
             
             <Link 
-              href="/contact"
+              href="mailto:giuseppe.caruso.sc@gmail.com"
               className="group inline-flex items-center gap-3 text-xl md:text-2xl font-medium hover:text-neutral-400 transition-colors duration-300"
             >
               <span>Start a project</span>
