@@ -36,7 +36,7 @@ export default async function PhotosPage() {
           return (
             <div
               key={photo.id}
-              className={`group relative overflow-hidden rounded-2xl bg-neutral-100 dark:bg-neutral-900 aspect-[3/2] ${gridClass}`}
+              className={`group relative overflow-hidden rounded-2xl bg-neutral-100 dark:bg-neutral-900 md:aspect-[3/2] ${gridClass}`}
             >
               {photo.type === 'video' ? (
                 <video
@@ -51,16 +51,25 @@ export default async function PhotosPage() {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <Image
-                  src={photo.src}
-                  alt={photo.title || `Photo ${index + 1}`}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                />
+                <>
+                  {/* Mobile: native aspect ratio */}
+                  <img
+                    src={photo.src}
+                    alt={photo.title || `Photo ${index + 1}`}
+                    className="w-full h-auto object-cover md:hidden"
+                  />
+                  {/* Desktop: fill container */}
+                  <Image
+                    src={photo.src}
+                    alt={photo.title || `Photo ${index + 1}`}
+                    fill
+                    className="object-cover hidden md:block"
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                  />
+                </>
               )}
 
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-end p-4 opacity-0 group-hover:opacity-100">
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-end p-4 opacity-0 group-hover:opacity-100 pointer-events-none">
                 <div className="text-white">
                   {photo.location && (
                     <p className="text-xs opacity-80">{photo.location}</p>
