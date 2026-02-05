@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giuseppe Caruso - CV</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f5f5f5;
+            color: #1a1a1a;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .cv-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            background: white;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+            border-radius: 16px;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            min-height: calc(100vh - 80px);
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            background: #0f172a;
+            color: white;
+            padding: 48px 32px;
+            position: relative;
+        }
+        
+        .sidebar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, transparent 100%);
+            pointer-events: none;
+        }
+        
+        .profile-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .avatar {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid rgba(255,255,255,0.1);
+            margin-bottom: 20px;
+            background: #2a2a2a;
+        }
+        
+        .name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 4px;
+        }
+        
+        .tagline {
+            font-size: 14px;
+            color: #94a3b8;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+        
+        .contact-section {
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #64748b;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            font-size: 13px;
+            color: #e2e8f0;
+        }
+        
+        .contact-icon {
+            width: 32px;
+            height: 32px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        
+        .contact-item a {
+            color: #60a5fa;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .contact-item a:hover {
+            color: #93c5fd;
+        }
+        
+        .location {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+        
+        .skills-sidebar {
+            margin-top: 32px;
+        }
+        
+        .skill-tag {
+            display: inline-block;
+            padding: 6px 12px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            font-size: 12px;
+            margin: 4px;
+            color: #e2e8f0;
+        }
+        
+        .languages {
+            margin-top: 32px;
+        }
+        
+        .lang-item {
+            margin-bottom: 12px;
+        }
+        
+        .lang-name {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+        
+        .lang-level {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+        
+        .progress-bar {
+            height: 3px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+            margin-top: 6px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #3b82f6;
+            border-radius: 2px;
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding: 48px;
+            background: white;
+        }
+        
+        .header {
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .header-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+        
+        .header-subtitle {
+            font-size: 16px;
+            color: #64748b;
+            font-weight: 400;
+        }
+        
+        .content-section {
+            margin-bottom: 32px;
+        }
+        
+        .content-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .content-title::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: #3b82f6;
+            border-radius: 2px;
+        }
+        
+        .experience-item, .education-item, .project-item {
+            margin-bottom: 24px;
+            padding-left: 20px;
+            border-left: 2px solid #e2e8f0;
+            position: relative;
+        }
+        
+        .experience-item::before, .education-item::before, .project-item::before {
+            content: '';
+            position: absolute;
+            left: -5px;
+            top: 6px;
+            width: 8px;
+            height: 8px;
+            background: #3b82f6;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 0 0 2px #e2e8f0;
+        }
+        
+        .exp-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .exp-title {
+            font-weight: 600;
+            color: #0f172a;
+            font-size: 15px;
+        }
+        
+        .exp-company {
+            color: #3b82f6;
+            font-weight: 500;
+        }
+        
+        .exp-date {
+            font-size: 13px;
+            color: #64748b;
+            font-weight: 500;
+            background: #f1f5f9;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        
+        .exp-desc {
+            font-size: 14px;
+            color: #475569;
+            line-height: 1.6;
+        }
+        
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        .skill-category {
+            background: #f8fafc;
+            padding: 16px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .skill-cat-title {
+            font-weight: 600;
+            font-size: 13px;
+            color: #0f172a;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .skill-cat-title span {
+            font-size: 16px;
+        }
+        
+        .skill-list {
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.5;
+        }
+        
+        .projects-grid {
+            display: grid;
+            gap: 20px;
+        }
+        
+        .project-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 12px;
+        }
+        
+        .project-title {
+            font-weight: 600;
+            color: #0f172a;
+            font-size: 15px;
+        }
+        
+        .project-type {
+            font-size: 11px;
+            padding: 4px 10px;
+            background: #dbeafe;
+            color: #1e40af;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+        
+        .project-desc {
+            font-size: 14px;
+            color: #475569;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+        
+        .project-tech {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .tech-tag {
+            font-size: 11px;
+            color: #64748b;
+            background: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .portfolio-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 24px;
+            padding: 12px 20px;
+            background: #0f172a;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+        
+        .portfolio-link:hover {
+            background: #1e293b;
+        }
+        
+        @media print {
+            body {
+                background: white;
+            }
+            .cv-container {
+                box-shadow: none;
+                margin: 0;
+                border-radius: 0;
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .cv-container {
+                grid-template-columns: 1fr;
+                margin: 20px;
+            }
+            .sidebar {
+                padding: 32px;
+            }
+            .main-content {
+                padding: 32px;
+            }
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cv-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="profile-section">
+                <img src="https://via.placeholder.com/140" alt="Giuseppe Caruso" class="avatar">
+                <h1 class="name">Giuseppe<br>Caruso</h1>
+                <p class="tagline">Digital Media Engineer<br>Cinema & Design Specialist</p>
+            </div>
+            
+            <div class="contact-section">
+                <h3 class="section-title">Contact</h3>
+                
+                <div class="contact-item">
+                    <div class="contact-icon">📱</div>
+                    <span>+39 3925808834</span>
+                </div>
+                
+                <div class="contact-item">
+                    <div class="contact-icon">✉️</div>
+                    <a href="mailto:carusothe99@gmail.com">carusothe99@gmail.com</a>
+                </div>
+                
+                <div class="contact-item">
+                    <div class="contact-icon">🎓</div>
+                    <span>s334105@studenti.polito.it</span>
+                </div>
+                
+                <div class="contact-item">
+                    <div class="contact-icon">💼</div>
+                    <a href="https://linkedin.com/in/giuseppecaruso" target="_blank">LinkedIn</a>
+                </div>
+                
+                <div class="contact-item">
+                    <div class="contact-icon">📸</div>
+                    <a href="https://instagram.com/giuseppe_caruso" target="_blank">@giuseppe_caruso</a>
+                </div>
+                
+                <div class="location" style="margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.1);">
+                    📍 Turin, Italy (TO)<br>
+                    🏠 Noto, Italy (SR)
+                </div>
+            </div>
+            
+            <div class="languages">
+                <h3 class="section-title">Languages</h3>
+                <div class="lang-item">
+                    <div class="lang-name">Italian</div>
+                    <div class="lang-level">Native</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 100%;"></div>
+                    </div>
+                </div>
+                <div class="lang-item">
+                    <div class="lang-name">English</div>
+                    <div class="lang-level">B2 (Cambridge)</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 70%;"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="skills-sidebar">
+                <h3 class="section-title">Core Expertise</h3>
+                <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                    <span class="skill-tag">Video Production</span>
+                    <span class="skill-tag">Color Grading</span>
+                    <span class="skill-tag">3D Modeling</span>
+                    <span class="skill-tag">Generative AI</span>
+                    <span class="skill-tag">Web Dev</span>
+                    <span class="skill-tag">UI/UX Design</span>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="header">
+                <h1 class="header-title">About Me</h1>
+                <p class="header-subtitle">Master's student in Digital Media Engineering with expertise spanning technical development and creative production. Passionate about bridging engineering precision with cinematic storytelling.</p>
+            </div>
+            
+            <!-- Projects Section (New) -->
+            <section class="content-section">
+                <h2 class="content-title">Featured Projects</h2>
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <div class="project-header">
+                            <h3 class="project-title">Cinematic Short Film Production</h3>
+                            <span class="project-type">Film</span>
+                        </div>
+                        <p class="project-desc">End-to-end production of narrative short films utilizing LOG color profiles, advanced camera movements, and professional color grading workflows in DaVinci Resolve. Managed pre-production through final delivery.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">DaVinci Resolve</span>
+                            <span class="tech-tag">Color Grading</span>
+                            <span class="tech-tag">Camera Operation</span>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card">
+                        <div class="project-header">
+                            <h3 class="project-title">Racing Team Brand Identity</h3>
+                            <span class="project-type">Design</span>
+                        </div>
+                        <p class="project-desc">Led complete visual identity redesign for Squadra Corse PoliTo including livery design, merchandise, and digital assets. Directed media division and established brand guidelines for Formula SAE competitions.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Illustrator</span>
+                            <span class="tech-tag">Figma</span>
+                            <span class="tech-tag">Brand Strategy</span>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card">
+                        <div class="project-header">
+                            <h3 class="project-title">Generative AI Content Pipeline</h3>
+                            <span class="project-type">Tech</span>
+                        </div>
+                        <p class="project-desc">Developed automated workflows for content generation using ComfyUI and Stable Diffusion. Integrated AI-generated assets into traditional post-production pipelines for enhanced visual effects and motion graphics.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">ComfyUI</span>
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">After Effects</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Experience -->
+            <section class="content-section">
+                <h2 class="content-title">Work Experience</h2>
+                
+                <div class="experience-item">
+                    <div class="exp-header">
+                        <div>
+                            <div class="exp-title">Video Editor & Content Creator</div>
+                            <div class="exp-company">Blank Spaces</div>
+                        </div>
+                        <span class="exp-date">Jul 2025 - Feb 2026</span>
+                    </div>
+                    <p class="exp-desc">Produced and edited video content for digital platforms. Managed complete post-production workflows including color correction, sound design, and motion graphics delivery.</p>
+                </div>
+                
+                <div class="experience-item">
+                    <div class="exp-header">
+                        <div>
+                            <div class="exp-title">Graphic Designer & Media Division Leader</div>
+                            <div class="exp-company">Squadra Corse PoliTo</div>
+                        </div>
+                        <span class="exp-date">2022 - 2023</span>
+                    </div>
+                    <p class="exp-desc">Directed visual communication strategy for university racing team. Managed team of designers and established digital presence across social media platforms.</p>
+                </div>
+                
+                <div class="experience-item">
+                    <div class="exp-header">
+                        <div>
+                            <div class="exp-title">Photographer & WordPress Editor</div>
+                            <div class="exp-company">Real Estate Company</div>
+                        </div>
+                        <span class="exp-date">Aug - Sep 2019</span>
+                    </div>
+                    <p class="exp-desc">Created property photography and managed digital advertisement content. Optimized WordPress site performance and SEO for local market reach.</p>
+                </div>
+            </section>
+            
+            <!-- Education -->
+            <section class="content-section">
+                <h2 class="content-title">Education</h2>
+                
+                <div class="education-item">
+                    <div class="exp-header">
+                        <div>
+                            <div class="exp-title">Master's Degree in Digital Media Engineering</div>
+                            <div class="exp-company">Politecnico di Torino</div>
+                        </div>
+                        <span class="exp-date">2024 - Present</span>
+                    </div>
+                    <p class="exp-desc">Specializing in advanced media technologies, interactive systems, and digital content production.</p>
+                </div>
+                
+                <div class="education-item">
+                    <div class="exp-header">
+                        <div>
+                            <div class="exp-title">Bachelor's Degree in Digital Media Engineering</div>
+                            <div class="exp-company">Politecnico di Torino</div>
+                        </div>
+                        <span class="exp-date">2021 - 2024</span>
+                    </div>
+                    <p class="exp-desc">Graduated with comprehensive training in computer science fundamentals, multimedia systems, and engineering principles.</p>
+                </div>
+            </section>
+            
+            <!-- Skills -->
+            <section class="content-section">
+                <h2 class="content-title">Technical Skills</h2>
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <div class="skill-cat-title"><span>🎬</span> Video & Motion</div>
+                        <div class="skill-list">DaVinci Resolve, Premiere Pro, After Effects, LOG workflows, Drone operation</div>
+                    </div>
+                    <div class="skill-category">
+                        <div class="skill-cat-title"><span>📸</span> Photography & Imaging</div>
+                        <div class="skill-list">Capture One, Lightroom, Photoshop, RAW processing, Composition</div>
+                    </div>
+                    <div class="skill-category">
+                        <div class="skill-cat-title"><span>💻</span> Development</div>
+                        <div class="skill-list">HTML, CSS, JavaScript, React, Kotlin, Jetpack Compose, Android Studio</div>
+                    </div>
+                    <div class="skill-category">
+                        <div class="skill-cat-title"><span>🎨</span> Design & 3D</div>
+                        <div class="skill-list">Figma, Illustrator, Blender, Plasticity, 3D Printing (Bambu Studio)</div>
+                    </div>
+                    <div class="skill-category">
+                        <div class="skill-cat-title"><span>🤖</span> Generative AI</div>
+                        <div class="skill-list">ComfyUI, Veo, Kling, Stable Diffusion workflows</div>
+                    </div>
+                    <div class="skill-category">
+                        <div class="skill-cat-title"><span>🎤</span> Audio</div>
+                        <div class="skill-list">Audition, Reaper, Microphone setup, Audio leveling</div>
+                    </div>
+                </div>
+            </section>
+            
+            <a href="https://peppecaru00.github.io/portfolio_v3" target="_blank" class="portfolio-link">
+                View Full Portfolio →
+            </a>
+        </main>
+    </div>
+</body>
+</html>

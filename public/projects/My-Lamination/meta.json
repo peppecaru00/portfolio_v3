@@ -8,5 +8,6 @@
   "services": ["Shooting", "Color Grading", "Editing"],
   "shotOn": ["Lumix S5", "Lumix 20-60mm"],
   "youtubeUrl": "https://youtube.com/shorts/wis9pSvz3WI",
-  "toolsUsed": ["DaVinci Resolve"]
+  "toolsUsed": ["DaVinci Resolve"],
+  "galleryAspectRation": ""
 }
