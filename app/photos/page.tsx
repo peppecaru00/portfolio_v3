@@ -69,7 +69,7 @@ export default async function PhotosPage() {
                 </>
               )}
 
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-end p-4 opacity-0 group-hover:opacity-100 pointer-events-none">
+              <div className="absolute inset-0 bg-black/0 pointer-events-none">
                 <div className="text-white">
                   {photo.location && (
                     <p className="text-xs opacity-80">{photo.location}</p>
