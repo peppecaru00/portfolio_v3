@@ -38,7 +38,7 @@ export default function AboutPage() {
                     </p>
                     <div className="flex flex-wrap gap-4">
                         <a
-                            href="/Curriculum_Giuseppe_Caruso.pdf"
+                            href={`${basePath}/Curriculum_Giuseppe_Caruso.pdf`}
                             target="_blank"
                             className="px-6 py-3 border border-neutral-300 dark:border-neutral-700 text-sm font-medium tracking-wider uppercase rounded-full hover:border-black dark:hover:border-white transition-colors"
                         >
