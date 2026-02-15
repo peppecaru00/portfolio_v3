@@ -21,7 +21,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en" className={`${inter.variable} dark`}>
       <body className="font-sans antialiased bg-white text-black dark:bg-neutral-950 dark:text-white transition-colors">
         <Preloader>
           <Navigation />
