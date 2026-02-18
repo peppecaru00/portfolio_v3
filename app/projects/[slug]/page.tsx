@@ -84,6 +84,15 @@ export default async function ProjectPage({
         "md:col-span-4 md:row-span-2",
         "md:col-span-4 md:row-span-2",
       ]
+    },
+    // 'original' preserves each image's native aspect ratio and shows items one-by-one (single column)
+    original: {
+      mobile: "aspect-auto",
+      desktop: "md:aspect-auto",
+      gridRowHeight: "md:auto-rows-[auto]",
+      pattern: [
+        "md:col-span-12 md:row-span-1"
+      ]
     }
   };
 
@@ -230,8 +239,7 @@ export default async function ProjectPage({
             </h3>
           </div>
 
-          <div className={`grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-3 ${aspectRatio === 'vertical' ? 'md:auto-rows-[350px]' : 'md:auto-rows-[250px]'
-            }`}>
+          <div className={aspectRatio === 'original' ? 'grid grid-cols-1 gap-6' : `grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-3 ${aspectRatio === 'vertical' ? 'md:auto-rows-[350px]' : 'md:auto-rows-[250px]'}`}>
             {galleryImages.map((image, index) => {
               const isVideo = ['.mp4', '.mov', '.webm'].some(ext =>
                 image.toLowerCase().endsWith(ext)
@@ -275,6 +283,38 @@ export default async function ProjectPage({
                 ];
                 gridClass = patterns[index % patterns.length];
                 aspectClass = "aspect-square md:aspect-auto";
+              }
+
+              if (aspectRatio === 'original') {
+                return (
+                  <div
+                    key={image}
+                    className="group relative overflow-hidden rounded-2xl bg-neutral-100 dark:bg-neutral-900 w-full"
+                  >
+                    {isVideo ? (
+                      <video
+                        src={image}
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        disableRemotePlayback
+                        disablePictureInPicture
+                        preload="auto"
+                        className="w-full h-auto object-contain transition-all duration-700"
+                      />
+                    ) : (
+                      // preserve native aspect ratio for 'original'
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={image}
+                        alt={`${project.title} detail ${index + 1}`}
+                        className="w-full h-auto object-contain transition-all duration-700"
+                        loading="lazy"
+                      />
+                    )}
+                  </div>
+                );
               }
 
               return (

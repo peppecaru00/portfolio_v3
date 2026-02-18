@@ -16,7 +16,7 @@ export interface ProjectMeta {
   shotOn?: string[];
   coverImage: string;
   coverType: 'image' | 'video';
-  galleryAspectRatio?: 'horizontal' | 'vertical' | 'square';
+  galleryAspectRatio?: 'horizontal' | 'vertical' | 'square' | 'original';
   youtubeUrl?: string;
   nextProject?: string;
 }
@@ -111,7 +111,8 @@ export const getProjectImages = cache(async (slug: string): Promise<string[]> =>
       const ext = path.extname(file).toLowerCase();
       return ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.mp4', '.mov', '.webm'].includes(ext);
     })
-    .sort();
+    // sort by filename (natural / numeric-aware, case-insensitive)
+    .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
 
   return files.map(file => `${basePath}/projects/${slug}/images/${file}`);
 });
