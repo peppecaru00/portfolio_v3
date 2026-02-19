@@ -20,23 +20,16 @@ export default async function PhotosPage() {
         </p>
       </div>
 
-      {/* Bento grid - Vertical orientation */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-3 md:auto-rows-auto">
+      {/* Grid layout — landscape spans full width, portrait placed in columns */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {photos.map((photo, index) => {
-          // Vertical bento patterns - 3 columns, portrait focus
-          const patterns = [
-            "md:col-span-6 md:row-span-1", // Each takes full height
-            "md:col-span-6 md:row-span-1",
-            "md:col-span-4 md:row-span-1",
-            "md:col-span-4 md:row-span-1",
-            "md:col-span-4 md:row-span-1",
-          ];
-          const gridClass = patterns[index % patterns.length];
+          const isLandscape = (photo.width || 0) >= (photo.height || 0);
+          const spanClass = isLandscape ? 'col-span-1 md:col-span-2 lg:col-span-3' : 'col-span-1';
 
           return (
             <div
               key={photo.id}
-              className={`group relative overflow-hidden rounded-2xl bg-neutral-100 dark:bg-neutral-900 md:aspect-[3/2] ${gridClass}`}
+              className={`${spanClass} relative group overflow-hidden rounded-2xl bg-neutral-100 dark:bg-neutral-900`}
             >
               {photo.type === 'video' ? (
                 <video
@@ -48,34 +41,22 @@ export default async function PhotosPage() {
                   disableRemotePlayback
                   disablePictureInPicture
                   preload="auto"
-                  className="w-full h-full object-cover"
+                  className="w-full h-auto object-contain"
                 />
               ) : (
-                <>
-                  {/* Mobile: native aspect ratio */}
-                  <img
-                    src={photo.src}
-                    alt={photo.title || `Photo ${index + 1}`}
-                    className="w-full h-auto object-cover md:hidden"
-                  />
-                  {/* Desktop: fill container */}
+                <div className="w-full h-full flex items-center justify-center">
                   <Image
                     src={photo.src}
                     alt={photo.title || `Photo ${index + 1}`}
-                    fill
-                    className="object-cover hidden md:block"
-                    sizes="(max-width: 768px) 100vw, 33vw"
+                    width={photo.width || 800}
+                    height={photo.height || 600}
+                    className="w-full h-auto object-contain"
+                    sizes={isLandscape ? '100vw' : '(min-width: 768px) 50vw, 100vw'}
                   />
-                </>
+                </div>
               )}
 
-              <div className="absolute inset-0 bg-black/0 pointer-events-none">
-                <div className="text-white">
-                  {photo.location && (
-                    <p className="text-xs opacity-80">{photo.location}</p>
-                  )}
-                </div>
-              </div>
+              
             </div>
           );
         })}

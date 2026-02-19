@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { cache } from 'react';
+import sizeOf from 'image-size';
 
 export interface ProjectMeta {
   slug: string;
@@ -20,6 +21,13 @@ export interface ProjectMeta {
   youtubeUrl?: string;
   nextProject?: string;
 }
+
+export interface ProjectImage {
+  src: string;
+  width: number;
+  height: number;
+  type: 'image' | 'video';
+} 
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
 const IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp', '.gif'];
@@ -99,7 +107,7 @@ export const getProjectBySlug = cache(async (slug: string): Promise<ProjectMeta 
   return projects.find(p => p.slug === slug) || null;
 });
 
-export const getProjectImages = cache(async (slug: string): Promise<string[]> => {
+export const getProjectImages = cache(async (slug: string): Promise<ProjectImage[]> => {
   const imagesDirectory = path.join(process.cwd(), 'public', 'projects', slug, 'images');
   
   if (!fs.existsSync(imagesDirectory)) {
@@ -114,5 +122,36 @@ export const getProjectImages = cache(async (slug: string): Promise<string[]> =>
     // sort by filename (natural / numeric-aware, case-insensitive)
     .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
 
-  return files.map(file => `${basePath}/projects/${slug}/images/${file}`);
+  const images = await Promise.all(
+    files.map(async (file) => {
+      const ext = path.extname(file).toLowerCase();
+      const isVideo = ['.mp4', '.mov', '.webm'].includes(ext);
+      const src = `${basePath}/projects/${slug}/images/${file}`;
+      const filePath = path.join(imagesDirectory, file);
+
+      // sensible defaults
+      let width = 1920;
+      let height = 1080;
+
+      if (!isVideo) {
+        try {
+          const buffer = fs.readFileSync(filePath);
+          const dims = sizeOf(buffer as Buffer);
+          width = dims.width || width;
+          height = dims.height || height;
+        } catch (e) {
+          console.warn(`Could not read dimensions for ${filePath}`);
+        }
+      }
+
+      return {
+        src,
+        width,
+        height,
+        type: isVideo ? 'video' : 'image',
+      } as ProjectImage;
+    })
+  );
+
+  return images;
 });

@@ -230,70 +230,31 @@ export default async function ProjectPage({
         </div>
       </div>
 
-      {/* Dynamic Project Gallery - Bento Grid */}
+      {/* Dynamic Project Gallery - preserve native aspect & place landscape full-width */}
       {galleryImages.length > 0 && (
         <div className="max-w-[1800px] mx-auto px-6 md:px-12 pb-24">
           <div className="flex justify-between items-end mb-6">
-            <h3 className="pb-2 text-xl font-bold text-neutral-300 tracking-tight">
-              GALLERY
-            </h3>
+            <h3 className="pb-2 text-xl font-bold text-neutral-300 tracking-tight">GALLERY</h3>
           </div>
 
-          <div className={aspectRatio === 'original' ? 'grid grid-cols-1 gap-6' : `grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-3 ${aspectRatio === 'vertical' ? 'md:auto-rows-[350px]' : 'md:auto-rows-[250px]'}`}>
-            {galleryImages.map((image, index) => {
-              const isVideo = ['.mp4', '.mov', '.webm'].some(ext =>
-                image.toLowerCase().endsWith(ext)
-              );
+          {/* grid with auto row heights so each image keeps native aspect */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-3">
+            {galleryImages.map((img, index) => {
+              const isVideo = img.type === 'video';
+              const isLandscape = img.width >= img.height;
 
-              // Grid patterns based on aspect ratio
-              let gridClass = "md:col-span-6";
-              let aspectClass = index % 3 === 0 ? "aspect-[16/9] md:aspect-auto" : "aspect-[21/9] md:aspect-auto";
+              // Landscape = full width; Portrait = half width on desktop
+              const gridClass = isLandscape ? 'md:col-span-12' : 'md:col-span-6';
 
-              if (aspectRatio === 'horizontal' || !aspectRatio) {
-                // Original horizontal bento pattern
-                const patterns = [
-                  "md:col-span-7 md:row-span-2",
-                  "md:col-span-5 md:row-span-1",
-                  "md:col-span-5 md:row-span-1",
-                  "md:col-span-6 md:row-span-1",
-                  "md:col-span-6 md:row-span-1",
-                ];
-                gridClass = patterns[index % patterns.length];
-              } else if (aspectRatio === 'vertical') {
-                // Vertical pattern - 3 columns, taller rows
-                const patterns = [
-                  "md:col-span-6 md:row-span-2",
-                  "md:col-span-6 md:row-span-1",
-                  "md:col-span-6 md:row-span-1",
-                  "md:col-span-4 md:row-span-2",
-                  "md:col-span-4 md:row-span-2",
-                  "md:col-span-4 md:row-span-2",
-                ];
-                gridClass = patterns[index % patterns.length];
-                aspectClass = "aspect-[3/4] md:aspect-auto"; // Portrait mobile, auto desktop
-              } else if (aspectRatio === 'square') {
-                // Square pattern
-                const patterns = [
-                  "md:col-span-6 md:row-span-2",
-                  "md:col-span-6 md:row-span-1",
-                  "md:col-span-6 md:row-span-1",
-                  "md:col-span-4 md:row-span-2",
-                  "md:col-span-4 md:row-span-2",
-                  "md:col-span-4 md:row-span-2",
-                ];
-                gridClass = patterns[index % patterns.length];
-                aspectClass = "aspect-square md:aspect-auto";
-              }
-
-              if (aspectRatio === 'original') {
-                return (
-                  <div
-                    key={image}
-                    className="group relative overflow-hidden rounded-2xl bg-neutral-100 dark:bg-neutral-900 w-full"
-                  >
-                    {isVideo ? (
+              return (
+                <div
+                  key={img.src}
+                  className={`group relative overflow-hidden rounded-2xl bg-neutral-100 dark:bg-neutral-900 ${gridClass}`}
+                >
+                  {isVideo ? (
+                    <div className="w-full h-auto flex items-center justify-center">
                       <video
-                        src={image}
+                        src={img.src}
                         autoPlay
                         muted
                         loop
@@ -303,45 +264,19 @@ export default async function ProjectPage({
                         preload="auto"
                         className="w-full h-auto object-contain transition-all duration-700"
                       />
-                    ) : (
-                      // preserve native aspect ratio for 'original'
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={image}
+                    </div>
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <Image
+                        src={img.src}
                         alt={`${project.title} detail ${index + 1}`}
+                        width={img.width}
+                        height={img.height}
                         className="w-full h-auto object-contain transition-all duration-700"
+                        sizes={isLandscape ? '100vw' : '(min-width: 768px) 50vw, 100vw'}
                         loading="lazy"
                       />
-                    )}
-                  </div>
-                );
-              }
-
-              return (
-                <div
-                  key={image}
-                  className={`group relative overflow-hidden rounded-2xl bg-neutral-100 dark:bg-neutral-900 ${aspectClass} ${gridClass}`}
-                >
-                  {isVideo ? (
-                    <video
-                      src={image}
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                      disableRemotePlayback
-                      disablePictureInPicture
-                      preload="auto"
-                      className="object-cover w-full h-full transition-all duration-700"
-                    />
-                  ) : (
-                    <Image
-                      src={image}
-                      alt={`${project.title} detail ${index + 1}`}
-                      fill
-                      className="object-cover transition-all duration-700"
-                      sizes={aspectRatio === 'vertical' ? "40vw" : (index % 5 === 0 ? "60vw" : "40vw")}
-                    />
+                    </div>
                   )}
                 </div>
               );
