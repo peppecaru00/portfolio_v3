@@ -48,13 +48,13 @@ export default function Home() {
           >
             <Link
               href="/projects"
-              className="inline-flex items-center justify-center rounded-4xl px-8 py-4 border border-white text-white font-medium tracking-wide hover:bg-white hover:text-black transition-all duration-300"
+              className="inline-flex items-center justify-center rounded-4xl px-8 py-4 bg-white text-black md:bg-transparent md:border md:border-white md:text-white font-medium tracking-wide hover:bg-white hover:text-black transition-all duration-300"
             >
               Projects
             </Link>
             <Link
               href="/photos"
-              className="inline-flex items-center justify-center rounded-4xl px-8 py-4 border border-white text-white font-medium tracking-wide hover:bg-white hover:text-black transition-all duration-300"
+              className="inline-flex items-center justify-center rounded-4xl px-8 py-4 bg-white text-black md:bg-transparent md:border md:border-white md:text-white font-medium tracking-wide hover:bg-white hover:text-black transition-all duration-300"
             >
               Photos
             </Link>

@@ -1,61 +1,98 @@
-[00:00:00.808] Server  LOG     ✓ Ready in 566ms
-[00:00:01.788] Server  LOG     Current Base Path: ""
-[00:00:01.982] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:00:02.476] Browser LOG     Current Base Path: 
-[00:00:02.476] Browser LOG     Current Base Path: 
-[00:04:25.188] Server  LOG     Current Base Path: ""
-[00:04:25.415] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:04:25.605] Browser LOG     Current Base Path: 
-[00:04:25.605] Browser LOG     Current Base Path: 
-[00:04:28.438] Server  WARN    Error: Route "/photos" used `searchParams.category`. `searchParams` is a Promise and must be unwrapped with `await` or `React.use()` before accessing its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
-[00:04:28.628] Browser WARN    Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
-[01:03:01.468] Server  WARN    Error: Route "/photos" used `searchParams.category`. `searchParams` is a Promise and must be unwrapped with `await` or `React.use()` before accessing its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
-[01:04:45.191] Server  WARN    Error: Route "/photos" used `searchParams.category`. `searchParams` is a Promise and must be unwrapped with `await` or `React.use()` before accessing its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
-[01:04:45.510] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[01:04:48.289] Browser WARN    Image with src "/photos/Martina/test_canon_c50_22.webp" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
-Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
-[01:04:51.693] Browser WARN    Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
-[01:10:13.232] Server  LOG     ✓ Compiled in 110ms
-[01:10:19.185] Server  WARN    Error: Route "/photos" used `searchParams.category`. `searchParams` is a Promise and must be unwrapped with `await` or `React.use()` before accessing its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
-[01:11:08.398] Server  WARN    Error: Route "/photos" used `searchParams.category`. `searchParams` is a Promise and must be unwrapped with `await` or `React.use()` before accessing its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
-[01:11:08.636] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[01:11:24.878] Server  WARN    Error: Route "/photos" used `searchParams.category`. `searchParams` is a Promise and must be unwrapped with `await` or `React.use()` before accessing its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
-[01:11:25.135] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[01:13:54.521] Server  WARN    Error: Route "/photos" used `searchParams.category`. `searchParams` is a Promise and must be unwrapped with `await` or `React.use()` before accessing its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
-[01:13:54.782] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[01:14:05.417] Browser WARN    Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
-[01:14:24.967] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[01:16:13.811] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[01:16:17.347] Server  WARN    Error: Route "/photos" used `searchParams.category`. `searchParams` is a Promise and must be unwrapped with `await` or `React.use()` before accessing its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
-[01:16:17.532] Browser WARN    Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
-[01:23:36.451] Server  WARN    Error: Route "/photos" used `searchParams.category`. `searchParams` is a Promise and must be unwrapped with `await` or `React.use()` before accessing its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
-[01:23:36.788] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[01:23:39.584] Browser WARN    Image with src "/photos/Cars/02_01.webp" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
-Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
-[01:24:06.716] Server  WARN    Error: Route "/photos" used `searchParams.category`. `searchParams` is a Promise and must be unwrapped with `await` or `React.use()` before accessing its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
-[01:24:06.852] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[01:27:25.947] Server  WARN    Error: Route "/photos" used `searchParams.category`. `searchParams` is a Promise and must be unwrapped with `await` or `React.use()` before accessing its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
-[01:27:26.092] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[01:36:42.859] Server  WARN    Error: Route "/photos" used `searchParams.category`. `searchParams` is a Promise and must be unwrapped with `await` or `React.use()` before accessing its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
-[01:36:43.000] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[01:36:49.675] Browser WARN    Image with src "/photos/Cars/02_01.webp" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
-Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
-[01:37:11.583] Browser WARN    Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
-[01:38:20.537] Server  WARN    Error: Route "/photos" used `searchParams.category`. `searchParams` is a Promise and must be unwrapped with `await` or `React.use()` before accessing its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
-[01:38:20.694] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[01:38:37.651] Server  WARN    Error: Route "/photos" used `searchParams.category`. `searchParams` is a Promise and must be unwrapped with `await` or `React.use()` before accessing its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
-[01:38:37.769] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[01:38:47.215] Server  WARN    Error: Route "/photos" used `searchParams.category`. `searchParams` is a Promise and must be unwrapped with `await` or `React.use()` before accessing its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
-[01:38:47.321] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[01:39:25.463] Server  WARN    Error: Route "/photos" used `searchParams.category`. `searchParams` is a Promise and must be unwrapped with `await` or `React.use()` before accessing its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
-[01:39:25.597] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[01:39:51.073] Server  WARN    Error: Route "/photos" used `searchParams.category`. `searchParams` is a Promise and must be unwrapped with `await` or `React.use()` before accessing its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
-[01:39:51.187] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[01:41:24.949] Server  WARN    Error: Route "/photos" used `searchParams.category`. `searchParams` is a Promise and must be unwrapped with `await` or `React.use()` before accessing its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
-[01:41:25.095] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[01:41:44.507] Server  WARN    Error: Route "/photos" used `searchParams.category`. `searchParams` is a Promise and must be unwrapped with `await` or `React.use()` before accessing its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
-[01:41:44.612] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[01:42:36.904] Server  WARN    Error: Route "/photos" used `searchParams.category`. `searchParams` is a Promise and must be unwrapped with `await` or `React.use()` before accessing its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
-[01:42:47.125] Browser WARN    Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
-[01:43:11.044] Server  WARN    Error: Route "/photos" used `searchParams.category`. `searchParams` is a Promise and must be unwrapped with `await` or `React.use()` before accessing its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
-[01:43:57.560] Server  WARN    Error: Route "/photos" used `searchParams.category`. `searchParams` is a Promise and must be unwrapped with `await` or `React.use()` before accessing its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+[00:00:00.714] Server  LOG     ✓ Ready in 523ms
+[00:00:02.078] Server  ERROR   ⨯ ./portfolio_v3/app/page.tsx:59:24
+Parsing ecmascript source code failed
+  57 |               className="inline-flex items-center justify-center rounded-4xl px-8 py-4 bg-white text-black md:bg-transparent md:border md:border-white md:text-white font-medium tracking-wide hover:bg-white hover:text-black transition-all duration-300"
+  58 |             >
+> 59 |           </motion.div>
+     |                        ^
+> 60 |         </div>
+     | ^^^^^^^^^
+  61 |       </div>
+  62 |
+  63 |       {/* Scroll Indicator */}
+
+Expected '</', got 'jsx text'
+
+
+[00:00:02.082] Server  ERROR   ⨯ ./portfolio_v3/app/page.tsx:59:24
+Parsing ecmascript source code failed
+  57 |               className="inline-flex items-center justify-center rounded-4xl px-8 py-4 bg-white text-black md:bg-transparent md:border md:border-white md:text-white font-medium tracking-wide hover:bg-white hover:text-black transition-all duration-300"
+  58 |             >
+> 59 |           </motion.div>
+     |                        ^
+> 60 |         </div>
+     | ^^^^^^^^^
+  61 |       </div>
+  62 |
+  63 |       {/* Scroll Indicator */}
+
+Expected '</', got 'jsx text'
+
+
+[00:00:02.784] Browser ERROR   uncaughtError: Error: ./portfolio_v3/app/page.tsx:59:24
+Parsing ecmascript source code failed
+  57 |               className="inline-flex items-center justify-center rounded-4xl px-8 py-4 bg-white text-black md:bg-transparent md:border md:border-white md:text-white font-medium tracking-wide hover:bg-white hover:text-black transition-all duration-300"
+  58 |             >
+> 59 |           </motion.div>
+     |                        ^
+> 60 |         </div>
+     | ^^^^^^^^^
+  61 |       </div>
+  62 |
+  63 |       {/* Scroll Indicator */}
+
+Expected '</', got 'jsx text'
+
+
+[00:00:02.997] Browser ERROR   ./portfolio_v3/app/page.tsx:59:24
+Parsing ecmascript source code failed
+  57 |               className="inline-flex items-center justify-center rounded-4xl px-8 py-4 bg-white text-black md:bg-transparent md:border md:border-white md:text-white font-medium tracking-wide hover:bg-white hover:text-black transition-all duration-300"
+  58 |             >
+> 59 |           </motion.div>
+     |                        ^
+> 60 |         </div>
+     | ^^^^^^^^^
+  61 |       </div>
+  62 |
+  63 |       {/* Scroll Indicator */}
+
+Expected '</', got 'jsx text'
+[00:00:03.233] Browser ERROR   ./portfolio_v3/app/page.tsx:59:24
+Parsing ecmascript source code failed
+  57 |               className="inline-flex items-center justify-center rounded-4xl px-8 py-4 bg-white text-black md:bg-transparent md:border md:border-white md:text-white font-medium tracking-wide hover:bg-white hover:text-black transition-all duration-300"
+  58 |             >
+> 59 |           </motion.div>
+     |                        ^
+> 60 |         </div>
+     | ^^^^^^^^^
+  61 |       </div>
+  62 |
+  63 |       {/* Scroll Indicator */}
+
+Expected '</', got 'jsx text'
+[00:00:14.759] Server  LOG     ✓ Compiled in 333ms
+[00:00:15.035] Server  LOG     Current Base Path: ""
+[00:00:15.241] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:15.464] Browser LOG     Current Base Path: 
+[00:00:15.464] Browser LOG     Current Base Path: 
+[00:00:54.001] Server  LOG     ✓ Compiled in 174ms
+[00:00:54.176] Browser LOG     Current Base Path: 
+[00:00:54.176] Browser LOG     Current Base Path: 
+[00:01:07.608] Server  LOG     ✓ Compiled in 108ms
+[00:01:07.767] Browser LOG     Current Base Path: 
+[00:01:07.768] Browser LOG     Current Base Path: 
+[00:01:46.906] Server  LOG     ✓ Compiled in 76ms
+[00:01:47.314] Browser LOG     Current Base Path: 
+[00:01:47.314] Browser LOG     Current Base Path: 
+[00:01:49.867] Server  LOG     ✓ Compiled in 73ms
+[00:01:49.961] Browser LOG     Current Base Path: 
+[00:01:49.961] Browser LOG     Current Base Path: 
+[00:01:57.138] Server  LOG     ✓ Compiled in 94ms
+[00:01:57.423] Browser LOG     Current Base Path: 
+[00:01:57.423] Browser LOG     Current Base Path: 
+[00:01:59.545] Server  LOG     ✓ Compiled in 72ms
+[00:01:59.812] Browser LOG     Current Base Path: 
+[00:01:59.812] Browser LOG     Current Base Path: 
+[00:02:06.134] Server  LOG     ✓ Compiled in 73ms
+[00:02:06.530] Browser LOG     Current Base Path: 
+[00:02:06.530] Browser LOG     Current Base Path: 
