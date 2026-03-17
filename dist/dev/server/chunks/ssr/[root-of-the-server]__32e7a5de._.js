@@ -41,19 +41,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$portfolio_v3$2f$node_modules
 ;
 ;
 ;
-// More robust basePath detection for GitHub Pages
-const getBasePath = ()=>{
-    // If the env var is defined (even if empty), use it.
-    // This makes it possible to force root-relative paths via an empty string.
-    const envBasePath = ("TURBOPACK compile-time value", "");
-    if ("TURBOPACK compile-time truthy", 1) {
-        // Special case: allow "ROOT" to mean root path in build-time env configs.
-        return ("TURBOPACK compile-time falsy", 0) ? "TURBOPACK unreachable" : envBasePath;
-    }
-    //TURBOPACK unreachable
-    ;
-};
-const basePath = getBasePath();
+const basePath = ("TURBOPACK compile-time value", "") || '';
 const getProjectCategories = (0, __TURBOPACK__imported__module__$5b$project$5d2f$portfolio_v3$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["cache"])(async ()=>{
     const photosDirectory = __TURBOPACK__imported__module__$5b$externals$5d2f$path__$5b$external$5d$__$28$path$2c$__cjs$29$__["default"].join(process.cwd(), 'public', 'photos');
     if (!__TURBOPACK__imported__module__$5b$externals$5d2f$fs__$5b$external$5d$__$28$fs$2c$__cjs$29$__["default"].existsSync(photosDirectory)) {

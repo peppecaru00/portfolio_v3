@@ -32,34 +32,7 @@ export interface PhotoCategory {
   count: number;
 }
 
-// More robust basePath detection for GitHub Pages
-const getBasePath = () => {
-  // If the env var is defined (even if empty), use it.
-  // This makes it possible to force root-relative paths via an empty string.
-  const envBasePath = process.env.NEXT_PUBLIC_BASE_PATH;
-  if (envBasePath !== undefined) {
-    // Special case: allow "ROOT" to mean root path in build-time env configs.
-    return envBasePath === 'ROOT' ? '' : envBasePath;
-  }
-
-  // For GitHub Pages, detect from package.json name or repository name
-  // This helps when env var isn't set during static export
-  if (process.env.GITHUB_PAGES || process.env.CI) {
-    // Try to read from package.json or use a default
-    try {
-      const packageJson = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'package.json'), 'utf8'));
-      // GitHub Pages usually uses the repo name as the base path
-      return `/${packageJson.name}`;
-    } catch {
-      return '';
-    }
-  }
-
-  return '';
-};
-
-const basePath = getBasePath();
-
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
 // Projects are organized as subdirectories in /public/photos/
 
 export const getProjectCategories = cache(async (): Promise<PhotoCategory[]> => {
