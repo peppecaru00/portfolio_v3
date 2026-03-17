@@ -53,7 +53,7 @@ export default async function ProjectPage({
 
       {/* Hero */}
       <div className="mb-12 md:mb-16">
-        <h1 className="text-5xl md:text-7xl font-light tracking-tight mb-4">{project.title}</h1>
+        <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-4">{project.title}</h1>
         <p className="text-neutral-400 text-lg mb-2">{project.year}</p>
         {project.description && (
           <p className="text-neutral-300 max-w-2xl mt-6 text-lg leading-relaxed">
@@ -63,7 +63,7 @@ export default async function ProjectPage({
       </div>
 
       {/* Photo Grid - Masonry style */}
-      <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+      <div className="columns-1 md:columns-2 lg:columns-3 gap-3 space-y-3">
         {project.photos.map((photo, index) => (
           <div 
             key={photo.id} 

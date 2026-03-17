@@ -140,7 +140,7 @@ function Home() {
                                 delay: 0.2
                             },
                             className: "text-sm md:text-base font-medium tracking-widest uppercase mb-6",
-                            children: "Creative Filmmaker & Photographer"
+                            children: "Fotografante & Videocreatore"
                         }, void 0, false, {
                             fileName: "[project]/portfolio_v3/app/page.tsx",
                             lineNumber: 21,
@@ -161,19 +161,19 @@ function Home() {
                             },
                             className: "text-5xl md:text-7xl lg:text-9xl font-bold tracking-tighter leading-[0.9] mb-8",
                             children: [
-                                "Crafting",
+                                "Shooting.",
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$portfolio_v3$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {}, void 0, false, {
                                     fileName: "[project]/portfolio_v3/app/page.tsx",
                                     lineNumber: 37,
                                     columnNumber: 13
                                 }, this),
-                                "Visual",
+                                "Create.",
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$portfolio_v3$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {}, void 0, false, {
                                     fileName: "[project]/portfolio_v3/app/page.tsx",
                                     lineNumber: 39,
                                     columnNumber: 13
                                 }, this),
-                                "Experiences"
+                                "Passion."
                             ]
                         }, void 0, true, {
                             fileName: "[project]/portfolio_v3/app/page.tsx",

@@ -26,7 +26,7 @@ export default async function PhotosPage({
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-2">
           Photogallery
         </h1>
-        <p className="text-neutral-400 text-lg">Selected works</p>
+        <p className="text-neutral-400 text-lg">Explore my photography projects</p>
 
         <div className="mt-8 flex flex-wrap gap-3">
         </div>

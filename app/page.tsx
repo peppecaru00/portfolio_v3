@@ -24,7 +24,7 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-sm md:text-base font-medium tracking-widest uppercase mb-6"
           >
-            Creative Filmmaker & Photographer
+            Fotografante & Videocreatore
           </motion.p>
 
           <motion.h1
@@ -33,11 +33,11 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-5xl md:text-7xl lg:text-9xl font-bold tracking-tighter leading-[0.9] mb-8"
           >
-            Crafting
+            Shooting.
             <br />
-            Visual
+            Create.
             <br />
-            Experiences
+            Passion.
           </motion.h1>
 
           <motion.div
