@@ -79,6 +79,7 @@
   :root, :host {
     --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    --color-red-50: #fef2f2;
     --color-red-100: #ffe2e2;
     --color-red-200: #ffcaca;
     --color-red-300: #ffa3a3;
@@ -197,6 +198,7 @@
 
   @supports (color: lab(0% 0 0)) {
     :root, :host {
+      --color-red-50: lab(96.5005% 4.18511 1.52329);
       --color-red-100: lab(92.243% 10.2865 3.83865);
       --color-red-200: lab(86.017% 19.8815 7.75869);
       --color-red-300: lab(76.5514% 36.4219 15.5335);
@@ -525,6 +527,10 @@
     position: fixed;
   }
 
+  .fixed\! {
+    position: fixed !important;
+  }
+
   .relative {
     position: relative;
   }
@@ -583,6 +589,10 @@
 
   .left-106 {
     left: calc(var(--spacing) * 106);
+  }
+
+  .\!z-1 {
+    z-index: 1 !important;
   }
 
   .z-4 {
@@ -1604,6 +1614,10 @@
     opacity: 0;
   }
 
+  .opacity-6 {
+    opacity: .06;
+  }
+
   .opacity-60 {
     opacity: .6;
   }
@@ -1633,6 +1647,11 @@
 
   .blur {
     --tw-blur: blur(8px);
+    filter: var(--tw-blur, ) var(--tw-brightness, ) var(--tw-contrast, ) var(--tw-grayscale, ) var(--tw-hue-rotate, ) var(--tw-invert, ) var(--tw-saturate, ) var(--tw-sepia, ) var(--tw-drop-shadow, );
+  }
+
+  .blur-md {
+    --tw-blur: blur(var(--blur-md));
     filter: var(--tw-blur, ) var(--tw-brightness, ) var(--tw-contrast, ) var(--tw-grayscale, ) var(--tw-hue-rotate, ) var(--tw-invert, ) var(--tw-saturate, ) var(--tw-sepia, ) var(--tw-drop-shadow, );
   }
 
@@ -1756,6 +1775,10 @@
 
   .\[key\:�D4ng\] {
     key: �D4ng;
+  }
+
+  .\[metatype\:�\5 r\] {
+    metatype: � r;
   }
 
   .\[name\:\11 \6 �\] {

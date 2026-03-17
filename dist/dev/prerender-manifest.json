@@ -1,11 +1,1 @@
-{
-  "version": 4,
-  "routes": {},
-  "dynamicRoutes": {},
-  "notFoundRoutes": [],
-  "preview": {
-    "previewModeId": "1c1137bcf7158edc888a63ee3436f955",
-    "previewModeSigningKey": "b29bbda3bb1e01aac85c43fc214c97bd2bbf18c7cb4d1424a76594a8750721e5",
-    "previewModeEncryptionKey": "e54abfbce05ee72531ed610ac7de62bb9ed5f8e8a640b54476355afccbb1b593"
-  }
-}
+{"version":4,"routes":{"/photos/buildings":{},"/photos/cars":{},"/photos/martina":{},"/photos/nature":{},"/photos/others":{},"/photos/people":{},"/photos/street":{}},"dynamicRoutes":{"/photos/[slug]":{"dataRoute":null,"dataRouteRegex":null,"fallback":null,"fallbackRevalidate":false,"fallbackSourceRoute":"/photos/[slug]","routeRegex":"^\\/photos\\/([^/]+?)(?:\\/)?$","allowHeader":[]}},"notFoundRoutes":[],"preview":{"previewModeId":"5a3499e05db4d7e78b9592a91a36824a","previewModeSigningKey":"ffc5c0c9744fd0c868108644b87a3ddc321a1d81b827a9b143fa5853d28eeb35","previewModeEncryptionKey":"3c85e88959d1b5d403b3f73e5ad966787965da5224d5a1627634be10e9489d04"}}

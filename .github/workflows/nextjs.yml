@@ -74,8 +74,12 @@ jobs:
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
       - name: Build with Next.js
-        env:
-          NEXT_PUBLIC_BASE_PATH: "/portfolio_v3"
+        # If you deploy to a custom domain (e.g. peppecaruso.it), set the
+        # NEXT_PUBLIC_BASE_PATH repository secret to "ROOT" so assets are
+        # generated with root-relative URLs.
+        #
+        # For GitHub Pages without a custom domain, you can remove this env block
+        # or leave it unset to let `next.config.ts` infer the repo-based basePath.
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
