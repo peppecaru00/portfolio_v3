@@ -43,22 +43,15 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$portfolio_v3$2f$node_modules
 ;
 // More robust basePath detection for GitHub Pages
 const getBasePath = ()=>{
-    // Check for explicit env var first
-    if ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
-    ;
-    // For GitHub Pages, detect from package.json name or repository name
-    // This helps when env var isn't set during static export
-    if (process.env.GITHUB_PAGES || process.env.CI) {
-        // Try to read from package.json or use a default
-        try {
-            const packageJson = JSON.parse(__TURBOPACK__imported__module__$5b$externals$5d2f$fs__$5b$external$5d$__$28$fs$2c$__cjs$29$__["default"].readFileSync(__TURBOPACK__imported__module__$5b$externals$5d2f$path__$5b$external$5d$__$28$path$2c$__cjs$29$__["default"].join(process.cwd(), 'package.json'), 'utf8'));
-            // GitHub Pages usually uses the repo name as the base path
-            return `/${packageJson.name}`;
-        } catch  {
-            return '';
-        }
+    // If the env var is defined (even if empty), use it.
+    // This makes it possible to force root-relative paths via an empty string.
+    const envBasePath = ("TURBOPACK compile-time value", "");
+    if ("TURBOPACK compile-time truthy", 1) {
+        // Special case: allow "ROOT" to mean root path in build-time env configs.
+        return ("TURBOPACK compile-time falsy", 0) ? "TURBOPACK unreachable" : envBasePath;
     }
-    return '';
+    //TURBOPACK unreachable
+    ;
 };
 const basePath = getBasePath();
 const getProjectCategories = (0, __TURBOPACK__imported__module__$5b$project$5d2f$portfolio_v3$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["cache"])(async ()=>{

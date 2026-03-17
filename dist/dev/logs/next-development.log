@@ -1,8 +1,11 @@
-[00:00:00.726] Server  LOG     ✓ Ready in 527ms
-[00:00:03.043] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:00:46.506] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:00:49.591] Browser LOG     Current Base Path: 
-[00:00:49.591] Browser LOG     Current Base Path: 
-[00:00:49.591] Browser WARN    Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
-[00:00:49.777] Browser LOG     Current Base Path: 
-[00:00:49.777] Browser LOG     Current Base Path: 
+[00:00:00.808] Server  LOG     ✓ Ready in 566ms
+[00:00:01.788] Server  LOG     Current Base Path: ""
+[00:00:01.982] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:02.476] Browser LOG     Current Base Path: 
+[00:00:02.476] Browser LOG     Current Base Path: 
+[00:04:25.188] Server  LOG     Current Base Path: ""
+[00:04:25.415] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:04:25.605] Browser LOG     Current Base Path: 
+[00:04:25.605] Browser LOG     Current Base Path: 
+[00:04:28.438] Server  WARN    Error: Route "/photos" used `searchParams.category`. `searchParams` is a Promise and must be unwrapped with `await` or `React.use()` before accessing its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+[00:04:28.628] Browser WARN    Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
