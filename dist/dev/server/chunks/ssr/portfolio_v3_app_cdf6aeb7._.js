@@ -98,7 +98,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$portfolio_v3$2f$node_modules
 ;
 function Home() {
     // Get the base path we defined in next.config.ts
-    const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+    const basePath = ("TURBOPACK compile-time value", "") || '';
     console.log("Current Base Path:", basePath);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$portfolio_v3$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "relative min-h-screen flex items-center justify-center",
