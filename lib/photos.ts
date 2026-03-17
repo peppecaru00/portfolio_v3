@@ -1,3 +1,4 @@
+// lib/photos.ts
 import fs from 'fs';
 import path from 'path';
 import { cache } from 'react';
@@ -14,7 +15,16 @@ export interface PhotoMeta {
   height: number;
 }
 
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+export interface Project {
+  id: string;
+  slug: string;
+  title: string;
+  year: string;
+  description?: string;
+  coverImage: string;
+  category: string;
+  photos: PhotoMeta[];
+}
 
 export interface PhotoCategory {
   name: string;
@@ -22,115 +32,166 @@ export interface PhotoCategory {
   count: number;
 }
 
-// Helper: extract alphabetic prefix from filenames like "NATURE1.jpg" or "nature_01.jpg".
-const extractPrefix = (filename: string): string | null => {
-  const base = filename.replace(/\.[^/.]+$/, '');
-  const m = base.match(/^([A-Za-z]+)(?:[_-]?\d.*|[_-].*|$)/);
-  return m ? m[1] : null;
+// More robust basePath detection for GitHub Pages
+const getBasePath = () => {
+  // Check for explicit env var first
+  if (process.env.NEXT_PUBLIC_BASE_PATH) {
+    return process.env.NEXT_PUBLIC_BASE_PATH;
+  }
+  
+  // For GitHub Pages, detect from package.json name or repository name
+  // This helps when env var isn't set during static export
+  if (process.env.GITHUB_PAGES || process.env.CI) {
+    // Try to read from package.json or use a default
+    try {
+      const packageJson = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'package.json'), 'utf8'));
+      // GitHub Pages usually uses the repo name as the base path
+      return `/${packageJson.name}`;
+    } catch {
+      return '';
+    }
+  }
+  
+  return '';
 };
 
-const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
+const basePath = getBasePath();
 
-export const getPhotoCategories = cache(async (): Promise<PhotoCategory[]> => {
+// Projects are organized as subdirectories in /public/photos/
+
+export const getProjectCategories = cache(async (): Promise<PhotoCategory[]> => {
   const photosDirectory = path.join(process.cwd(), 'public', 'photos');
-
+  
   if (!fs.existsSync(photosDirectory)) {
     return [{ name: 'All', slug: 'all', count: 0 }];
   }
 
   const entries = fs.readdirSync(photosDirectory, { withFileTypes: true });
-  const allowed = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.mp4', '.mov', '.webm'];
+  const projectDirs = entries.filter(e => e.isDirectory());
+  
+  const categories = new Map<string, number>();
+  let totalProjects = 0;
 
-  let total = 0;
-  const counts = new Map<string, number>();
-
-  // count files in root and infer prefix-based categories
-  for (const e of entries) {
-    if (!e.isFile()) continue;
-    const ext = path.extname(e.name).toLowerCase();
-    if (!allowed.includes(ext)) continue;
-    total++;
-
-    const prefix = extractPrefix(e.name);
-    if (prefix) {
-      const slug = prefix.toLowerCase();
-      counts.set(slug, (counts.get(slug) || 0) + 1);
-    }
-  }
-
-  // count files in subdirectories (directory = explicit category)
-  for (const d of entries.filter(e => e.isDirectory())) {
-    const dirPath = path.join(photosDirectory, d.name);
-    const files = fs.readdirSync(dirPath).filter(f => allowed.includes(path.extname(f).toLowerCase()));
-    total += files.length;
-    const slug = d.name.toLowerCase();
-    counts.set(slug, (counts.get(slug) || 0) + files.length);
-  }
-
-  const categories: PhotoCategory[] = Array.from(counts.entries())
-    .map(([slug, count]) => ({ name: capitalize(slug), slug, count }))
-    .sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }));
-
-  return [{ name: 'All', slug: 'all', count: total }, ...categories];
-});
-
-export const getPhotos = cache(async (category?: string): Promise<PhotoMeta[]> => {
-  const photosDirectory = path.join(process.cwd(), 'public', 'photos');
-
-  if (!fs.existsSync(photosDirectory)) {
-    console.warn('Photos directory not found:', photosDirectory);
-    return [];
-  }
-
-  const allowed = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.mp4', '.mov', '.webm'];
-
-  const collect = (dirPath: string, prefix = ''): { file: string; filePath: string; src: string }[] => {
-    return fs.readdirSync(dirPath)
-      .filter(f => allowed.includes(path.extname(f).toLowerCase()))
-      .map(file => ({ file, filePath: path.join(dirPath, file), src: `${basePath}/photos/${prefix}${file}` }));
-  };
-
-  const escapeRegExp = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const matchesPrefix = (file: string, prefix: string) => {
-    const base = file.replace(/\.[^/.]+$/, '').toLowerCase();
-    const p = prefix.toLowerCase();
-    return new RegExp(`^${escapeRegExp(p)}(?:\\d|[_-]|$)`).test(base);
-  };
-
-  let candidates: { file: string; filePath: string; src: string }[] = [];
-
-  if (!category || category.toLowerCase() === 'all') {
-    // collect root files and subfolders
-    candidates.push(...collect(photosDirectory, ''));
-    const entries = fs.readdirSync(photosDirectory, { withFileTypes: true });
-    for (const d of entries.filter(e => e.isDirectory())) {
-      candidates.push(...collect(path.join(photosDirectory, d.name), `${d.name}/`));
-    }
-  } else {
-    const entries = fs.readdirSync(photosDirectory, { withFileTypes: true });
-
-    // if there's a matching directory, return its files
-    const matchDir = entries.find(e => e.isDirectory() && e.name.toLowerCase() === category.toLowerCase());
-    if (matchDir) {
-      candidates.push(...collect(path.join(photosDirectory, matchDir.name), `${matchDir.name}/`));
-    } else {
-      // treat category as filename prefix: match files in root and in subfolders
-      candidates.push(...collect(photosDirectory, '').filter(c => matchesPrefix(c.file, category)));
-      for (const d of entries.filter(e => e.isDirectory())) {
-        candidates.push(...collect(path.join(photosDirectory, d.name), `${d.name}/`).filter(c => matchesPrefix(c.file, category)));
+  for (const dir of projectDirs) {
+    const projectPath = path.join(photosDirectory, dir.name);
+    const hasImages = fs.readdirSync(projectPath).some(f => 
+      ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.mp4', '.mov', '.webm']
+        .includes(path.extname(f).toLowerCase())
+    );
+    
+    if (hasImages) {
+      totalProjects++;
+      const metaPath = path.join(projectPath, 'project.json');
+      if (fs.existsSync(metaPath)) {
+        const meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
+        if (meta.category) {
+          const slug = meta.category.toLowerCase();
+          categories.set(slug, (categories.get(slug) || 0) + 1);
+        }
       }
     }
   }
 
-  // sort by filename (numeric-aware)
-  candidates.sort((a, b) => a.file.localeCompare(b.file, undefined, { numeric: true, sensitivity: 'base' }));
+  const catsArray = Array.from(categories.entries())
+    .map(([slug, count]) => ({ 
+      name: slug.charAt(0).toUpperCase() + slug.slice(1), 
+      slug, 
+      count 
+    }))
+    .sort((a, b) => a.name.localeCompare(b.name));
 
-  const photos = await Promise.all(
-    candidates.map(async ({ file, filePath, src }) => {
-      const id = file.replace(/\.[^/.]+$/, '');
+  return [{ name: 'All', slug: 'all', count: totalProjects }, ...catsArray];
+});
+
+export const getProjects = cache(async (category?: string): Promise<Project[]> => {
+  const photosDirectory = path.join(process.cwd(), 'public', 'photos');
+  
+  if (!fs.existsSync(photosDirectory)) {
+    return [];
+  }
+
+  const entries = fs.readdirSync(photosDirectory, { withFileTypes: true });
+  const projectDirs = entries.filter(e => e.isDirectory());
+  
+  const allowedExts = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.mp4', '.mov', '.webm'];
+  const projects: Project[] = [];
+
+  for (const dir of projectDirs) {
+    const projectPath = path.join(photosDirectory, dir.name);
+    const files = fs.readdirSync(projectPath)
+      .filter(f => allowedExts.includes(path.extname(f).toLowerCase()))
+      .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+
+    if (files.length === 0) continue;
+
+    const metaPath = path.join(projectPath, 'project.json');
+    let meta: Partial<Project> = {};
+    if (fs.existsSync(metaPath)) {
+      meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
+    }
+
+    if (category && category !== 'all') {
+      const projectCat = (meta.category || dir.name).toLowerCase();
+      if (projectCat !== category) continue;
+    }
+
+    const coverFile = files[0];
+    // Ensure no double slashes in path construction
+    const cleanBasePath = basePath.replace(/\/$/, '');
+    const coverSrc = `${cleanBasePath}/photos/${dir.name}/${coverFile}`;
+
+    projects.push({
+      id: dir.name,
+      slug: dir.name.toLowerCase().replace(/\s+/g, '-'),
+      title: meta.title || dir.name.replace(/[-_]/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+      year: meta.year || new Date().getFullYear().toString(),
+      description: meta.description,
+      coverImage: coverSrc,
+      category: meta.category || 'uncategorized',
+      photos: [],
+    });
+  }
+
+  return projects.sort((a, b) => {
+    const yearDiff = parseInt(b.year) - parseInt(a.year);
+    return yearDiff !== 0 ? yearDiff : a.title.localeCompare(b.title);
+  });
+});
+
+export const getProjectBySlug = cache(async (slug: string): Promise<Project | null> => {
+  const photosDirectory = path.join(process.cwd(), 'public', 'photos');
+  
+  if (!fs.existsSync(photosDirectory)) return null;
+
+  const entries = fs.readdirSync(photosDirectory, { withFileTypes: true });
+  const projectDir = entries.find(e => 
+    e.isDirectory() && e.name.toLowerCase().replace(/\s+/g, '-') === slug
+  );
+
+  if (!projectDir) return null;
+
+  const projectPath = path.join(photosDirectory, projectDir.name);
+  const allowedExts = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.mp4', '.mov', '.webm'];
+  
+  const files = fs.readdirSync(projectPath)
+    .filter(f => allowedExts.includes(path.extname(f).toLowerCase()))
+    .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+
+  const metaPath = path.join(projectPath, 'project.json');
+  let meta: Partial<Project> = {};
+  if (fs.existsSync(metaPath)) {
+    meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
+  }
+
+  const cleanBasePath = basePath.replace(/\/$/, '');
+
+  const photos: PhotoMeta[] = await Promise.all(
+    files.map(async (file) => {
+      const id = path.basename(file, path.extname(file));
       const ext = path.extname(file).toLowerCase();
       const isVideo = ['.mp4', '.mov', '.webm'].includes(ext);
-
+      const filePath = path.join(projectPath, file);
+      
       let width = 800;
       let height = 600;
 
@@ -148,23 +209,45 @@ export const getPhotos = cache(async (category?: string): Promise<PhotoMeta[]> =
         height = 1080;
       }
 
-      const metaPath = path.join(path.dirname(filePath), `${id}.json`);
-      let meta: Partial<PhotoMeta> = { title: id.replace(/-/g, ' ') };
-      if (fs.existsSync(metaPath)) {
-        const fileContent = fs.readFileSync(metaPath, 'utf8');
-        meta = { ...meta, ...JSON.parse(fileContent) };
+      const photoMetaPath = path.join(projectPath, `${id}.json`);
+      let photoMeta: Partial<PhotoMeta> = { title: id.replace(/[-_]/g, ' ') };
+      if (fs.existsSync(photoMetaPath)) {
+        photoMeta = { ...photoMeta, ...JSON.parse(fs.readFileSync(photoMetaPath, 'utf8')) };
       }
 
       return {
         id,
-        src,
+        src: `${cleanBasePath}/photos/${projectDir.name}/${file}`,
         type: isVideo ? 'video' : 'image',
         width,
         height,
-        ...meta,
-      } as PhotoMeta;
+        ...photoMeta,
+      };
     })
   );
 
-  return photos;
+  const coverFile = files[0];
+  const coverSrc = `${cleanBasePath}/photos/${projectDir.name}/${coverFile}`;
+
+  return {
+    id: projectDir.name,
+    slug,
+    title: meta.title || projectDir.name.replace(/[-_]/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+    year: meta.year || new Date().getFullYear().toString(),
+    description: meta.description,
+    coverImage: coverSrc,
+    category: meta.category || 'uncategorized',
+    photos,
+  };
+});
+
+export const getAllProjectSlugs = cache(async (): Promise<string[]> => {
+  const photosDirectory = path.join(process.cwd(), 'public', 'photos');
+  
+  if (!fs.existsSync(photosDirectory)) return [];
+
+  const entries = fs.readdirSync(photosDirectory, { withFileTypes: true });
+  return entries
+    .filter(e => e.isDirectory())
+    .map(e => e.name.toLowerCase().replace(/\s+/g, '-'));
 });
