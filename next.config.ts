@@ -1,21 +1,17 @@
-import type { NextConfig } from "next";
+// next.config.js
+const isGithubActions = process.env.GITHUB_ACTIONS === 'true';
+const repoName = process.env.GITHUB_REPOSITORY?.split('/')[1] || 'portfolio_v3';
 
-// 1. Grab the path from the environment (injected by GitHub Actions)
-// If running locally, this will be undefined, defaulting to '' (root)
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
-
-const nextConfig: NextConfig = {
-  output: 'export',  
-  trailingSlash: true,
-  // 2. Use the dynamic path
-  basePath: basePath,
-  
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  output: 'export',
+  distDir: 'dist',
+  basePath: isGithubActions ? `/${repoName}` : '',
+  assetPrefix: isGithubActions ? `/${repoName}/` : '',
   images: {
     unoptimized: true,
   },
-  
-  // 3. No need for 'env' block here; NEXT_PUBLIC_ variables 
-  // are automatically picked up if set in the system (like we did in YAML).
+  trailingSlash: true, // Helps with GitHub Pages routing
 };
 
-export default nextConfig;
+module.exports = nextConfig;
