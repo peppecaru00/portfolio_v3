@@ -1,11 +1,1 @@
-{
-  "version": 4,
-  "routes": {},
-  "dynamicRoutes": {},
-  "notFoundRoutes": [],
-  "preview": {
-    "previewModeId": "e42b4ca6fad01e044089f7ae78195a9a",
-    "previewModeSigningKey": "be911b8750c41a0202b73d14ac3e1d278c68653d65fea0ec3e8e42352106bfe8",
-    "previewModeEncryptionKey": "ccbd8f6e0fa18a93aeac2f466cc4748addafe43f2ae3e37b98c0be31abc2ac81"
-  }
-}
+{"version":4,"routes":{"/photos/cars":{},"/photos/laurea-mariagrazia-e-chiara":{},"/photos/musei-reali":{},"/photos/nature":{},"/photos/others":{},"/photos/_laurea-fabio":{},"/photos/__parco":{},"/photos/__roma":{},"/photos/___martina-pace":{}},"dynamicRoutes":{"/photos/[slug]":{"dataRoute":null,"dataRouteRegex":null,"fallback":null,"fallbackRevalidate":false,"fallbackSourceRoute":"/photos/[slug]","routeRegex":"^\\/photos\\/([^/]+?)(?:\\/)?$","allowHeader":[]}},"notFoundRoutes":[],"preview":{"previewModeId":"de65f347fbea1668798d08dd25cf2044","previewModeSigningKey":"67fb90965119d52a6e174eb9c90a02f1ceb78f2888a2798c0c5ab44949b14037","previewModeEncryptionKey":"8022f7c459e4f8b09d5903307f28f294eb651db82d76106e594baba9c153825c"}}
