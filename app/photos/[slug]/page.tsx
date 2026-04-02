@@ -62,36 +62,47 @@ export default async function ProjectPage({
         )}
       </div>
 
-      {/* Photo Grid - Left-to-right order */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-        {project.photos.map((photo, index) => (
-          <div 
-            key={photo.id} 
-            className="relative group overflow-hidden rounded-lg bg-neutral-900"
-          >
-            {photo.type === 'video' ? (
-              <video
-                src={photo.src}
-                autoPlay
-                muted
-                loop
-                playsInline
-                className="w-full h-auto"
-              />
-            ) : (
-              <Image
-                src={photo.src}
-                alt={photo.title || `Photo ${index + 1}`}
-                width={photo.width || 800}
-                height={photo.height || 600}
-                className="w-full h-auto object-cover"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                priority={index < 3}
-              />
-            )}
-        
-          </div>
-        ))}
+      {/* Photo Grid - Masonry with left-to-right order */}
+      {/* gridAutoRows=10px + span N per item recreates masonry while keeping row-first ordering */}
+      <div
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-3"
+        style={{ gridAutoRows: '10px' }}
+      >
+        {project.photos.map((photo, index) => {
+          const w = photo.width || 800;
+          const h = photo.height || 600;
+          // span = how many 10px rows this cell needs to fill its natural height
+          // ~60 rows ≈ 600px column width at 1:1; add 1 for the gap row
+          const span = Math.round((h / w) * 60) + 1;
+          return (
+            <div
+              key={photo.id}
+              className="relative group overflow-hidden rounded-lg bg-neutral-900"
+              style={{ gridRow: `span ${span}` }}
+            >
+              {photo.type === 'video' ? (
+                <video
+                  src={photo.src}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className="w-full h-auto"
+                />
+              ) : (
+                <Image
+                  src={photo.src}
+                  alt={photo.title || `Photo ${index + 1}`}
+                  width={photo.width || 800}
+                  height={photo.height || 600}
+                  className="w-full h-auto object-cover"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  priority={index < 3}
+                />
+              )}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
