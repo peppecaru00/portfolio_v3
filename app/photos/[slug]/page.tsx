@@ -9,32 +9,32 @@ export async function generateStaticParams() {
   return slugs.map((slug) => ({ slug }));
 }
 
-export async function generateMetadata({ 
-  params 
-}: { 
-  params: Promise<{ slug: string }> 
+export async function generateMetadata({
+  params
+}: {
+  params: Promise<{ slug: string }>
 }) {
   const { slug } = await params;
   const project = await getProjectBySlug(slug);
-  
+
   if (!project) {
     return { title: 'Not Found' };
   }
-  
+
   return {
     title: `${project.title} | Photography`,
     description: project.description || `Photos from ${project.title}`,
   };
 }
 
-export default async function ProjectPage({ 
-  params 
-}: { 
-  params: Promise<{ slug: string }> 
+export default async function ProjectPage({
+  params
+}: {
+  params: Promise<{ slug: string }>
 }) {
   const { slug } = await params;
   const project = await getProjectBySlug(slug);
-  
+
   if (!project) {
     notFound();
   }
@@ -43,8 +43,8 @@ export default async function ProjectPage({
     <div className="min-h-screen pt-32 pb-24 px-6 md:px-12 max-w-[1800px] mx-auto">
       {/* Back link */}
       <div className="mb-8">
-        <Link 
-          href="/photos" 
+        <Link
+          href="/photos"
           className="inline-flex items-center gap-2 text-sm uppercase tracking-widest text-neutral-400 hover:text-white transition-colors"
         >
           <span>←</span> Back to Projects
@@ -62,47 +62,36 @@ export default async function ProjectPage({
         )}
       </div>
 
-      {/* Photo Grid - Justified Flow (left-to-right wrapping) */}
-      <div className="flex flex-wrap gap-3 md:gap-4">
-        {project.photos.map((photo, index) => {
-          const w = photo.width || 800;
-          const h = photo.height || 600;
-          
-          return (
-            <div
-              key={photo.id}
-              className="relative group overflow-hidden rounded-lg bg-neutral-900"
-              style={{
-                flexGrow: w / h,
-                flexBasis: `${(w / h) * 300}px`,
-                aspectRatio: `${w} / ${h}`
-              }}
-            >
-              {photo.type === 'video' ? (
-                <video
-                  src={photo.src}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  className="w-full h-full object-cover absolute inset-0"
-                />
-              ) : (
-                <Image
-                  src={photo.src}
-                  alt={photo.title || `Photo ${index + 1}`}
-                  width={w}
-                  height={h}
-                  className="w-full h-full object-cover absolute inset-0"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  priority={index < 3}
-                />
-              )}
-            </div>
-          );
-        })}
-        {/* Spacer to prevent the last row from stretching excessively if not full */}
-        <div style={{ flexGrow: 99999 }} />
+      {/* Photo Grid - Masonry style */}
+      <div className="columns-1 md:columns-2 lg:columns-3 gap-3 space-y-3">
+        {project.photos.map((photo, index) => (
+          <div
+            key={photo.id}
+            className="break-inside-avoid relative group overflow-hidden rounded-lg bg-neutral-900"
+          >
+            {photo.type === 'video' ? (
+              <video
+                src={photo.src}
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="w-full h-auto"
+              />
+            ) : (
+              <Image
+                src={photo.src}
+                alt={photo.title || `Photo ${index + 1}`}
+                width={photo.width || 800}
+                height={photo.height || 600}
+                className="w-full h-auto object-cover"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                priority={index < 3}
+              />
+            )}
+
+          </div>
+        ))}
       </div>
     </div>
   );
