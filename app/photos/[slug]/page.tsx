@@ -62,18 +62,22 @@ export default async function ProjectPage({
         )}
       </div>
 
-      {/* Photo Grid - Masonry with left-to-right order */}
-      {/* gridAutoRows=10px + span N per item recreates masonry while keeping row-first ordering */}
+      {/* Photo Grid - Masonry style (left-to-right order) */}
       <div
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-3"
-        style={{ gridAutoRows: '10px' }}
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(1, 1fr)',
+          gridAutoRows: '10px',
+          gap: '12px',
+        }}
+        className="masonry-grid"
       >
         {project.photos.map((photo, index) => {
           const w = photo.width || 800;
           const h = photo.height || 600;
-          // span = how many 10px rows this cell needs to fill its natural height
-          // ~60 rows ≈ 600px column width at 1:1; add 1 for the gap row
-          const span = Math.round((h / w) * 60) + 1;
+          // span = ceil(imageHeight / imageWidth * colWidthPx / rowHeightPx) + gap padding
+          // Using ~400px column width, 10px row height as baseline
+          const span = Math.ceil((h / w) * 40) + 1;
           return (
             <div
               key={photo.id}
@@ -87,7 +91,7 @@ export default async function ProjectPage({
                   muted
                   loop
                   playsInline
-                  className="w-full h-auto"
+                  className="w-full h-full object-cover absolute inset-0"
                 />
               ) : (
                 <Image
@@ -95,7 +99,7 @@ export default async function ProjectPage({
                   alt={photo.title || `Photo ${index + 1}`}
                   width={photo.width || 800}
                   height={photo.height || 600}
-                  className="w-full h-auto object-cover"
+                  className="w-full h-full object-cover absolute inset-0"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   priority={index < 3}
                 />
