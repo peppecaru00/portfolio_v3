@@ -62,12 +62,12 @@ export default async function ProjectPage({
         )}
       </div>
 
-      {/* Photo Grid - Masonry style */}
-      <div className="columns-1 md:columns-2 lg:columns-3 gap-3 space-y-3">
+      {/* Photo Grid - Left-to-right order */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
         {project.photos.map((photo, index) => (
           <div 
             key={photo.id} 
-            className="break-inside-avoid relative group overflow-hidden rounded-lg bg-neutral-900"
+            className="relative group overflow-hidden rounded-lg bg-neutral-900"
           >
             {photo.type === 'video' ? (
               <video
