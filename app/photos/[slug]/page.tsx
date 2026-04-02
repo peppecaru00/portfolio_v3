@@ -9,32 +9,32 @@ export async function generateStaticParams() {
   return slugs.map((slug) => ({ slug }));
 }
 
-export async function generateMetadata({ 
-  params 
-}: { 
-  params: Promise<{ slug: string }> 
+export async function generateMetadata({
+  params
+}: {
+  params: Promise<{ slug: string }>
 }) {
   const { slug } = await params;
   const project = await getProjectBySlug(slug);
-  
+
   if (!project) {
     return { title: 'Not Found' };
   }
-  
+
   return {
     title: `${project.title} | Photography`,
     description: project.description || `Photos from ${project.title}`,
   };
 }
 
-export default async function ProjectPage({ 
-  params 
-}: { 
-  params: Promise<{ slug: string }> 
+export default async function ProjectPage({
+  params
+}: {
+  params: Promise<{ slug: string }>
 }) {
   const { slug } = await params;
   const project = await getProjectBySlug(slug);
-  
+
   if (!project) {
     notFound();
   }
@@ -43,8 +43,8 @@ export default async function ProjectPage({
     <div className="min-h-screen pt-32 pb-24 px-6 md:px-12 max-w-[1800px] mx-auto">
       {/* Back link */}
       <div className="mb-8">
-        <Link 
-          href="/photos" 
+        <Link
+          href="/photos"
           className="inline-flex items-center gap-2 text-sm uppercase tracking-widest text-neutral-400 hover:text-white transition-colors"
         >
           <span>←</span> Back to Projects
@@ -65,8 +65,8 @@ export default async function ProjectPage({
       {/* Photo Grid - Masonry style */}
       <div className="columns-1 md:columns-2 lg:columns-3 gap-3 space-y-3">
         {project.photos.map((photo, index) => (
-          <div 
-            key={photo.id} 
+          <div
+            key={photo.id}
             className="break-inside-avoid relative group overflow-hidden rounded-lg bg-neutral-900"
           >
             {photo.type === 'video' ? (
@@ -89,7 +89,7 @@ export default async function ProjectPage({
                 priority={index < 3}
               />
             )}
-        
+
           </div>
         ))}
       </div>
