@@ -62,27 +62,21 @@ export default async function ProjectPage({
         )}
       </div>
 
-      {/* Photo Grid - Masonry style (left-to-right order) */}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(1, 1fr)',
-          gridAutoRows: '10px',
-          gap: '12px',
-        }}
-        className="masonry-grid"
-      >
+      {/* Photo Grid - Justified Flow (left-to-right wrapping) */}
+      <div className="flex flex-wrap gap-3 md:gap-4">
         {project.photos.map((photo, index) => {
           const w = photo.width || 800;
           const h = photo.height || 600;
-          // span = ceil(imageHeight / imageWidth * colWidthPx / rowHeightPx) + gap padding
-          // Using ~400px column width, 10px row height as baseline
-          const span = Math.ceil((h / w) * 40) + 1;
+          
           return (
             <div
               key={photo.id}
               className="relative group overflow-hidden rounded-lg bg-neutral-900"
-              style={{ gridRow: `span ${span}` }}
+              style={{
+                flexGrow: w / h,
+                flexBasis: `${(w / h) * 300}px`,
+                aspectRatio: `${w} / ${h}`
+              }}
             >
               {photo.type === 'video' ? (
                 <video
@@ -97,8 +91,8 @@ export default async function ProjectPage({
                 <Image
                   src={photo.src}
                   alt={photo.title || `Photo ${index + 1}`}
-                  width={photo.width || 800}
-                  height={photo.height || 600}
+                  width={w}
+                  height={h}
                   className="w-full h-full object-cover absolute inset-0"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   priority={index < 3}
@@ -107,6 +101,8 @@ export default async function ProjectPage({
             </div>
           );
         })}
+        {/* Spacer to prevent the last row from stretching excessively if not full */}
+        <div style={{ flexGrow: 99999 }} />
       </div>
     </div>
   );
