@@ -33,14 +33,14 @@ export default function AboutPage() {
                     <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter mb-6">
                         Hi, I'm <span className="text-neutral-500">Giuseppe Caruso</span>
                     </h1>
-                    <p className="text-lg md:text-xl text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8">
+                    <p className="text-lg md:text-xl text-neutral-400 leading-relaxed mb-8">
                         I'm a creative filmmaker based in Turin, Italy. I help people bring their visions to life through compelling visual storytelling.
                     </p>
                     <div className="flex flex-wrap gap-4">
                         <a
                             href={`${basePath}/CV_Giuseppe_Caruso.pdf`}
                             target="_blank"
-                            className="px-6 py-3 border border-neutral-300 dark:border-neutral-700 text-sm font-medium tracking-wider uppercase rounded-full hover:border-black dark:hover:border-white transition-colors"
+                            className="px-6 py-3 border border-neutral-700 text-sm font-medium tracking-wider uppercase rounded-full hover:border-white transition-colors"
                         >
                             Download CV
                         </a>
@@ -55,7 +55,7 @@ export default function AboutPage() {
                     <h2 className="text-sm font-medium tracking-widest uppercase text-neutral-500 mb-4">
                        Education
                     </h2>
-                    <p className="text-neutral-700 dark:text-neutral-300 leading-relaxed mb-6">
+                    <p className="text-neutral-300 leading-relaxed mb-6">
                         Politecnico di Torino - Master of Science, Cinema and Media Engineering
                     </p>
                 </div>
@@ -74,7 +74,7 @@ export default function AboutPage() {
                         ].map((service) => (
                             <li
                                 key={service}
-                                className="flex items-center gap-3 text-neutral-700 dark:text-neutral-300"
+                                className="flex items-center gap-3 text-neutral-300"
                             >
                                 <span className="w-1.5 h-1.5 rounded-full bg-neutral-400" />
                                 {service}

@@ -22,7 +22,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${inter.variable} dark`}>
-      <body className="font-sans antialiased bg-white text-black dark:bg-neutral-950 dark:text-white transition-colors">
+      <body className="font-sans antialiased bg-neutral-950 text-white transition-colors">
         <Preloader>
           <Navigation />
           <main>{children}</main>

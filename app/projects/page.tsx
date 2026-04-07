@@ -15,7 +15,7 @@ export default async function ProjectsPage() {
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter mb-6">
           Selected Work
         </h1>
-        <p className="text-lg md:text-xl text-neutral-600 dark:text-neutral-400 max-w-2xl">
+        <p className="text-lg md:text-xl text-neutral-400 max-w-2xl">
           A curated collection of {projects.length} projects
         </p>
       </div>
@@ -28,7 +28,7 @@ export default async function ProjectsPage() {
             className="group block"
           >
             <div className="relative rounded-xl transition-all duration-200 group-hover:ring-2 group-hover:ring-white group-hover:ring-offset-black">
-              <div className="relative aspect-[16/9] overflow-hidden rounded-xl bg-neutral-100 dark:bg-neutral-900 mb-4">
+              <div className="relative aspect-[16/9] overflow-hidden rounded-xl bg-neutral-900 mb-4">
                 {project.coverType === 'video' ? (
                   <video
                     src={project.coverImage}

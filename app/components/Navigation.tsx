@@ -29,7 +29,7 @@ export default function Navigation() {
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          isScrolled ? "bg-white/80 dark:bg-neutral-950/80 backdrop-blur-md" : "bg-transparent"
+          isScrolled ? "bg-neutral-950/80 backdrop-blur-md" : "bg-transparent"
         }`}
       >
         <div className="max-w-[1800px] mx-auto px-6 md:px-12">
@@ -81,7 +81,7 @@ export default function Navigation() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-40 bg-white dark:bg-neutral-950 md:hidden"
+            className="fixed inset-0 z-40 bg-neutral-950 md:hidden"
           >
             <div className="flex flex-col items-center justify-center h-full gap-8">
               {navLinks.map((link, index) => (

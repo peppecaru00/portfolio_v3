@@ -12,7 +12,7 @@ export default function ContactPage() {
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter mb-4">
             Start a Project
           </h1>
-          <p className="text-lg text-neutral-600 dark:text-neutral-400">
+          <p className="text-lg text-neutral-400">
             Tell me about your project and I'll get back to you within 24 hours.
           </p>
         </div>
@@ -31,7 +31,7 @@ export default function ContactPage() {
                 name="name"
                 required
                 placeholder="John Doe"
-                className="w-full px-4 py-3 bg-transparent border-b-2 border-neutral-200 dark:border-neutral-800 focus:border-black dark:focus:border-white outline-none transition-colors placeholder:text-neutral-400"
+                className="w-full px-4 py-3 bg-transparent border-b-2 border-neutral-800 focus:border-white outline-none transition-colors placeholder:text-neutral-400"
               />
             </div>
             <div className="space-y-2">
@@ -44,7 +44,7 @@ export default function ContactPage() {
                 name="email"
                 required
                 placeholder="john@example.com"
-                className="w-full px-4 py-3 bg-transparent border-b-2 border-neutral-200 dark:border-neutral-800 focus:border-black dark:focus:border-white outline-none transition-colors placeholder:text-neutral-400"
+                className="w-full px-4 py-3 bg-transparent border-b-2 border-neutral-800 focus:border-white outline-none transition-colors placeholder:text-neutral-400"
               />
             </div>
           </div>
@@ -58,7 +58,7 @@ export default function ContactPage() {
               id="type"
               name="type"
               required
-              className="w-full px-4 py-3 bg-transparent border-b-2 border-neutral-200 dark:border-neutral-800 focus:border-black dark:focus:border-white outline-none transition-colors cursor-pointer"
+              className="w-full px-4 py-3 bg-transparent border-b-2 border-neutral-800 focus:border-white outline-none transition-colors cursor-pointer"
             >
               <option value="" disabled selected>Select a service</option>
               <option value="branding">Branding & Identity</option>
@@ -77,7 +77,7 @@ export default function ContactPage() {
             <select
               id="budget"
               name="budget"
-              className="w-full px-4 py-3 bg-transparent border-b-2 border-neutral-200 dark:border-neutral-800 focus:border-black dark:focus:border-white outline-none transition-colors cursor-pointer"
+              className="w-full px-4 py-3 bg-transparent border-b-2 border-neutral-800 focus:border-white outline-none transition-colors cursor-pointer"
             >
               <option value="" disabled selected>Select budget range</option>
               <option value="small">$1,000 - $5,000</option>
@@ -97,7 +97,7 @@ export default function ContactPage() {
               id="timeline"
               name="timeline"
               placeholder="e.g., 3 months, ASAP, Q2 2024"
-              className="w-full px-4 py-3 bg-transparent border-b-2 border-neutral-200 dark:border-neutral-800 focus:border-black dark:focus:border-white outline-none transition-colors placeholder:text-neutral-400"
+              className="w-full px-4 py-3 bg-transparent border-b-2 border-neutral-800 focus:border-white outline-none transition-colors placeholder:text-neutral-400"
             />
           </div>
 
@@ -112,22 +112,22 @@ export default function ContactPage() {
               rows={4}
               required
               placeholder="Tell me about your project, goals, and any specific requirements..."
-              className="w-full px-4 py-3 bg-transparent border-b-2 border-neutral-200 dark:border-neutral-800 focus:border-black dark:focus:border-white outline-none transition-colors resize-none placeholder:text-neutral-400"
+              className="w-full px-4 py-3 bg-transparent border-b-2 border-neutral-800 focus:border-white outline-none transition-colors resize-none placeholder:text-neutral-400"
             />
           </div>
 
           {/* Submit Button */}
           <button
             type="submit"
-            className="group relative w-full md:w-auto px-8 py-4 bg-black dark:bg-white text-white dark:text-black font-medium tracking-wider uppercase overflow-hidden transition-transform hover:scale-[1.02] active:scale-[0.98]"
+            className="group relative w-full md:w-auto px-8 py-4 bg-white text-black font-medium tracking-wider uppercase overflow-hidden transition-transform hover:scale-[1.02] active:scale-[0.98]"
           >
             <span className="relative z-10">Send Message</span>
-            <div className="absolute inset-0 bg-neutral-800 dark:bg-neutral-200 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+            <div className="absolute inset-0 bg-neutral-200 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
           </button>
         </form>
 
         {/* Alternative Contact */}
-        <div className="mt-16 pt-8 border-t border-neutral-200 dark:border-neutral-800">
+        <div className="mt-16 pt-8 border-t border-neutral-800">
           <p className="text-sm text-neutral-500 mb-2">Prefer email?</p>
           <a 
             href="mailto:hello@yourdomain.com" 

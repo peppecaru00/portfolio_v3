@@ -101,7 +101,7 @@ export default async function ProjectPage({
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <div className="relative h-[70vh] md:h-[85vh] bg-neutral-100 dark:bg-neutral-900">
+      <div className="relative h-[70vh] md:h-[85vh] bg-neutral-900">
         {project.coverType === 'video' ? (
           <video
             src={project.coverImage}
@@ -201,7 +201,7 @@ export default async function ProjectPage({
               <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-6">
                 Overview
               </h2>
-              <p className="text-lg md:text-xl leading-relaxed text-neutral-700 dark:text-neutral-300">
+              <p className="text-lg md:text-xl leading-relaxed text-neutral-300">
                 {project.description}
               </p>
             </section>
@@ -211,7 +211,7 @@ export default async function ProjectPage({
                 {project.challenge && (
                   <div>
                     <h3 className="text-xl font-bold tracking-tight mb-4">Challenge</h3>
-                    <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                    <p className="text-neutral-400 leading-relaxed">
                       {project.challenge}
                     </p>
                   </div>
@@ -219,7 +219,7 @@ export default async function ProjectPage({
                 {project.solution && (
                   <div>
                     <h3 className="text-xl font-bold tracking-tight mb-4">Solution</h3>
-                    <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                    <p className="text-neutral-400 leading-relaxed">
                       {project.solution}
                     </p>
                   </div>
@@ -249,7 +249,7 @@ export default async function ProjectPage({
               return (
                 <div
                   key={img.src}
-                  className={`group relative overflow-hidden rounded-2xl bg-neutral-100 dark:bg-neutral-900 ${gridClass}`}
+                  className={`group relative overflow-hidden rounded-2xl bg-neutral-900 ${gridClass}`}
                 >
                   {isVideo ? (
                     <div className="w-full h-auto flex items-center justify-center">
@@ -287,7 +287,7 @@ export default async function ProjectPage({
 
       {/* Next Project Navigation */}
       {nextProject && nextProject.slug !== slug && (
-        <div className="border-t border-neutral-200 dark:border-neutral-800">
+        <div className="border-t border-neutral-800">
           <div className="max-w-[1800px] mx-auto px-6 md:px-12 py-16 md:py-24">
             <Link
               href={`/projects/${nextProject.slug}`}
@@ -301,7 +301,7 @@ export default async function ProjectPage({
                   {nextProject.title}
                 </h2>
               </div>
-              <div className="w-12 h-12 rounded-full border border-current flex items-center justify-center group-hover:bg-black group-hover:text-white dark:group-hover:bg-white dark:group-hover:text-black transition-colors duration-300">
+              <div className="w-12 h-12 rounded-full border border-current flex items-center justify-center group-hover:bg-white group-hover:text-black transition-colors duration-300">
                 <svg
                   width="24"
                   height="24"

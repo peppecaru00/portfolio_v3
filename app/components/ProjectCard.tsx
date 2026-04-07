@@ -20,9 +20,9 @@ export default function ProjectCard({
 
   return (
     <Link href={`/projects/${slug}`} className="group block">
-      <div className="relative aspect-[4/3] overflow-hidden bg-neutral-100 dark:bg-neutral-900 mb-4">
+      <div className="relative aspect-[4/3] overflow-hidden bg-neutral-900 mb-4">
         {/* Placeholder while loading */}
-        <div className={`absolute inset-0 bg-neutral-200 dark:bg-neutral-800 transition-opacity duration-500 ${loaded ? 'opacity-0' : 'opacity-100'}`} />
+        <div className={`absolute inset-0 bg-neutral-800 transition-opacity duration-500 ${loaded ? 'opacity-0' : 'opacity-100'}`} />
         
         <Image
           key={`${slug}-${image}`} // Force re-render on route change

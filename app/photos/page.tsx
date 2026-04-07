@@ -2,6 +2,7 @@
 import { getProjects, getProjectCategories } from "@/lib/photos";
 import Image from "next/image";
 import Link from "next/link";
+import { Images } from "lucide-react";
 
 export const metadata = {
   title: 'Photography | Portfolio',
@@ -38,32 +39,45 @@ export default async function PhotosPage({
           <Link 
             key={project.id} 
             href={`/photos/${project.slug}`}
-            className="group relative aspect-[4/5] overflow-hidden rounded-lg bg-neutral-900 block cursor-pointer"
+            className="group relative block cursor-pointer mb-6 md:mb-0"
           >
-            <Image
-              src={project.coverImage}
-              alt={project.title}
-              fill
-              className="object-cover transition-transform duration-700 group-hover:scale-105"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            />
+            {/* Stack Effect Backgrounds */}
+            <div className="absolute inset-0 bg-neutral-800/80 border border-neutral-700/50 rounded-lg transform rotate-2 translate-x-2 translate-y-1 scale-[0.98] origin-bottom-right transition-transform duration-500 group-hover:rotate-4 group-hover:translate-x-4 group-hover:translate-y-2 z-0" />
+            <div className="absolute inset-0 bg-neutral-700/80 border border-neutral-600/50 rounded-lg transform -rotate-1 -translate-x-1 translate-y-2 scale-[0.98] origin-bottom-left transition-transform duration-500 group-hover:-rotate-3 group-hover:-translate-x-2 group-hover:translate-y-4 z-0" />
             
-            {/* Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
-            
-            {/* Content */}
-            <div className="absolute inset-0 flex flex-col justify-end p-6 pointer-events-none">
-              <h3 className="text-2xl font-bold tracking-wide mb-1 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
-                {project.title}
-              </h3>
-              <p className="text-neutral-400 text-sm transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500 delay-75">
-                {project.year}
-              </p>
-            </div>
-
-            {/* Hover indicator */}
-            <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <span className="text-xs uppercase tracking-widest text-white/80">View Project</span>
+            {/* Main Image Container */}
+            <div className="relative aspect-[4/5] overflow-hidden rounded-lg bg-neutral-900 w-full h-full z-10 transition-transform duration-500">
+              <Image
+                src={project.coverImage}
+                alt={project.title}
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              />
+              
+              {/* Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-500" />
+              
+              {/* Album Icon Indicator */}
+              <div className="absolute top-4 right-4 bg-black/40 border border-white/10 backdrop-blur-sm rounded-full p-2 text-white/90 group-hover:bg-black/60 group-hover:scale-110 transition-all duration-300">
+                <Images className="w-5 h-5" />
+              </div>
+              
+              {/* Content */}
+              <div className="absolute inset-0 flex flex-col justify-end p-6 pointer-events-none">
+                <h3 className="text-2xl font-bold tracking-wide mb-1 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                  {project.title}
+                </h3>
+                <div className="flex items-center gap-3 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500 delay-75">
+                  <p className="text-neutral-400 text-sm">
+                    {project.year}
+                  </p>
+                  <div className="w-1.5 h-1.5 rounded-full bg-neutral-600" />
+                  <p className="text-neutral-400 text-sm font-medium">
+                    View Album
+                  </p>
+                </div>
+              </div>
             </div>
           </Link>
         ))}

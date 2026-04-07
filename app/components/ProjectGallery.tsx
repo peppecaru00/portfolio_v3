@@ -45,7 +45,7 @@ export default function ProjectGallery({ items, projectTitle }: ProjectGalleryPr
               <div
                 key={`${item.type}-${index}`}
                 onClick={() => openLightbox(index)}
-                className={`group relative overflow-hidden rounded-2xl bg-neutral-100 dark:bg-neutral-900 ${aspectClass} ${gridClass} cursor-pointer`}
+                className={`group relative overflow-hidden rounded-2xl bg-neutral-900 ${aspectClass} ${gridClass} cursor-pointer`}
               >
                 {item.type === 'video' ? (
                   <>
