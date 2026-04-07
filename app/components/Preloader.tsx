@@ -42,8 +42,13 @@ export default function Preloader({ children }: { children: React.ReactNode }) {
       await Promise.all([
         minTime,
         new Promise(resolve => {
-          if (document.readyState === 'complete') resolve(null);
-          else window.addEventListener('load', () => resolve(null));
+          if (document.readyState === 'complete') {
+            resolve(null);
+          } else {
+            window.addEventListener('load', () => resolve(null));
+            // Fallback for iOS/mobile where video loading might block window.onload indefinitely
+            setTimeout(() => resolve(null), 3000); 
+          }
         })
       ]);
       
