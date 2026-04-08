@@ -30,6 +30,8 @@ export async function generateMetadata({
 function PhotoCard({ photo, index }: { photo: any; index: number; key?: string | number }) {
   return (
     <div className="relative group overflow-hidden rounded-lg bg-neutral-900">
+      {/* Inner Border */}
+      <div className="absolute inset-0 border-2 border-white/10 rounded-lg pointer-events-none z-30" />
       {photo.type === 'video' ? (
         <video
           src={photo.src}

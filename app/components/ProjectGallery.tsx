@@ -47,6 +47,8 @@ export default function ProjectGallery({ items, projectTitle }: ProjectGalleryPr
                 onClick={() => openLightbox(index)}
                 className={`group relative overflow-hidden rounded-2xl bg-neutral-900 ${aspectClass} ${gridClass} cursor-pointer`}
               >
+                {/* Inner Border */}
+                <div className="absolute inset-0 border-2 border-white/10 rounded-2xl pointer-events-none z-30" />
                 {item.type === 'video' ? (
                   <>
                     {/* Video Thumbnail */}

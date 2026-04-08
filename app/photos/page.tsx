@@ -9,13 +9,13 @@ export const metadata = {
   description: 'A collection of photography projects',
 };
 
-export default async function PhotosPage({ 
-  searchParams 
-}: { 
-  searchParams?: { category?: string } 
+export default async function PhotosPage({
+  searchParams
+}: {
+  searchParams?: { category?: string }
 }) {
   const selectedCategory = (searchParams?.category || 'all').toLowerCase();
-  
+
   const [projects, categories] = await Promise.all([
     getProjects(selectedCategory),
     getProjectCategories(),
@@ -34,19 +34,17 @@ export default async function PhotosPage({
       </div>
 
       {/* Projects Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-9 gap-9">
         {projects.map((project) => (
-          <Link 
-            key={project.id} 
+          <Link
+            key={project.id}
             href={`/photos/${project.slug}`}
             className="group relative block cursor-pointer mb-6 md:mb-0"
           >
-            {/* Stack Effect Backgrounds */}
-            <div className="absolute inset-0 bg-neutral-800/80 border border-neutral-700/50 rounded-lg transform rotate-2 translate-x-2 translate-y-1 scale-[0.98] origin-bottom-right transition-transform duration-500 group-hover:rotate-4 group-hover:translate-x-4 group-hover:translate-y-2 z-0" />
-            <div className="absolute inset-0 bg-neutral-700/80 border border-neutral-600/50 rounded-lg transform -rotate-1 -translate-x-1 translate-y-2 scale-[0.98] origin-bottom-left transition-transform duration-500 group-hover:-rotate-3 group-hover:-translate-x-2 group-hover:translate-y-4 z-0" />
-            
             {/* Main Image Container */}
             <div className="relative aspect-[4/5] overflow-hidden rounded-lg bg-neutral-900 w-full h-full z-10 transition-transform duration-500">
+              {/* Inner Border */}
+              <div className="absolute inset-0 border-2 border-white/10 rounded-lg pointer-events-none z-30" />
               <Image
                 src={project.coverImage}
                 alt={project.title}
@@ -54,15 +52,15 @@ export default async function PhotosPage({
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
-              
+
               {/* Overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-500" />
-              
+
               {/* Album Icon Indicator */}
               <div className="absolute top-4 right-4 bg-black/40 border border-white/10 backdrop-blur-sm rounded-full p-2 text-white/90 group-hover:bg-black/60 group-hover:scale-110 transition-all duration-300">
                 <Images className="w-5 h-5" />
               </div>
-              
+
               {/* Content */}
               <div className="absolute inset-0 flex flex-col justify-end p-6 pointer-events-none">
                 <h3 className="text-2xl font-bold tracking-wide mb-1 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
