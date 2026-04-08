@@ -83,9 +83,11 @@ export default function Lightbox({ photos, initialIndex, onClose }: LightboxProp
   }, []);
 
   const paginate = useCallback((newDirection: number) => {
-    if (scaleRef.current > 1.05) return;
+    if (scaleRef.current > 1.05) {
+      resetZoom();
+    }
     setPage(([p]) => [p + newDirection, newDirection]);
-  }, []);
+  }, [resetZoom]);
 
   // Reset zoom on photo change
   useEffect(() => {
