@@ -123,7 +123,15 @@ export const getProjects = cache(async (category?: string): Promise<Project[]> =
       if (projectCat !== category) continue;
     }
 
-    const coverFile = files[0];
+    let coverFile = files[0];
+    if (meta.coverImage && files.includes(meta.coverImage)) {
+      coverFile = meta.coverImage;
+    } else {
+      const explicitCover = files.find(f => f.toLowerCase().startsWith('cover.'));
+      if (explicitCover) {
+        coverFile = explicitCover;
+      }
+    }
     // Ensure no double slashes in path construction
     const cleanBasePath = basePath.replace(/\/$/, '');
     const coverSrc = `${cleanBasePath}/photos/${dir.name}/${coverFile}`;
@@ -140,7 +148,7 @@ export const getProjects = cache(async (category?: string): Promise<Project[]> =
       id: dir.name,
       slug: dir.name.toLowerCase().replace(/\s+/g, '-'),
       title: meta.title || dir.name.replace(/[-_]/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
-      year: meta.year || new Date().getFullYear().toString(),
+      year: meta.year || (meta.date ? new Date(meta.date).getFullYear().toString() : new Date().getFullYear().toString()),
       description: meta.description,
       coverImage: coverSrc,
       category: meta.category || 'uncategorized',
@@ -251,14 +259,22 @@ export const getProjectBySlug = cache(async (slug: string): Promise<Project | nu
     })
   );
 
-  const coverFile = files[0];
+  let coverFile = files[0];
+  if (meta.coverImage && files.includes(meta.coverImage)) {
+    coverFile = meta.coverImage;
+  } else {
+    const explicitCover = files.find(f => f.toLowerCase().startsWith('cover.'));
+    if (explicitCover) {
+      coverFile = explicitCover;
+    }
+  }
   const coverSrc = `${cleanBasePath}/photos/${projectDir.name}/${coverFile}`;
 
   return {
     id: projectDir.name,
     slug,
     title: meta.title || projectDir.name.replace(/[-_]/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
-    year: meta.year || new Date().getFullYear().toString(),
+    year: meta.year || (meta.date ? new Date(meta.date).getFullYear().toString() : new Date().getFullYear().toString()),
     description: meta.description,
     coverImage: coverSrc,
     category: meta.category || 'uncategorized',
