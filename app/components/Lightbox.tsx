@@ -180,12 +180,16 @@ export default function Lightbox({ photos, initialIndex, onClose }: LightboxProp
       return;
     }
 
-    // Single-finger swipe to navigate (only when not zoomed)
-    if (e.changedTouches.length === 1 && !isZoomed && singleTouchStartRef.current) {
+    // Allow a fast/big horizontal swipe to navigate even while zoomed
+    if (e.changedTouches.length === 1 && singleTouchStartRef.current) {
       const dx = e.changedTouches[0].clientX - singleTouchStartRef.current.x;
       const dy = e.changedTouches[0].clientY - singleTouchStartRef.current.y;
-      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+      const isHorizontalSwipe = Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 80;
+
+      if (isHorizontalSwipe) {
+        resetZoom();
         paginate(dx < 0 ? 1 : -1);
+        return;
       }
     }
   };
