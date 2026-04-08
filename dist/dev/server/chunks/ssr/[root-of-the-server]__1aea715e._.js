@@ -106,6 +106,15 @@ const getProjects = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_mod
         withFileTypes: true
     });
     const projectDirs = entries.filter((e)=>e.isDirectory());
+    const orderPath = __TURBOPACK__imported__module__$5b$externals$5d2f$path__$5b$external$5d$__$28$path$2c$__cjs$29$__["default"].join(photosDirectory, 'order.json');
+    let customOrder = [];
+    if (__TURBOPACK__imported__module__$5b$externals$5d2f$fs__$5b$external$5d$__$28$fs$2c$__cjs$29$__["default"].existsSync(orderPath)) {
+        try {
+            customOrder = JSON.parse(__TURBOPACK__imported__module__$5b$externals$5d2f$fs__$5b$external$5d$__$28$fs$2c$__cjs$29$__["default"].readFileSync(orderPath, 'utf8'));
+        } catch (e) {
+            console.warn('Could not parse order.json');
+        }
+    }
     const allowedExts = [
         '.jpg',
         '.jpeg',
@@ -132,22 +141,50 @@ const getProjects = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_mod
             const projectCat = (meta.category || dir.name).toLowerCase();
             if (projectCat !== category) continue;
         }
-        const coverFile = files[0];
+        let coverFile = files[0];
+        if (meta.coverImage && files.includes(meta.coverImage)) {
+            coverFile = meta.coverImage;
+        } else {
+            const explicitCover = files.find((f)=>f.toLowerCase().startsWith('cover.'));
+            if (explicitCover) {
+                coverFile = explicitCover;
+            }
+        }
         // Ensure no double slashes in path construction
         const cleanBasePath = basePath.replace(/\/$/, '');
         const coverSrc = `${cleanBasePath}/photos/${dir.name}/${coverFile}`;
+        let albumOrder = meta.order;
+        if (albumOrder === undefined && customOrder.length > 0) {
+            const idx = customOrder.indexOf(dir.name);
+            if (idx !== -1) {
+                albumOrder = idx;
+            }
+        }
         projects.push({
             id: dir.name,
             slug: dir.name.toLowerCase().replace(/\s+/g, '-'),
             title: meta.title || dir.name.replace(/[-_]/g, ' ').replace(/\b\w/g, (l)=>l.toUpperCase()),
-            year: meta.year || new Date().getFullYear().toString(),
+            year: meta.year || (meta.date ? new Date(meta.date).getFullYear().toString() : new Date().getFullYear().toString()),
             description: meta.description,
             coverImage: coverSrc,
             category: meta.category || 'uncategorized',
-            photos: []
+            photos: [],
+            order: albumOrder,
+            date: meta.date
         });
     }
     return projects.sort((a, b)=>{
+        if (a.date && b.date) {
+            const dateDiff = new Date(b.date).getTime() - new Date(a.date).getTime();
+            if (dateDiff !== 0) return dateDiff;
+        }
+        if (a.date && !b.date) return -1;
+        if (!a.date && b.date) return 1;
+        if (a.order !== undefined && b.order !== undefined) {
+            return a.order - b.order;
+        }
+        if (a.order !== undefined) return -1;
+        if (b.order !== undefined) return 1;
         const yearDiff = parseInt(b.year) - parseInt(a.year);
         return yearDiff !== 0 ? yearDiff : a.title.localeCompare(b.title);
     });
@@ -179,8 +216,22 @@ const getProjectBySlug = (0, __TURBOPACK__imported__module__$5b$project$5d2f$nod
     if (__TURBOPACK__imported__module__$5b$externals$5d2f$fs__$5b$external$5d$__$28$fs$2c$__cjs$29$__["default"].existsSync(metaPath)) {
         meta = JSON.parse(__TURBOPACK__imported__module__$5b$externals$5d2f$fs__$5b$external$5d$__$28$fs$2c$__cjs$29$__["default"].readFileSync(metaPath, 'utf8'));
     }
+    const orderPath = __TURBOPACK__imported__module__$5b$externals$5d2f$path__$5b$external$5d$__$28$path$2c$__cjs$29$__["default"].join(photosDirectory, 'order.json');
+    let albumOrder = meta.order;
+    if (albumOrder === undefined && __TURBOPACK__imported__module__$5b$externals$5d2f$fs__$5b$external$5d$__$28$fs$2c$__cjs$29$__["default"].existsSync(orderPath)) {
+        try {
+            const customOrder = JSON.parse(__TURBOPACK__imported__module__$5b$externals$5d2f$fs__$5b$external$5d$__$28$fs$2c$__cjs$29$__["default"].readFileSync(orderPath, 'utf8'));
+            const idx = customOrder.indexOf(projectDir.name);
+            if (idx !== -1) {
+                albumOrder = idx;
+            }
+        } catch (e) {
+            console.warn('Could not parse order.json');
+        }
+    }
     const cleanBasePath = basePath.replace(/\/$/, '');
-    const photos = await Promise.all(files.map(async (file)=>{
+    const projectTitle = meta.title || projectDir.name.replace(/[-_]/g, ' ').replace(/\b\w/g, (l)=>l.toUpperCase());
+    const photos = await Promise.all(files.map(async (file, index)=>{
         const id = __TURBOPACK__imported__module__$5b$externals$5d2f$path__$5b$external$5d$__$28$path$2c$__cjs$29$__["default"].basename(file, __TURBOPACK__imported__module__$5b$externals$5d2f$path__$5b$external$5d$__$28$path$2c$__cjs$29$__["default"].extname(file));
         const ext = __TURBOPACK__imported__module__$5b$externals$5d2f$path__$5b$external$5d$__$28$path$2c$__cjs$29$__["default"].extname(file).toLowerCase();
         const isVideo = [
@@ -206,7 +257,7 @@ const getProjectBySlug = (0, __TURBOPACK__imported__module__$5b$project$5d2f$nod
         }
         const photoMetaPath = __TURBOPACK__imported__module__$5b$externals$5d2f$path__$5b$external$5d$__$28$path$2c$__cjs$29$__["default"].join(projectPath, `${id}.json`);
         let photoMeta = {
-            title: id.replace(/[-_]/g, ' ')
+            title: `${projectTitle} ${index + 1}`
         };
         if (__TURBOPACK__imported__module__$5b$externals$5d2f$fs__$5b$external$5d$__$28$fs$2c$__cjs$29$__["default"].existsSync(photoMetaPath)) {
             photoMeta = {
@@ -223,17 +274,27 @@ const getProjectBySlug = (0, __TURBOPACK__imported__module__$5b$project$5d2f$nod
             ...photoMeta
         };
     }));
-    const coverFile = files[0];
+    let coverFile = files[0];
+    if (meta.coverImage && files.includes(meta.coverImage)) {
+        coverFile = meta.coverImage;
+    } else {
+        const explicitCover = files.find((f)=>f.toLowerCase().startsWith('cover.'));
+        if (explicitCover) {
+            coverFile = explicitCover;
+        }
+    }
     const coverSrc = `${cleanBasePath}/photos/${projectDir.name}/${coverFile}`;
     return {
         id: projectDir.name,
         slug,
         title: meta.title || projectDir.name.replace(/[-_]/g, ' ').replace(/\b\w/g, (l)=>l.toUpperCase()),
-        year: meta.year || new Date().getFullYear().toString(),
+        year: meta.year || (meta.date ? new Date(meta.date).getFullYear().toString() : new Date().getFullYear().toString()),
         description: meta.description,
         coverImage: coverSrc,
         category: meta.category || 'uncategorized',
-        photos
+        photos,
+        order: albumOrder,
+        date: meta.date
     };
 });
 const getAllProjectSlugs = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["cache"])(async ()=>{
@@ -269,8 +330,8 @@ const metadata = {
     title: 'Photography | Portfolio',
     description: 'A collection of photography projects'
 };
-async function PhotosPage({ searchParams }) {
-    const selectedCategory = (searchParams?.category || 'all').toLowerCase();
+async function PhotosPage() {
+    const selectedCategory = 'all';
     const [projects, categories] = await Promise.all([
         (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$photos$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["getProjects"])(selectedCategory),
         (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$photos$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["getProjectCategories"])()
@@ -286,7 +347,7 @@ async function PhotosPage({ searchParams }) {
                         children: "Photogallery"
                     }, void 0, false, {
                         fileName: "[project]/app/photos/page.tsx",
-                        lineNumber: 27,
+                        lineNumber: 23,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -294,20 +355,20 @@ async function PhotosPage({ searchParams }) {
                         children: "Explore my photography projects"
                     }, void 0, false, {
                         fileName: "[project]/app/photos/page.tsx",
-                        lineNumber: 30,
+                        lineNumber: 26,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "mt-8 flex flex-wrap gap-3"
                     }, void 0, false, {
                         fileName: "[project]/app/photos/page.tsx",
-                        lineNumber: 32,
+                        lineNumber: 28,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/photos/page.tsx",
-                lineNumber: 26,
+                lineNumber: 22,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -322,7 +383,7 @@ async function PhotosPage({ searchParams }) {
                                     className: "absolute inset-0 border-2 border-white/10 rounded-lg pointer-events-none z-30"
                                 }, void 0, false, {
                                     fileName: "[project]/app/photos/page.tsx",
-                                    lineNumber: 47,
+                                    lineNumber: 43,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"], {
@@ -333,14 +394,14 @@ async function PhotosPage({ searchParams }) {
                                     sizes: "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                 }, void 0, false, {
                                     fileName: "[project]/app/photos/page.tsx",
-                                    lineNumber: 48,
+                                    lineNumber: 44,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-500"
                                 }, void 0, false, {
                                     fileName: "[project]/app/photos/page.tsx",
-                                    lineNumber: 57,
+                                    lineNumber: 53,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -349,12 +410,12 @@ async function PhotosPage({ searchParams }) {
                                         className: "w-5 h-5"
                                     }, void 0, false, {
                                         fileName: "[project]/app/photos/page.tsx",
-                                        lineNumber: 61,
+                                        lineNumber: 57,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/app/photos/page.tsx",
-                                    lineNumber: 60,
+                                    lineNumber: 56,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -365,7 +426,7 @@ async function PhotosPage({ searchParams }) {
                                             children: project.title
                                         }, void 0, false, {
                                             fileName: "[project]/app/photos/page.tsx",
-                                            lineNumber: 66,
+                                            lineNumber: 62,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -376,14 +437,14 @@ async function PhotosPage({ searchParams }) {
                                                     children: project.year
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/photos/page.tsx",
-                                                    lineNumber: 70,
+                                                    lineNumber: 66,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                     className: "w-1.5 h-1.5 rounded-full bg-neutral-600"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/photos/page.tsx",
-                                                    lineNumber: 73,
+                                                    lineNumber: 69,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -391,41 +452,41 @@ async function PhotosPage({ searchParams }) {
                                                     children: "View Album"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/photos/page.tsx",
-                                                    lineNumber: 74,
+                                                    lineNumber: 70,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/photos/page.tsx",
-                                            lineNumber: 69,
+                                            lineNumber: 65,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/photos/page.tsx",
-                                    lineNumber: 65,
+                                    lineNumber: 61,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/photos/page.tsx",
-                            lineNumber: 45,
+                            lineNumber: 41,
                             columnNumber: 13
                         }, this)
                     }, project.id, false, {
                         fileName: "[project]/app/photos/page.tsx",
-                        lineNumber: 39,
+                        lineNumber: 35,
                         columnNumber: 11
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/app/photos/page.tsx",
-                lineNumber: 37,
+                lineNumber: 33,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/photos/page.tsx",
-        lineNumber: 25,
+        lineNumber: 21,
         columnNumber: 5
     }, this);
 }

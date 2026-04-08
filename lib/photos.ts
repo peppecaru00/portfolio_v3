@@ -217,9 +217,10 @@ export const getProjectBySlug = cache(async (slug: string): Promise<Project | nu
   }
 
   const cleanBasePath = basePath.replace(/\/$/, '');
+  const projectTitle = meta.title || projectDir.name.replace(/[-_]/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
 
   const photos: PhotoMeta[] = await Promise.all(
-    files.map(async (file) => {
+    files.map(async (file, index) => {
       const id = path.basename(file, path.extname(file));
       const ext = path.extname(file).toLowerCase();
       const isVideo = ['.mp4', '.mov', '.webm'].includes(ext);
@@ -243,7 +244,7 @@ export const getProjectBySlug = cache(async (slug: string): Promise<Project | nu
       }
 
       const photoMetaPath = path.join(projectPath, `${id}.json`);
-      let photoMeta: Partial<PhotoMeta> = { title: id.replace(/[-_]/g, ' ') };
+      let photoMeta: Partial<PhotoMeta> = { title: `${projectTitle} - ${index + 1}` };
       if (fs.existsSync(photoMetaPath)) {
         photoMeta = { ...photoMeta, ...JSON.parse(fs.readFileSync(photoMetaPath, 'utf8')) };
       }

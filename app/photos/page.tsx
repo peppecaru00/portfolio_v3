@@ -9,12 +9,8 @@ export const metadata = {
   description: 'A collection of photography projects',
 };
 
-export default async function PhotosPage({
-  searchParams
-}: {
-  searchParams?: { category?: string }
-}) {
-  const selectedCategory = (searchParams?.category || 'all').toLowerCase();
+export default async function PhotosPage() {
+  const selectedCategory = 'all';
 
   const [projects, categories] = await Promise.all([
     getProjects(selectedCategory),
