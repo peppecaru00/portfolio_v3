@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useCallback, useState } from 'react';
+import { useEffect, useCallback, useState, useRef } from 'react';
 import Image from 'next/image';
 import { X, ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -20,7 +20,7 @@ interface LightboxProps {
   onClose: () => void;
 }
 
-const variants = {
+const slideVariants = {
   enter: (direction: number) => ({
     x: direction > 0 ? 60 : -60,
     opacity: 0,
@@ -38,28 +38,71 @@ const variants = {
 };
 
 const swipeConfidenceThreshold = 10000;
-const swipePower = (offset: number, velocity: number) => {
-  return Math.abs(offset) * velocity;
-};
+const swipePower = (offset: number, velocity: number) => Math.abs(offset) * velocity;
+
+const MIN_SCALE = 1;
+const MAX_SCALE = 5;
+
+function getDistance(t1: React.Touch, t2: React.Touch) {
+  const dx = t1.clientX - t2.clientX;
+  const dy = t1.clientY - t2.clientY;
+  return Math.sqrt(dx * dx + dy * dy);
+}
+
+function getMidpoint(t1: React.Touch, t2: React.Touch) {
+  return {
+    x: (t1.clientX + t2.clientX) / 2,
+    y: (t1.clientY + t2.clientY) / 2,
+  };
+}
 
 export default function Lightbox({ photos, initialIndex, onClose }: LightboxProps) {
   const [[page, direction], setPage] = useState([initialIndex, 0]);
-  const [isZoomed, setIsZoomed] = useState(false);
 
-  // Wrap index to ensure it loops properly
+  // Zoom / pan state
+  const [scale, setScale] = useState(1);
+  const [pan, setPan] = useState({ x: 0, y: 0 });
+  const isZoomed = scale > 1.05;
+
+  // Refs for gesture tracking (avoid stale closures)
+  const scaleRef = useRef(1);
+  const panRef = useRef({ x: 0, y: 0 });
+  const lastPinchDistRef = useRef<number | null>(null);
+  const lastPinchMidRef = useRef<{ x: number; y: number } | null>(null);
+  const singleTouchStartRef = useRef<{ x: number; y: number } | null>(null);
+  const imageRef = useRef<HTMLDivElement | null>(null);
+
   const imageIndex = ((page % photos.length) + photos.length) % photos.length;
   const current = photos[imageIndex];
 
+  const resetZoom = useCallback(() => {
+    scaleRef.current = 1;
+    panRef.current = { x: 0, y: 0 };
+    setScale(1);
+    setPan({ x: 0, y: 0 });
+  }, []);
+
   const paginate = useCallback((newDirection: number) => {
-    if (isZoomed) return;
-    setPage([page + newDirection, newDirection]);
-  }, [page, isZoomed]);
+    if (scaleRef.current > 1.05) return;
+    setPage(([p]) => [p + newDirection, newDirection]);
+  }, []);
+
+  // Reset zoom on photo change
+  useEffect(() => {
+    resetZoom();
+  }, [imageIndex, resetZoom]);
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
-    if (e.key === 'Escape') onClose();
+    if (e.key === 'Escape') {
+      if (scaleRef.current > 1.05) {
+        resetZoom();
+      } else {
+        onClose();
+      }
+    }
     if (e.key === 'ArrowLeft') paginate(-1);
     if (e.key === 'ArrowRight') paginate(1);
-  }, [onClose, paginate]);
+  }, [onClose, paginate, resetZoom]);
 
   useEffect(() => {
     document.addEventListener('keydown', handleKeyDown);
@@ -70,14 +113,90 @@ export default function Lightbox({ photos, initialIndex, onClose }: LightboxProp
     };
   }, [handleKeyDown]);
 
-  // Reset zoom on image change
-  useEffect(() => {
-    setIsZoomed(false);
-  }, [imageIndex]);
-
   const handleBackdropClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) {
-      onClose();
+    if (e.target === e.currentTarget) onClose();
+  };
+
+  // ── Touch handlers ───────────────────────────────────────────────────────────
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (e.touches.length === 2) {
+      // Pinch start
+      lastPinchDistRef.current = getDistance(e.touches[0], e.touches[1]);
+      lastPinchMidRef.current = getMidpoint(e.touches[0], e.touches[1]);
+      singleTouchStartRef.current = null;
+    } else if (e.touches.length === 1) {
+      singleTouchStartRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      lastPinchDistRef.current = null;
+    }
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (e.touches.length === 2) {
+      e.preventDefault?.();
+      const dist = getDistance(e.touches[0], e.touches[1]);
+      const mid = getMidpoint(e.touches[0], e.touches[1]);
+
+      if (lastPinchDistRef.current !== null && lastPinchMidRef.current !== null) {
+        const ratio = dist / lastPinchDistRef.current;
+        const newScale = Math.max(MIN_SCALE, Math.min(MAX_SCALE, scaleRef.current * ratio));
+
+        // Pan to keep pinch midpoint anchored
+        const dx = mid.x - lastPinchMidRef.current.x;
+        const dy = mid.y - lastPinchMidRef.current.y;
+        const newPan = {
+          x: panRef.current.x + dx,
+          y: panRef.current.y + dy,
+        };
+
+        scaleRef.current = newScale;
+        panRef.current = newPan;
+        setScale(newScale);
+        setPan({ ...newPan });
+      }
+
+      lastPinchDistRef.current = dist;
+      lastPinchMidRef.current = mid;
+      singleTouchStartRef.current = null;
+    } else if (e.touches.length === 1 && scaleRef.current > 1.05) {
+      // Panning while zoomed
+      if (singleTouchStartRef.current) {
+        const dx = e.touches[0].clientX - singleTouchStartRef.current.x;
+        const dy = e.touches[0].clientY - singleTouchStartRef.current.y;
+        panRef.current = { x: panRef.current.x + dx, y: panRef.current.y + dy };
+        setPan({ ...panRef.current });
+        singleTouchStartRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      }
+    }
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    lastPinchDistRef.current = null;
+    lastPinchMidRef.current = null;
+
+    // Snap back to 1x if almost un-pinched
+    if (scaleRef.current < 1.1) {
+      resetZoom();
+      return;
+    }
+
+    // Single-finger swipe to navigate (only when not zoomed)
+    if (e.changedTouches.length === 1 && !isZoomed && singleTouchStartRef.current) {
+      const dx = e.changedTouches[0].clientX - singleTouchStartRef.current.x;
+      const dy = e.changedTouches[0].clientY - singleTouchStartRef.current.y;
+      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+        paginate(dx < 0 ? 1 : -1);
+      }
+    }
+  };
+
+  const toggleZoomDesktop = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (isZoomed) {
+      resetZoom();
+    } else {
+      scaleRef.current = 2;
+      setScale(2);
     }
   };
 
@@ -100,68 +219,64 @@ export default function Lightbox({ photos, initialIndex, onClose }: LightboxProp
         {imageIndex + 1} / {photos.length}
       </div>
 
-      {/* Zoom button (images only) */}
+      {/* Zoom button — desktop only */}
       {current.type === 'image' && (
         <button
-          onClick={() => setIsZoomed(z => !z)}
-          className="absolute bottom-6 right-6 z-10 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/10 backdrop-blur-sm transition-all duration-200 hover:scale-110"
+          onClick={() => (isZoomed ? resetZoom() : (scaleRef.current = 2, setScale(2)))}
+          className="hidden md:flex absolute bottom-6 right-6 z-10 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/10 backdrop-blur-sm transition-all duration-200 hover:scale-110"
           aria-label={isZoomed ? 'Zoom out' : 'Zoom in'}
         >
           {isZoomed ? <ZoomOut className="w-5 h-5" /> : <ZoomIn className="w-5 h-5" />}
         </button>
       )}
 
-      {/* Prev button */}
+      {/* Prev button — desktop only */}
       <button
-        onClick={(e) => {
-          e.stopPropagation();
-          paginate(-1);
-        }}
-        className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 z-10 p-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/10 backdrop-blur-sm transition-all duration-200 hover:scale-110"
+        onClick={(e) => { e.stopPropagation(); paginate(-1); }}
+        className="hidden md:block absolute left-6 top-1/2 -translate-y-1/2 z-10 p-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/10 backdrop-blur-sm transition-all duration-200 hover:scale-110"
         aria-label="Previous photo"
       >
         <ChevronLeft className="w-6 h-6" />
       </button>
 
-      {/* Next button */}
+      {/* Next button — desktop only */}
       <button
-        onClick={(e) => {
-          e.stopPropagation();
-          paginate(1);
-        }}
-        className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 z-10 p-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/10 backdrop-blur-sm transition-all duration-200 hover:scale-110"
+        onClick={(e) => { e.stopPropagation(); paginate(1); }}
+        className="hidden md:block absolute right-6 top-1/2 -translate-y-1/2 z-10 p-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/10 backdrop-blur-sm transition-all duration-200 hover:scale-110"
         aria-label="Next photo"
       >
         <ChevronRight className="w-6 h-6" />
       </button>
 
       {/* Main media area */}
-      <div className="relative flex items-center justify-center w-full h-full px-14 md:px-24 pt-16 pb-24 overflow-hidden">
+      <div
+        className="relative flex items-center justify-center w-full h-full px-4 md:px-24 pt-16 pb-24 overflow-hidden"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
         <AnimatePresence initial={false} custom={direction}>
           <motion.div
             key={page}
             custom={direction}
-            variants={variants}
+            variants={slideVariants}
             initial="enter"
             animate="center"
             exit="exit"
             transition={{
-              x: { type: "spring", stiffness: 300, damping: 30 },
+              x: { type: 'spring', stiffness: 300, damping: 30 },
               opacity: { duration: 0.2 },
             }}
-            drag={isZoomed ? false : "x"}
+            // Desktop drag-to-navigate (disabled when zoomed)
+            drag={isZoomed ? false : 'x'}
             dragConstraints={{ left: 0, right: 0 }}
             dragElastic={1}
-            onDragEnd={(e, { offset, velocity }) => {
+            onDragEnd={(_, { offset, velocity }) => {
               const swipe = swipePower(offset.x, velocity.x);
-
-              if (swipe < -swipeConfidenceThreshold) {
-                paginate(1);
-              } else if (swipe > swipeConfidenceThreshold) {
-                paginate(-1);
-              }
+              if (swipe < -swipeConfidenceThreshold) paginate(1);
+              else if (swipe > swipeConfidenceThreshold) paginate(-1);
             }}
-            className="absolute flex items-center justify-center w-full h-full p-4 md:p-12"
+            className="absolute flex items-center justify-center w-full h-full"
           >
             {current.type === 'video' ? (
               <video
@@ -175,22 +290,24 @@ export default function Lightbox({ photos, initialIndex, onClose }: LightboxProp
               />
             ) : (
               <div
-                className="relative cursor-zoom-in transition-transform duration-300 ease-in-out rounded-lg overflow-hidden shadow-2xl"
+                ref={imageRef}
+                className="relative rounded-lg overflow-hidden shadow-2xl select-none"
                 style={{
-                  cursor: isZoomed ? 'zoom-out' : 'zoom-in',
-                  transform: isZoomed ? 'scale(1.7)' : 'scale(1)',
+                  transform: `scale(${scale}) translate(${pan.x / scale}px, ${pan.y / scale}px)`,
+                  transformOrigin: 'center center',
+                  transition: scale === 1 ? 'transform 0.25s ease' : 'none',
+                  cursor: isZoomed ? 'move' : 'zoom-in',
+                  touchAction: 'none',
+                  willChange: 'transform',
                 }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setIsZoomed(z => !z);
-                }}
+                onClick={toggleZoomDesktop}
               >
                 <Image
                   src={current.src}
                   alt={current.title || `Photo ${imageIndex + 1}`}
                   width={current.width}
                   height={current.height}
-                  className="max-w-[85vw] max-h-[85vh] w-auto h-auto object-contain pointer-events-none"
+                  className="max-w-[90vw] max-h-[80vh] w-auto h-auto object-contain pointer-events-none"
                   priority
                   draggable={false}
                 />

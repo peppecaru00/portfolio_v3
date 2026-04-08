@@ -617,6 +617,10 @@
     left: calc(var(--spacing) * 3);
   }
 
+  .left-6 {
+    left: calc(var(--spacing) * 6);
+  }
+
   .left-106 {
     left: calc(var(--spacing) * 106);
   }
@@ -1011,6 +1015,10 @@
 
   .max-w-\[85vw\] {
     max-width: 85vw;
+  }
+
+  .max-w-\[90vw\] {
+    max-width: 90vw;
   }
 
   .max-w-\[1800px\] {
@@ -2483,6 +2491,12 @@
   @media (min-width: 48rem) {
     .md\:mb-24 {
       margin-bottom: calc(var(--spacing) * 24);
+    }
+  }
+
+  @media (min-width: 48rem) {
+    .md\:block {
+      display: block;
     }
   }
 

@@ -23,7 +23,7 @@ var _s = __turbopack_context__.k.signature();
 ;
 ;
 ;
-const variants = {
+const slideVariants = {
     enter: (direction)=>({
             x: direction > 0 ? 60 : -60,
             opacity: 0
@@ -40,40 +40,95 @@ const variants = {
         })
 };
 const swipeConfidenceThreshold = 10000;
-const swipePower = (offset, velocity)=>{
-    return Math.abs(offset) * velocity;
-};
+const swipePower = (offset, velocity)=>Math.abs(offset) * velocity;
+const MIN_SCALE = 1;
+const MAX_SCALE = 5;
+function getDistance(t1, t2) {
+    const dx = t1.clientX - t2.clientX;
+    const dy = t1.clientY - t2.clientY;
+    return Math.sqrt(dx * dx + dy * dy);
+}
+function getMidpoint(t1, t2) {
+    return {
+        x: (t1.clientX + t2.clientX) / 2,
+        y: (t1.clientY + t2.clientY) / 2
+    };
+}
 function Lightbox({ photos, initialIndex, onClose }) {
     _s();
     const [[page, direction], setPage] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([
         initialIndex,
         0
     ]);
-    const [isZoomed, setIsZoomed] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
-    // Wrap index to ensure it loops properly
+    // Zoom / pan state
+    const [scale, setScale] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(1);
+    const [pan, setPan] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])({
+        x: 0,
+        y: 0
+    });
+    const isZoomed = scale > 1.05;
+    // Refs for gesture tracking (avoid stale closures)
+    const scaleRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(1);
+    const panRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])({
+        x: 0,
+        y: 0
+    });
+    const lastPinchDistRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
+    const lastPinchMidRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
+    const singleTouchStartRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
+    const imageRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
     const imageIndex = (page % photos.length + photos.length) % photos.length;
     const current = photos[imageIndex];
+    const resetZoom = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
+        "Lightbox.useCallback[resetZoom]": ()=>{
+            scaleRef.current = 1;
+            panRef.current = {
+                x: 0,
+                y: 0
+            };
+            setScale(1);
+            setPan({
+                x: 0,
+                y: 0
+            });
+        }
+    }["Lightbox.useCallback[resetZoom]"], []);
     const paginate = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "Lightbox.useCallback[paginate]": (newDirection)=>{
-            if (isZoomed) return;
-            setPage([
-                page + newDirection,
-                newDirection
-            ]);
+            if (scaleRef.current > 1.05) return;
+            setPage({
+                "Lightbox.useCallback[paginate]": ([p])=>[
+                        p + newDirection,
+                        newDirection
+                    ]
+            }["Lightbox.useCallback[paginate]"]);
         }
-    }["Lightbox.useCallback[paginate]"], [
-        page,
-        isZoomed
+    }["Lightbox.useCallback[paginate]"], []);
+    // Reset zoom on photo change
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "Lightbox.useEffect": ()=>{
+            resetZoom();
+        }
+    }["Lightbox.useEffect"], [
+        imageIndex,
+        resetZoom
     ]);
     const handleKeyDown = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "Lightbox.useCallback[handleKeyDown]": (e)=>{
-            if (e.key === 'Escape') onClose();
+            if (e.key === 'Escape') {
+                if (scaleRef.current > 1.05) {
+                    resetZoom();
+                } else {
+                    onClose();
+                }
+            }
             if (e.key === 'ArrowLeft') paginate(-1);
             if (e.key === 'ArrowRight') paginate(1);
         }
     }["Lightbox.useCallback[handleKeyDown]"], [
         onClose,
-        paginate
+        paginate,
+        resetZoom
     ]);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "Lightbox.useEffect": ()=>{
@@ -89,17 +144,92 @@ function Lightbox({ photos, initialIndex, onClose }) {
     }["Lightbox.useEffect"], [
         handleKeyDown
     ]);
-    // Reset zoom on image change
-    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
-        "Lightbox.useEffect": ()=>{
-            setIsZoomed(false);
-        }
-    }["Lightbox.useEffect"], [
-        imageIndex
-    ]);
     const handleBackdropClick = (e)=>{
-        if (e.target === e.currentTarget) {
-            onClose();
+        if (e.target === e.currentTarget) onClose();
+    };
+    // ── Touch handlers ───────────────────────────────────────────────────────────
+    const handleTouchStart = (e)=>{
+        if (e.touches.length === 2) {
+            // Pinch start
+            lastPinchDistRef.current = getDistance(e.touches[0], e.touches[1]);
+            lastPinchMidRef.current = getMidpoint(e.touches[0], e.touches[1]);
+            singleTouchStartRef.current = null;
+        } else if (e.touches.length === 1) {
+            singleTouchStartRef.current = {
+                x: e.touches[0].clientX,
+                y: e.touches[0].clientY
+            };
+            lastPinchDistRef.current = null;
+        }
+    };
+    const handleTouchMove = (e)=>{
+        if (e.touches.length === 2) {
+            e.preventDefault?.();
+            const dist = getDistance(e.touches[0], e.touches[1]);
+            const mid = getMidpoint(e.touches[0], e.touches[1]);
+            if (lastPinchDistRef.current !== null && lastPinchMidRef.current !== null) {
+                const ratio = dist / lastPinchDistRef.current;
+                const newScale = Math.max(MIN_SCALE, Math.min(MAX_SCALE, scaleRef.current * ratio));
+                // Pan to keep pinch midpoint anchored
+                const dx = mid.x - lastPinchMidRef.current.x;
+                const dy = mid.y - lastPinchMidRef.current.y;
+                const newPan = {
+                    x: panRef.current.x + dx,
+                    y: panRef.current.y + dy
+                };
+                scaleRef.current = newScale;
+                panRef.current = newPan;
+                setScale(newScale);
+                setPan({
+                    ...newPan
+                });
+            }
+            lastPinchDistRef.current = dist;
+            lastPinchMidRef.current = mid;
+            singleTouchStartRef.current = null;
+        } else if (e.touches.length === 1 && scaleRef.current > 1.05) {
+            // Panning while zoomed
+            if (singleTouchStartRef.current) {
+                const dx = e.touches[0].clientX - singleTouchStartRef.current.x;
+                const dy = e.touches[0].clientY - singleTouchStartRef.current.y;
+                panRef.current = {
+                    x: panRef.current.x + dx,
+                    y: panRef.current.y + dy
+                };
+                setPan({
+                    ...panRef.current
+                });
+                singleTouchStartRef.current = {
+                    x: e.touches[0].clientX,
+                    y: e.touches[0].clientY
+                };
+            }
+        }
+    };
+    const handleTouchEnd = (e)=>{
+        lastPinchDistRef.current = null;
+        lastPinchMidRef.current = null;
+        // Snap back to 1x if almost un-pinched
+        if (scaleRef.current < 1.1) {
+            resetZoom();
+            return;
+        }
+        // Single-finger swipe to navigate (only when not zoomed)
+        if (e.changedTouches.length === 1 && !isZoomed && singleTouchStartRef.current) {
+            const dx = e.changedTouches[0].clientX - singleTouchStartRef.current.x;
+            const dy = e.changedTouches[0].clientY - singleTouchStartRef.current.y;
+            if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+                paginate(dx < 0 ? 1 : -1);
+            }
+        }
+    };
+    const toggleZoomDesktop = (e)=>{
+        e.stopPropagation();
+        if (isZoomed) {
+            resetZoom();
+        } else {
+            scaleRef.current = 2;
+            setScale(2);
         }
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -114,12 +244,12 @@ function Lightbox({ photos, initialIndex, onClose }) {
                     className: "w-5 h-5"
                 }, void 0, false, {
                     fileName: "[project]/app/components/Lightbox.tsx",
-                    lineNumber: 95,
+                    lineNumber: 214,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/Lightbox.tsx",
-                lineNumber: 90,
+                lineNumber: 209,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -131,29 +261,29 @@ function Lightbox({ photos, initialIndex, onClose }) {
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/Lightbox.tsx",
-                lineNumber: 99,
+                lineNumber: 218,
                 columnNumber: 7
             }, this),
             current.type === 'image' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                onClick: ()=>setIsZoomed((z)=>!z),
-                className: "absolute bottom-6 right-6 z-10 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/10 backdrop-blur-sm transition-all duration-200 hover:scale-110",
+                onClick: ()=>isZoomed ? resetZoom() : (scaleRef.current = 2, setScale(2)),
+                className: "hidden md:flex absolute bottom-6 right-6 z-10 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/10 backdrop-blur-sm transition-all duration-200 hover:scale-110",
                 "aria-label": isZoomed ? 'Zoom out' : 'Zoom in',
                 children: isZoomed ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$zoom$2d$out$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ZoomOut$3e$__["ZoomOut"], {
                     className: "w-5 h-5"
                 }, void 0, false, {
                     fileName: "[project]/app/components/Lightbox.tsx",
-                    lineNumber: 110,
+                    lineNumber: 229,
                     columnNumber: 23
                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$zoom$2d$in$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ZoomIn$3e$__["ZoomIn"], {
                     className: "w-5 h-5"
                 }, void 0, false, {
                     fileName: "[project]/app/components/Lightbox.tsx",
-                    lineNumber: 110,
+                    lineNumber: 229,
                     columnNumber: 57
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/Lightbox.tsx",
-                lineNumber: 105,
+                lineNumber: 224,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -161,18 +291,18 @@ function Lightbox({ photos, initialIndex, onClose }) {
                     e.stopPropagation();
                     paginate(-1);
                 },
-                className: "absolute left-3 md:left-6 top-1/2 -translate-y-1/2 z-10 p-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/10 backdrop-blur-sm transition-all duration-200 hover:scale-110",
+                className: "hidden md:block absolute left-6 top-1/2 -translate-y-1/2 z-10 p-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/10 backdrop-blur-sm transition-all duration-200 hover:scale-110",
                 "aria-label": "Previous photo",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$left$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronLeft$3e$__["ChevronLeft"], {
                     className: "w-6 h-6"
                 }, void 0, false, {
                     fileName: "[project]/app/components/Lightbox.tsx",
-                    lineNumber: 123,
+                    lineNumber: 239,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/Lightbox.tsx",
-                lineNumber: 115,
+                lineNumber: 234,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -180,34 +310,37 @@ function Lightbox({ photos, initialIndex, onClose }) {
                     e.stopPropagation();
                     paginate(1);
                 },
-                className: "absolute right-3 md:right-6 top-1/2 -translate-y-1/2 z-10 p-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/10 backdrop-blur-sm transition-all duration-200 hover:scale-110",
+                className: "hidden md:block absolute right-6 top-1/2 -translate-y-1/2 z-10 p-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/10 backdrop-blur-sm transition-all duration-200 hover:scale-110",
                 "aria-label": "Next photo",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$right$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronRight$3e$__["ChevronRight"], {
                     className: "w-6 h-6"
                 }, void 0, false, {
                     fileName: "[project]/app/components/Lightbox.tsx",
-                    lineNumber: 135,
+                    lineNumber: 248,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/Lightbox.tsx",
-                lineNumber: 127,
+                lineNumber: 243,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "relative flex items-center justify-center w-full h-full px-14 md:px-24 pt-16 pb-24 overflow-hidden",
+                className: "relative flex items-center justify-center w-full h-full px-4 md:px-24 pt-16 pb-24 overflow-hidden",
+                onTouchStart: handleTouchStart,
+                onTouchMove: handleTouchMove,
+                onTouchEnd: handleTouchEnd,
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$components$2f$AnimatePresence$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AnimatePresence"], {
                     initial: false,
                     custom: direction,
                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
                         custom: direction,
-                        variants: variants,
+                        variants: slideVariants,
                         initial: "enter",
                         animate: "center",
                         exit: "exit",
                         transition: {
                             x: {
-                                type: "spring",
+                                type: 'spring',
                                 stiffness: 300,
                                 damping: 30
                             },
@@ -215,21 +348,19 @@ function Lightbox({ photos, initialIndex, onClose }) {
                                 duration: 0.2
                             }
                         },
-                        drag: isZoomed ? false : "x",
+                        // Desktop drag-to-navigate (disabled when zoomed)
+                        drag: isZoomed ? false : 'x',
                         dragConstraints: {
                             left: 0,
                             right: 0
                         },
                         dragElastic: 1,
-                        onDragEnd: (e, { offset, velocity })=>{
+                        onDragEnd: (_, { offset, velocity })=>{
                             const swipe = swipePower(offset.x, velocity.x);
-                            if (swipe < -swipeConfidenceThreshold) {
-                                paginate(1);
-                            } else if (swipe > swipeConfidenceThreshold) {
-                                paginate(-1);
-                            }
+                            if (swipe < -swipeConfidenceThreshold) paginate(1);
+                            else if (swipe > swipeConfidenceThreshold) paginate(-1);
                         },
-                        className: "absolute flex items-center justify-center w-full h-full p-4 md:p-12",
+                        className: "absolute flex items-center justify-center w-full h-full",
                         children: current.type === 'video' ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("video", {
                             src: current.src,
                             autoPlay: true,
@@ -242,49 +373,51 @@ function Lightbox({ photos, initialIndex, onClose }) {
                             }
                         }, void 0, false, {
                             fileName: "[project]/app/components/Lightbox.tsx",
-                            lineNumber: 167,
+                            lineNumber: 282,
                             columnNumber: 15
                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "relative cursor-zoom-in transition-transform duration-300 ease-in-out rounded-lg overflow-hidden shadow-2xl",
+                            ref: imageRef,
+                            className: "relative rounded-lg overflow-hidden shadow-2xl select-none",
                             style: {
-                                cursor: isZoomed ? 'zoom-out' : 'zoom-in',
-                                transform: isZoomed ? 'scale(1.7)' : 'scale(1)'
+                                transform: `scale(${scale}) translate(${pan.x / scale}px, ${pan.y / scale}px)`,
+                                transformOrigin: 'center center',
+                                transition: scale === 1 ? 'transform 0.25s ease' : 'none',
+                                cursor: isZoomed ? 'move' : 'zoom-in',
+                                touchAction: 'none',
+                                willChange: 'transform'
                             },
-                            onClick: (e)=>{
-                                e.stopPropagation();
-                                setIsZoomed((z)=>!z);
-                            },
+                            onClick: toggleZoomDesktop,
                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                 src: current.src,
                                 alt: current.title || `Photo ${imageIndex + 1}`,
                                 width: current.width,
                                 height: current.height,
-                                className: "max-w-[85vw] max-h-[85vh] w-auto h-auto object-contain pointer-events-none",
+                                className: "max-w-[90vw] max-h-[80vh] w-auto h-auto object-contain pointer-events-none",
                                 priority: true,
                                 draggable: false
                             }, void 0, false, {
                                 fileName: "[project]/app/components/Lightbox.tsx",
-                                lineNumber: 188,
+                                lineNumber: 305,
                                 columnNumber: 17
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/components/Lightbox.tsx",
-                            lineNumber: 177,
+                            lineNumber: 292,
                             columnNumber: 15
                         }, this)
                     }, page, false, {
                         fileName: "[project]/app/components/Lightbox.tsx",
-                        lineNumber: 141,
+                        lineNumber: 259,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/app/components/Lightbox.tsx",
-                    lineNumber: 140,
+                    lineNumber: 258,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/Lightbox.tsx",
-                lineNumber: 139,
+                lineNumber: 252,
                 columnNumber: 7
             }, this),
             current.title && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -292,7 +425,7 @@ function Lightbox({ photos, initialIndex, onClose }) {
                 children: current.title
             }, void 0, false, {
                 fileName: "[project]/app/components/Lightbox.tsx",
-                lineNumber: 205,
+                lineNumber: 322,
                 columnNumber: 9
             }, this),
             photos.length <= 20 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -312,22 +445,22 @@ function Lightbox({ photos, initialIndex, onClose }) {
                         "aria-label": `Go to photo ${i + 1}`
                     }, i, false, {
                         fileName: "[project]/app/components/Lightbox.tsx",
-                        lineNumber: 214,
+                        lineNumber: 331,
                         columnNumber: 13
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/app/components/Lightbox.tsx",
-                lineNumber: 212,
+                lineNumber: 329,
                 columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/Lightbox.tsx",
-        lineNumber: 85,
+        lineNumber: 204,
         columnNumber: 5
     }, this);
 }
-_s(Lightbox, "ts2npv2FbY/MKa0kolwNhHWmlMQ=");
+_s(Lightbox, "VW1L+nnTZULzOv5u/rf3iBpOyAY=");
 _c = Lightbox;
 var _c;
 __turbopack_context__.k.register(_c, "Lightbox");

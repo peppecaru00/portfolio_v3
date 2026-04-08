@@ -16,3 +16,5 @@
 [00:08:08.819] Browser ERROR   uncaughtError: ReferenceError: cleanBasePath is not defined
 [00:08:15.820] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
 [00:08:48.535] Server  LOG     ✓ Compiled in 480ms
+[00:15:09.294] Server  LOG     ✓ Compiled in 310ms
+[00:16:59.974] Server  LOG     ✓ Compiled in 327ms
