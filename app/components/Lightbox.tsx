@@ -302,7 +302,6 @@ export default function Lightbox({ photos, initialIndex, onClose }: LightboxProp
                   transition: scale === 1 ? 'transform 0.25s ease' : 'none',
                   cursor: isZoomed ? 'move' : 'zoom-in',
                   touchAction: 'none',
-                  willChange: 'transform',
                 }}
                 onClick={toggleZoomDesktop}
               >
