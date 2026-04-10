@@ -70,6 +70,7 @@ export default function Lightbox({ photos, initialIndex, onClose }: LightboxProp
   const lastPinchDistRef = useRef<number | null>(null);
   const lastPinchMidRef = useRef<{ x: number; y: number } | null>(null);
   const singleTouchStartRef = useRef<{ x: number; y: number } | null>(null);
+  const touchStartOrigRef = useRef<{ x: number; y: number; time: number } | null>(null);
   const imageRef = useRef<HTMLDivElement | null>(null);
 
   const imageIndex = ((page % photos.length) + photos.length) % photos.length;
@@ -129,6 +130,7 @@ export default function Lightbox({ photos, initialIndex, onClose }: LightboxProp
       singleTouchStartRef.current = null;
     } else if (e.touches.length === 1) {
       singleTouchStartRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      touchStartOrigRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY, time: Date.now() };
       lastPinchDistRef.current = null;
     }
   };
@@ -183,10 +185,17 @@ export default function Lightbox({ photos, initialIndex, onClose }: LightboxProp
     }
 
     // Allow a fast/big horizontal swipe to navigate even while zoomed
-    if (e.changedTouches.length === 1 && singleTouchStartRef.current) {
-      const dx = e.changedTouches[0].clientX - singleTouchStartRef.current.x;
-      const dy = e.changedTouches[0].clientY - singleTouchStartRef.current.y;
-      const isHorizontalSwipe = Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 80;
+    if (e.changedTouches.length === 1 && touchStartOrigRef.current) {
+      const orig = touchStartOrigRef.current;
+      const dx = e.changedTouches[0].clientX - orig.x;
+      const dy = e.changedTouches[0].clientY - orig.y;
+      
+      const duration = Date.now() - orig.time;
+      const velocity = Math.abs(dx) / duration;
+      
+      // If they dragged far enough (>80px), mostly horizontally
+      // Ensure there's some velocity so ultra-slow panning doesn't accidentally trigger a navigation
+      const isHorizontalSwipe = Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 80 && velocity > 0.2;
 
       if (isHorizontalSwipe) {
         resetZoom();
