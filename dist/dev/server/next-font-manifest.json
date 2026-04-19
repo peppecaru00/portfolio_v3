@@ -1,12 +1,12 @@
 {
   "app": {
-    "[project]/app/_not-found/page": [
+    "[project]/portfolio_v3/app/page": [
       "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
     ],
-    "[project]/app/photos/[slug]/page": [
+    "[project]/portfolio_v3/app/projects/[slug]/page": [
       "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
     ],
-    "[project]/app/photos/page": [
+    "[project]/portfolio_v3/app/projects/page": [
       "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
     ]
   },
