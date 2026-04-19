@@ -811,6 +811,10 @@
     margin: calc(var(--spacing) * 4);
   }
 
+  .m-7 {
+    margin: calc(var(--spacing) * 7);
+  }
+
   .mx-auto {
     margin-inline: auto;
   }
@@ -1735,6 +1739,10 @@
     object-fit: cover;
   }
 
+  .p-0 {
+    padding: calc(var(--spacing) * 0);
+  }
+
   .p-2 {
     padding: calc(var(--spacing) * 2);
   }
@@ -1757,6 +1765,10 @@
 
   .p-6 {
     padding: calc(var(--spacing) * 6);
+  }
+
+  .p-9 {
+    padding: calc(var(--spacing) * 9);
   }
 
   .px-4 {
@@ -2046,6 +2058,10 @@
     opacity: .07;
   }
 
+  .opacity-8 {
+    opacity: .08;
+  }
+
   .opacity-60 {
     opacity: .6;
   }
@@ -2204,12 +2220,32 @@
     user-select: none;
   }
 
+  .\[key\:\1 _4ng\] {
+    key:  4ng;
+  }
+
+  .\[key\:\12 �4ng\] {
+    key:  �4ng;
+  }
+
+  .\[key\:\1a \11 4ng\] {
+    key:   4ng;
+  }
+
+  .\[key\:\%L4ng\] {
+    key: % L4ng;
+  }
+
   .\[key\:g\^4ng\] {
     key: g^ 4ng;
   }
 
   .\[key\:�O4ng\] {
     key: �O4ng;
+  }
+
+  .\[key\:�X4ng\] {
+    key: �X4ng;
   }
 
   .\[key\:��4ng\] {
@@ -2232,8 +2268,16 @@
     name:   �ng;
   }
 
+  .\[name\:\11 \6 �\] {
+    name:   �;
+  }
+
   .\[name\:�\1c �ng\] {
     name: � �ng;
+  }
+
+  .\[name\:�3�\] {
+    name: �3�;
   }
 
   @media (hover: hover) {
