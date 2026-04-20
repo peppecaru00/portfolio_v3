@@ -5,3 +5,4 @@
 [00:00:04.901] Browser LOG     Current Base Path: 
 [00:00:09.210] Browser WARN    Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
 [00:03:14.354] Server  LOG     ✓ Compiled in 550ms
+[00:04:16.468] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
