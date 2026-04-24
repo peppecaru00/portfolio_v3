@@ -8,7 +8,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
   
   const socials = [
-    { name: "Instagram", href: "https://instagram.com/giuseppe_caruso00", icon: Instagram },
+    { name: "Instagram", href: "https://instagram.com/peppecaruso.it", icon: Instagram },
     { name: "LinkedIn", href: "https://www.linkedin.com/in/giuseppecaruso00/", icon: Linkedin },
     { name: "GitHub", href: "https://github.com/peppecaru00", icon: Github },
   ];
