@@ -3,6 +3,7 @@ import { getProjectBySlug, getAllProjectSlugs } from "@/lib/photos";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import AlbumGallery from "./AlbumGallery";
+import { createMetadata, absoluteUrl } from "@/lib/metadata";
 
 export async function generateStaticParams() {
   const slugs = await getAllProjectSlugs();
@@ -21,10 +22,12 @@ export async function generateMetadata({
     return { title: 'Not Found' };
   }
 
-  return {
+  return createMetadata({
     title: `${project.title} | Photography`,
     description: project.description || `Photos from ${project.title}`,
-  };
+    images: [absoluteUrl(project.coverImage)],
+    path: `/photos/${slug}`,
+  });
 }
 
 export default async function ProjectPage({

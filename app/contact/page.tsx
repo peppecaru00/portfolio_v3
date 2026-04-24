@@ -1,7 +1,11 @@
-export const metadata = {
-  title: 'Start a Project | Portfolio',
-  description: 'Let\'s work together on your next project',
-};
+import { createMetadata, absoluteUrl } from "@/lib/metadata";
+
+export const metadata = createMetadata({
+  title: "Start a Project | Portfolio",
+  description: "Contact Giuseppe Caruso to start your next visual storytelling project.",
+  images: [absoluteUrl("/me.jpg")],
+  path: "/contact",
+});
 
 export default function ContactPage() {
   return (

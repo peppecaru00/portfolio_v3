@@ -1,10 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
+import { createMetadata, absoluteUrl } from "@/lib/metadata";
 
-export const metadata = {
-    title: 'About Me | Portfolio',
-    description: 'Learn more about me and my work',
-};
+export const metadata = createMetadata({
+  title: "About Me | Portfolio",
+  description: "Learn more about Giuseppe Caruso and his creative work in film, photography and motion design.",
+  images: [absoluteUrl("/me.jpg")],
+  path: "/about",
+});
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
 

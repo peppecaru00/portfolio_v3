@@ -4,16 +4,17 @@ import "./globals.css";
 import Navigation from "./components/Navigation";
 import Footer from "./components/Footer";
 import Preloader from "./components/Preloader";
+import { createMetadata } from "@/lib/metadata";
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createMetadata({
   title: "Portfolio | Giuseppe Caruso",
-  description: "Selected works and creative projects",
-};
+  description: "Selected works and creative storytelling by Giuseppe Caruso.",
+});
 
 export default function RootLayout({
   children,

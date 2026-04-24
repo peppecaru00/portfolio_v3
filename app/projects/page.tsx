@@ -1,6 +1,14 @@
 import { getProjects } from "@/lib/projects";
 import Image from "next/image";
 import Link from "next/link";
+import { createMetadata, absoluteUrl } from "@/lib/metadata";
+
+export const metadata = createMetadata({
+  title: "Projects | Portfolio",
+  description: "Selected motion, film and visual design projects by Giuseppe Caruso.",
+  images: [absoluteUrl("/me.jpg")],
+  path: "/projects",
+});
 
 // Remove the searchParams prop completely
 export default async function ProjectsPage() {

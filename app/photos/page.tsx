@@ -3,11 +3,14 @@ import { getProjects, getProjectCategories } from "@/lib/photos";
 import Image from "next/image";
 import Link from "next/link";
 import { Images } from "lucide-react";
+import { createMetadata, absoluteUrl } from "@/lib/metadata";
 
-export const metadata = {
-  title: 'Photography | Portfolio',
-  description: 'A collection of photography projects',
-};
+export const metadata = createMetadata({
+  title: "Photography | Portfolio",
+  description: "Explore photography albums and creative visual projects by Giuseppe Caruso.",
+  images: [absoluteUrl("/me.jpg")],
+  path: "/photos",
+});
 
 export default async function PhotosPage() {
   const selectedCategory = 'all';

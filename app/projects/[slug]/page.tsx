@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getProjects, getProjectBySlug, getProjectImages } from "@/lib/projects";
 import YouTubeButton from "../../components/YoutubeButton";
+import { createMetadata, absoluteUrl } from "@/lib/metadata";
 
 export async function generateStaticParams() {
   const projects = await getProjects();
@@ -21,10 +22,12 @@ export async function generateMetadata({
 
   if (!project) return {};
 
-  return {
+  return createMetadata({
     title: `${project.title} | Portfolio`,
     description: project.description,
-  };
+    images: [absoluteUrl(project.coverImage)],
+    path: `/projects/${slug}`,
+  });
 }
 
 export default async function ProjectPage({
