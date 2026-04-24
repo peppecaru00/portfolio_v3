@@ -1,9 +1,9 @@
 {
-  "[project]/app/components/Lightbox.tsx [app-client] (ecmascript, next/dynamic entry)": {
-    "id": "[project]/app/components/Lightbox.tsx [app-client] (ecmascript, next/dynamic entry)",
+  "[project]/portfolio_v3/app/components/Lightbox.tsx [app-client] (ecmascript, next/dynamic entry)": {
+    "id": "[project]/portfolio_v3/app/components/Lightbox.tsx [app-client] (ecmascript, next/dynamic entry)",
     "files": [
-      "static/chunks/_996eb64d._.js",
-      "static/chunks/app_components_Lightbox_tsx_95c75ac2._.js"
+      "static/chunks/portfolio_v3_ab900e93._.js",
+      "static/chunks/portfolio_v3_app_components_Lightbox_tsx_d4525edb._.js"
     ]
   }
 }

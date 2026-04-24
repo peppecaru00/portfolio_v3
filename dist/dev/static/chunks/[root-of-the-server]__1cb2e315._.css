@@ -2228,6 +2228,10 @@
     key:  �4ng;
   }
 
+  .\[key\:Z\3 rng\] {
+    key: Z rng;
+  }
+
   .\[key\:g\^4ng\] {
     key: g^ 4ng;
   }
@@ -2258,6 +2262,10 @@
 
   .\[name\:\11 \6 �\] {
     name:   �;
+  }
+
+  .\[name\:\%\8 �ng\] {
+    name: %  �ng;
   }
 
   .\[name\:�\1c �ng\] {
@@ -2831,6 +2839,12 @@
   @media (min-width: 64rem) {
     .lg\:grid-cols-3 {
       grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .lg\:grid-cols-4 {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
   }
 

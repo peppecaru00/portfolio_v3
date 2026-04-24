@@ -4,8 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && next export && node -e \"require('fs').writeFileSync('out/.nojekyll','')\"",
-    "export": "next export",
+    "build": "next build && node -e \"require('fs').writeFileSync('out/.nojekyll','')\"",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d out",
     "start": "next start",
