@@ -2228,24 +2228,12 @@
     key:  �4ng;
   }
 
-  .\[key\:\1a \11 4ng\] {
-    key:   4ng;
-  }
-
-  .\[key\:\%L4ng\] {
-    key: % L4ng;
-  }
-
   .\[key\:g\^4ng\] {
     key: g^ 4ng;
   }
 
   .\[key\:�O4ng\] {
     key: �O4ng;
-  }
-
-  .\[key\:�X4ng\] {
-    key: �X4ng;
   }
 
   .\[key\:��4ng\] {
@@ -2274,10 +2262,6 @@
 
   .\[name\:�\1c �ng\] {
     name: � �ng;
-  }
-
-  .\[name\:�3�\] {
-    name: �3�;
   }
 
   @media (hover: hover) {
