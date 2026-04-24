@@ -128,7 +128,7 @@ function Home() {
                                 delay: 0.2
                             },
                             className: "text-sm md:text-base font-medium tracking-widest uppercase mb-6",
-                            children: "Fotografante & Videocreatore"
+                            children: "Hello everyone, my name is"
                         }, void 0, false, {
                             fileName: "[project]/portfolio_v3/app/page.tsx",
                             lineNumber: 19,
@@ -149,19 +149,13 @@ function Home() {
                             },
                             className: "text-5xl md:text-7xl lg:text-9xl font-bold tracking-tighter leading-[0.9] mb-8",
                             children: [
-                                "Shooting.",
+                                "GIUSEPPE",
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$portfolio_v3$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {}, void 0, false, {
                                     fileName: "[project]/portfolio_v3/app/page.tsx",
                                     lineNumber: 35,
                                     columnNumber: 13
                                 }, this),
-                                "Create.",
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$portfolio_v3$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {}, void 0, false, {
-                                    fileName: "[project]/portfolio_v3/app/page.tsx",
-                                    lineNumber: 37,
-                                    columnNumber: 13
-                                }, this),
-                                "Passion."
+                                "CARUSO"
                             ]
                         }, void 0, true, {
                             fileName: "[project]/portfolio_v3/app/page.tsx",
@@ -189,7 +183,7 @@ function Home() {
                                     children: "Projects"
                                 }, void 0, false, {
                                     fileName: "[project]/portfolio_v3/app/page.tsx",
-                                    lineNumber: 47,
+                                    lineNumber: 45,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$portfolio_v3$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$portfolio_v3$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -198,13 +192,13 @@ function Home() {
                                     children: "Photos"
                                 }, void 0, false, {
                                     fileName: "[project]/portfolio_v3/app/page.tsx",
-                                    lineNumber: 53,
+                                    lineNumber: 51,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/portfolio_v3/app/page.tsx",
-                            lineNumber: 41,
+                            lineNumber: 39,
                             columnNumber: 11
                         }, this)
                     ]
@@ -247,17 +241,17 @@ function Home() {
                         className: "w-1 h-2 bg-white rounded-full"
                     }, void 0, false, {
                         fileName: "[project]/portfolio_v3/app/page.tsx",
-                        lineNumber: 75,
+                        lineNumber: 73,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/portfolio_v3/app/page.tsx",
-                    lineNumber: 70,
+                    lineNumber: 68,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/portfolio_v3/app/page.tsx",
-                lineNumber: 64,
+                lineNumber: 62,
                 columnNumber: 7
             }, this)
         ]

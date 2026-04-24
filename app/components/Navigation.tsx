@@ -17,9 +17,9 @@ export default function Navigation() {
   }, []);
 
   const navLinks = [
-    { href: "/projects", label: "Projects" },
-    { href: "/photos", label: "Photos" },
-    { href: "/about", label: "Me" },
+    { href: "/projects", label: "VIDEOS" },
+    { href: "/photos", label: "PHOTOS" },
+    { href: "/about", label: "ME" },
   ];
 
   return (
@@ -35,7 +35,7 @@ export default function Navigation() {
         <div className="max-w-[1800px] mx-auto px-6 md:px-12">
           <nav className="flex items-center justify-between h-20 md:h-24">
             <Link href="/" className="text-xl md:text-2xl font-bold tracking-tighter z-50 relative">
-              GIUSEPPE CARUSO
+              PEPPECARUSO.IT
             </Link>
 
             {/* Desktop Navigation */}
