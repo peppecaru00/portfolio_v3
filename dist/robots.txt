@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://peppecaru00.github.io/portfolio_v3/sitemap.xml
-Host: https://peppecaru00.github.io/portfolio_v3
