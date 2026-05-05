@@ -622,7 +622,7 @@ function Preloader({ children }) {
                 el.addEventListener('error', updateProgress);
             }
         });
-        const minTime = new Promise((resolve)=>setTimeout(resolve, 1500));
+        const minTime = new Promise((resolve)=>setTimeout(resolve, 500));
         const handleLoad = async ()=>{
             await Promise.all([
                 minTime,

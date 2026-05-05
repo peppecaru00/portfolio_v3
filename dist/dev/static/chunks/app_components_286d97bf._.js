@@ -649,7 +649,7 @@ function Preloader({ children }) {
                 }
             }["Preloader.useEffect"]);
             const minTime = new Promise({
-                "Preloader.useEffect": (resolve)=>setTimeout(resolve, 1500)
+                "Preloader.useEffect": (resolve)=>setTimeout(resolve, 500)
             }["Preloader.useEffect"]);
             const handleLoad = {
                 "Preloader.useEffect.handleLoad": async ()=>{

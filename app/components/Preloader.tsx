@@ -19,7 +19,7 @@ export default function Preloader({ children }: { children: React.ReactNode }) {
     let loadedCount = 0;
     const mediaElements = document.querySelectorAll('img, video');
     const totalAssets = Math.max(mediaElements.length, 1);
-    
+
     const updateProgress = () => {
       loadedCount++;
       const percent = Math.min((loadedCount / totalAssets) * 100, 100);
@@ -36,7 +36,7 @@ export default function Preloader({ children }: { children: React.ReactNode }) {
       }
     });
 
-    const minTime = new Promise(resolve => setTimeout(resolve, 1500));
+    const minTime = new Promise(resolve => setTimeout(resolve, 500));
 
     const handleLoad = async () => {
       await Promise.all([
@@ -47,11 +47,11 @@ export default function Preloader({ children }: { children: React.ReactNode }) {
           } else {
             window.addEventListener('load', () => resolve(null));
             // Fallback for iOS/mobile where video loading might block window.onload indefinitely
-            setTimeout(() => resolve(null), 3000); 
+            setTimeout(() => resolve(null), 3000);
           }
         })
       ]);
-      
+
       setProgress(100);
       setTimeout(() => setIsLoading(false), 400);
     };
@@ -83,7 +83,7 @@ export default function Preloader({ children }: { children: React.ReactNode }) {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="text-white text-2xl font-bold tracking-tighter mb-8"
             >
-            ✌️ Just a sec...
+              ✌️ Just a sec...
             </motion.div>
 
             <div className="w-48 h-[2px] bg-neutral-800 overflow-hidden">
