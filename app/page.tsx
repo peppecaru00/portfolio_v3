@@ -9,7 +9,7 @@ export default function Home() {
     <div className="relative min-h-screen flex items-center justify-center">
       {/* Background Video */}
       <VideoBackground
-        videoSrc={`${basePath}/videos/hero-bg.mp4`}
+        videoSrc="https://peppecaruso-portfolio-storage.s3.eu-north-1.amazonaws.com/showreel_2.mp4"
         overlay={true}
       />
 
