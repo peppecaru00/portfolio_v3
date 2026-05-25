@@ -1,11 +1,1 @@
-{
-  "version": 4,
-  "routes": {},
-  "dynamicRoutes": {},
-  "notFoundRoutes": [],
-  "preview": {
-    "previewModeId": "29afa1e07fc1403cd64dabdc04041294",
-    "previewModeSigningKey": "892cab8b482379c1e28b2b9332983c457d2b2c6b2eb6cfad6ac37a602dd5ccbd",
-    "previewModeEncryptionKey": "ec496373155773e796a9e3e3b3ae87ab673c997848f4f797f774bf6352374db7"
-  }
-}
+{"version":4,"routes":{"/photos/cars":{},"/photos/fashion-shooting-palazzo-nicolaci-noto":{},"/photos/fiat-600":{},"/photos/martina-pace":{},"/photos/musei-reali":{},"/photos/nature":{},"/photos/others":{},"/photos/roma":{}},"dynamicRoutes":{"/photos/[slug]":{"dataRoute":null,"dataRouteRegex":null,"fallback":null,"fallbackRevalidate":false,"fallbackSourceRoute":"/photos/[slug]","routeRegex":"^\\/photos\\/([^/]+?)(?:\\/)?$","allowHeader":[]}},"notFoundRoutes":[],"preview":{"previewModeId":"fb4d97235fd4fa0d6d873aed3f9f5169","previewModeSigningKey":"58fbf84ec56191fb1d2a90465de677ed0315b248d4104f418971aa1460808737","previewModeEncryptionKey":"8e0d3104a7c7ff2930de9d4aabce8adf939b62ba8a5c07a18eb6891e0649af3e"}}

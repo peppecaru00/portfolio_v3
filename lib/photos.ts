@@ -37,6 +37,13 @@ export interface PhotoCategory {
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
 // Projects are organized as subdirectories in /public/photos/
 
+export const getProjectSlug = (dirName: string): string => {
+  return dirName
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+};
+
 export const getProjectCategories = cache(async (): Promise<PhotoCategory[]> => {
   const photosDirectory = path.join(process.cwd(), 'public', 'photos');
   
@@ -146,7 +153,7 @@ export const getProjects = cache(async (category?: string): Promise<Project[]> =
 
     projects.push({
       id: dir.name,
-      slug: dir.name.toLowerCase().replace(/\s+/g, '-'),
+      slug: getProjectSlug(dir.name),
       title: meta.title || dir.name.replace(/[-_]/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
       year: meta.year || (meta.date ? new Date(meta.date).getFullYear().toString() : new Date().getFullYear().toString()),
       description: meta.description,
@@ -184,7 +191,7 @@ export const getProjectBySlug = cache(async (slug: string): Promise<Project | nu
 
   const entries = fs.readdirSync(photosDirectory, { withFileTypes: true });
   const projectDir = entries.find(e => 
-    e.isDirectory() && e.name.toLowerCase().replace(/\s+/g, '-') === slug
+    e.isDirectory() && getProjectSlug(e.name) === slug
   );
 
   if (!projectDir) return null;
@@ -293,5 +300,5 @@ export const getAllProjectSlugs = cache(async (): Promise<string[]> => {
   const entries = fs.readdirSync(photosDirectory, { withFileTypes: true });
   return entries
     .filter(e => e.isDirectory())
-    .map(e => e.name.toLowerCase().replace(/\s+/g, '-'));
+    .map(e => getProjectSlug(e.name));
 });
