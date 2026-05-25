@@ -24,7 +24,6 @@ export interface Project {
   coverImage: string;
   category: string;
   photos: PhotoMeta[];
-  order?: number;
   date?: string;
 }
 
@@ -97,16 +96,6 @@ export const getProjects = cache(async (category?: string): Promise<Project[]> =
 
   const entries = fs.readdirSync(photosDirectory, { withFileTypes: true });
   const projectDirs = entries.filter(e => e.isDirectory());
-  
-  const orderPath = path.join(photosDirectory, 'order.json');
-  let customOrder: string[] = [];
-  if (fs.existsSync(orderPath)) {
-    try {
-      customOrder = JSON.parse(fs.readFileSync(orderPath, 'utf8'));
-    } catch (e) {
-      console.warn('Could not parse order.json');
-    }
-  }
 
   const allowedExts = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.mp4', '.mov', '.webm'];
   const projects: Project[] = [];
@@ -143,14 +132,6 @@ export const getProjects = cache(async (category?: string): Promise<Project[]> =
     const cleanBasePath = basePath.replace(/\/$/, '');
     const coverSrc = `${cleanBasePath}/photos/${dir.name}/${coverFile}`;
 
-    let albumOrder = meta.order;
-    if (albumOrder === undefined && customOrder.length > 0) {
-      const idx = customOrder.indexOf(dir.name);
-      if (idx !== -1) {
-        albumOrder = idx;
-      }
-    }
-
     projects.push({
       id: dir.name,
       slug: getProjectSlug(dir.name),
@@ -160,7 +141,6 @@ export const getProjects = cache(async (category?: string): Promise<Project[]> =
       coverImage: coverSrc,
       category: meta.category || 'uncategorized',
       photos: [],
-      order: albumOrder,
       date: meta.date,
     });
   }
@@ -172,12 +152,6 @@ export const getProjects = cache(async (category?: string): Promise<Project[]> =
     }
     if (a.date && !b.date) return -1;
     if (!a.date && b.date) return 1;
-
-    if (a.order !== undefined && b.order !== undefined) {
-      return a.order - b.order;
-    }
-    if (a.order !== undefined) return -1;
-    if (b.order !== undefined) return 1;
 
     const yearDiff = parseInt(b.year) - parseInt(a.year);
     return yearDiff !== 0 ? yearDiff : a.title.localeCompare(b.title);
@@ -209,19 +183,7 @@ export const getProjectBySlug = cache(async (slug: string): Promise<Project | nu
     meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
   }
 
-  const orderPath = path.join(photosDirectory, 'order.json');
-  let albumOrder = meta.order;
-  if (albumOrder === undefined && fs.existsSync(orderPath)) {
-    try {
-      const customOrder: string[] = JSON.parse(fs.readFileSync(orderPath, 'utf8'));
-      const idx = customOrder.indexOf(projectDir.name);
-      if (idx !== -1) {
-        albumOrder = idx;
-      }
-    } catch (e) {
-      console.warn('Could not parse order.json');
-    }
-  }
+
 
   const cleanBasePath = basePath.replace(/\/$/, '');
   const projectTitle = meta.title || projectDir.name.replace(/[-_]/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
@@ -287,7 +249,6 @@ export const getProjectBySlug = cache(async (slug: string): Promise<Project | nu
     coverImage: coverSrc,
     category: meta.category || 'uncategorized',
     photos,
-    order: albumOrder,
     date: meta.date,
   };
 });
